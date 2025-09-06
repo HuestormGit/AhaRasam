@@ -60,7 +60,7 @@ function Contact() {
 
     try {
       const res = await axios.post(
-       `${process.env.REACT_APP_STRAPI_URL}/api/contacts`,
+       `${process.env.REACT_APP_STRAPI_URL}api/contacts`,
         payload,
         {
           headers: {
