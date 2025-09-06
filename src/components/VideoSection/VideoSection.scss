@@ -1,0 +1,48 @@
+@import "../../css-config/mixins.scss";
+
+.VideoSection {
+  background-color: #E1AD3F;
+  position: relative;
+  padding: 120px 0;
+  overflow: hidden; // ✅ ensures overlay doesn’t overflow outside
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;   /* ✅ stick to bottom */
+    left: 0;
+    width: 100%; /* ✅ span full width */
+    height: 200px; /* adjust depending on your overlay image height */
+    background-image: url("../../assets/video-bottom.png");
+    background-size: cover;  /* ✅ stretch to cover full width */
+    background-repeat: no-repeat;
+    background-position: center bottom; /* ✅ keep aligned at bottom */
+    z-index: 0; /* behind content */
+    opacity: 1;
+
+    @include md {
+      height: 400px; /* taller for tablets */
+    }
+  }
+
+  .container {
+    position: relative;
+    z-index: 1; /* ✅ keeps text & video above overlay */
+    .videosectionheading{
+        color: #FFFFFF;
+        font-family: "Barlow", sans-serif;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 40px;
+        line-height: 48px;
+    }
+    .videosectionpara{
+         color: #FFFFFF;
+        font-family: "Barlow", sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 24px;
+        line-height: 28px;
+    }
+  }
+}

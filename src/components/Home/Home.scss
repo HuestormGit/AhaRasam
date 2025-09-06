@@ -1,0 +1,10 @@
+@import "../../css-config/mixins.scss";
+.container{max-width: 1200px;}
+.home{
+   margin-top: -110px;
+   .spacer{
+      height: 80px;
+      background-image: url(../../assets/video-top.png);
+      background-size: contain;
+   }
+}

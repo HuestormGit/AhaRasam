@@ -1,0 +1,175 @@
+@import "../../css-config/mixins.scss";
+
+.products-grid {
+  padding: 2rem 0;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: 600;
+  }
+
+  .products-container {
+    // display: flex;
+    // flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .product-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: box-shadow 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #a42222;
+    }
+
+    img {
+      width: 100%;
+      max-width: 250px;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+    }
+
+    .variant-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      margin-bottom: 0.8rem;
+
+      span {
+        font-weight: 500;
+      }
+
+      .trash-btn {
+        background: #fce5e5;
+        color: #d9534f;
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.3s ease;
+
+        &:hover {
+          background: #f8b9b9;
+        }
+      }
+
+      .varqty-sec{
+        display: flex;
+        align-items: center;
+      }
+
+      .qty-btn {
+        background: #E1AD3F;
+        border: 0px solid #ddd;
+        border-radius: 6px;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s ease;
+
+        &:hover {
+          background: #e0e0e0;
+        }
+      }
+
+      .qty-value {
+        min-width: 24px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 1rem;
+      }
+    }
+
+    > button {
+      display: block;
+      width: 100%;
+      background: #d9534f;
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      margin: 1rem 0;
+      cursor: pointer;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background: #c9302c;
+      }
+    }
+
+    .process-ctn-cls{
+      display: flex;
+      justify-content: flex-end;
+      .proceed-btn{
+        border-width: 0;
+        border-radius: 20px;
+        background-color: #E1AD3F;
+        &:hover{
+          background: #c9302c;
+
+        }
+      }
+    }
+
+    .ingredients,
+    .howto {
+      margin-top: 1.5rem;
+
+      h4 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #a42222;
+      }
+
+      p,
+      li {
+        font-size: 0.95rem;
+        line-height: 1.4;
+        margin-bottom: 0.3rem;
+      }
+
+      ul {
+        padding-left: 1.2rem;
+        margin: 0;
+      }
+    }
+  }
+
+  // Responsive with mixins
+  // @include lg {
+  //   .product-card {
+  //     flex: 0 0 calc(50% - 1rem);
+  //   }
+  // }
+
+  // @include md {
+  //   .product-card {
+  //     flex: 0 0 100%;
+  //   }
+  // }
+}

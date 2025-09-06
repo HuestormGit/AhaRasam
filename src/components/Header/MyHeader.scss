@@ -1,0 +1,60 @@
+@import "../../css-config/mixins.scss";
+.navbar-brand {
+  img{
+    width: 85px;
+    @include md{
+      width: 250px;
+    }
+    @include sm{
+      width: 150px;
+    }
+  }
+  
+}
+.navbar {
+  .navbar-nav{
+    align-items: baseline;
+    .nav-link{
+      color: #fff;
+      font-size: 1.1em;
+      padding: 0.5em 1em;
+      font-family: "Barlow";
+      @include md{
+        font-size: 24px;
+      }
+    }
+  }
+  &.sticky-nav{
+    position: sticky;
+    background-color: #E1AD3F;
+    top: 0;
+     transform: translateY(-100px);
+    animation: Stickey-nav 0.2s ease forwards;
+    z-index: 5;
+    img{
+    width: 85px;
+    @include md{
+      width: 90px;
+    }
+  }
+  }
+}
+
+@keyframes Stickey-nav {
+  0%{
+    transform: translateY(-100px);
+  }
+  100%{
+    transform: translateY(0);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  // .navbar-brand img {
+  //   width: 100px;
+  // }
+  .navbar-brand {
+    margin-right: 0;
+    padding: 0 1em;
+  }
+}

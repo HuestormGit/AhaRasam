@@ -1,0 +1,158 @@
+@import "../../css-config/mixins.scss";
+.contact-section {
+  padding: 60px 20px;
+  background: #fff;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    align-items: flex-start;
+  }
+
+  /* LEFT FORM */
+  .contact-form-box {
+    flex: 1 1 470px;
+
+    .form-title {
+      font: normal normal 600 40px/48px Barlow, sans-serif;
+      color: #aa2423;
+      margin-bottom: 10px;
+    }
+
+    .form-subtitle {
+      font: normal normal normal 24px/28px Barlow, sans-serif;
+      color: #707070;
+      margin-bottom: 30px;
+      max-width: 470px;
+    }
+
+    .contact-form {
+      .form-group {
+        position: relative;
+        margin-bottom: 20px;
+
+        input,
+        textarea {
+          width: 100%;
+          border: none;
+          border-bottom: 1px solid #ddd;
+          padding: 10px 5px;
+          font-size: 16px;
+          font-family: Barlow, sans-serif;
+          outline: none;
+          background: transparent;
+        }
+
+        textarea {
+          resize: none;
+          height: 100px;
+        }
+
+        label {
+          display: block;
+          margin-bottom: 6px;
+          font-size: 14px;
+          color: #333;
+        }
+      }
+
+      .radio-group {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        margin: 15px 0;
+
+        label {
+            display: flex;
+          font-size: 16px;
+          color: #333;
+        }
+
+        input[type="radio"] {
+          accent-color: #aa2423; // modern browsers support
+          margin-right: 6px;
+        }
+      }
+      .btn-container{
+        display: flex;
+        justify-content: flex-end;
+        .btn-submit {
+        // float : right;
+       
+        display: inline-block;
+        // background: linear-gradient(90deg, #aa2423 0%, #e8b64a 100%);
+        background-color: #E1AD3F;
+        color: #fff;
+        border: none;
+        padding: 12px 40px;
+        border-radius: 20px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.3s ease;
+
+        &:hover {
+          opacity: 0.9;
+        }
+      }
+      }
+      
+    }
+  }
+
+  /* RIGHT INFO */
+  .contact-info {
+    flex: 1 1 470px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .company-logo {
+      max-width: 200px;
+      margin-bottom: 20px;
+    }
+
+    .company-name {
+      font: normal normal 600 40px/48px Barlow;
+      color: #aa2423;
+      margin-bottom: 12px;
+    }
+
+    .company-address {
+      font: normal normal normal 24px/28px Barlow;
+      color: #707070;
+      max-width: 400px;
+    }
+  }
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+  .contact-section {
+    padding: 40px 15px;
+
+    .container {
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .contact-form-box,
+    .contact-info {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+
+    .form-title {
+      font-size: 32px;
+      line-height: 40px;
+    }
+
+    .form-subtitle {
+      font-size: 16px;
+      line-height: 22px;
+    }
+  }
+}
