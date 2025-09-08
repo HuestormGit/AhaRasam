@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import CheckoutPopup from "../Checkout/CheckoutPopup";
 import { CartContext } from "../../context/CartContext";
 import "./Cart.scss";
+import Checkout from "../Checkout/Checkout";
 
 const Cart = () => {
   const { cart, removeFromCart } = useContext(CartContext);
@@ -39,7 +40,14 @@ const Cart = () => {
             cartData={cart}
             onClose={() => setShowCheckout(false)}
           />
+          
         )}
+
+        <p>without razorpay check data save in strapi or not :-</p>
+        <Checkout
+            cartData={cart}
+            onClose={() => setShowCheckout(false)}
+          />
       </div>
     </div>
   );

@@ -1,113 +1,80 @@
-import { useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+import { postDataToApi } from "../../utils/Api";
 
-const Checkout = ({ cart }) => {
-  // cart = [{ productName, variant, quantity, price }]
-  const [form, setForm] = useState({
-    CustomerName: "",
-    Email: "",
-    PhoneNumber: "",
-  });
+const Checkout = ({ cartData, onClose }) => {
+  const [form, setForm] = useState({ name: "", email: "", contact: "" });
+
+  const totalAmount = cartData.reduce((sum, item) => sum + item.price * item.qty, 0);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-  // ---- Payment + Save to Strapi ----
-  const handlePayment = async () => {
+  const createOrder = async () => {
     try {
-      // 1. Create order in backend (Strapi Razorpay controller)
-      const orderRes = await axios.post("http://localhost:1337/api/orders/create-razorpay-order", {
-        amount: total * 100, // in paisa
-      });
-
-      const { id: razorpayOrderId, amount } = orderRes.data;
-
-      // 2. Open Razorpay Checkout
-      const options = {
-        key: process.env.REACT_APP_RAZORPAY_KEY,
-        amount,
-        currency: "INR",
-        name: "AHA! Rasam",
-        description: "Order Payment",
-        order_id: razorpayOrderId,
-        handler: async function (response) {
-          // response has razorpay_payment_id, razorpay_order_id, razorpay_signature
-
-          // 3. Save order in Strapi
-          await axios.post("http://localhost:1337/api/orders", {
-            data: {
-              CustomerName: form.CustomerName,
-              Email: form.Email,
-              PhoneNumber: form.PhoneNumber,
-              ProductName: cart.map((c) => c.productName).join(", "),
-              Variant: cart.map((c) => c.variant).join(", "),
-              Quantity: cart.map((c) => c.quantity).join(", "),
-              Price: total,
-              PaymentStatus: "Paid",
-              RazorpayOrderID: response.razorpay_order_id,
-              TransactionID: response.razorpay_payment_id,
-            },
-          });
-
-          alert("Payment successful & order saved!");
-        },
-        prefill: {
-          name: form.CustomerName,
-          email: form.Email,
-          contact: form.PhoneNumber,
-        },
-        theme: { color: "#3399cc" },
+      // Save order directly in Strapi as "pending"
+      const orderPayload = {
+        customerName: form.name,
+        email: form.email,
+        phoneNumber: form.contact,
+        items: cartData,
+        total: totalAmount,
+        status: "pending", // always start with pending
       };
 
-      const rzp = new window.Razorpay(options);
-      rzp.open();
+      await postDataToApi("/api/orders", { data: orderPayload });
+
+      alert("✅ Order saved successfully! (Pending status)");
+      localStorage.removeItem("cartList");
+      window.location.href = "/?thankyou=true";
     } catch (err) {
-      console.error("Payment error:", err);
-      alert("Something went wrong during payment!");
+      console.error("Order save error:", err);
+      alert("❌ Failed to save order.");
     }
   };
 
+  console.log("🛒 CheckoutPopup received cartData:", cartData);
+
   return (
-    <div className="checkout">
-      <h2>Checkout</h2>
+    <div className="popup-overlay">
+      <div className="popup-content">
+        <h2>Checkout</h2>
 
-      {/* Customer Info */}
-      <input
-        type="text"
-        name="CustomerName"
-        placeholder="Customer Name"
-        value={form.CustomerName}
-        onChange={handleChange}
-      />
-      <input
-        type="email"
-        name="Email"
-        placeholder="Email"
-        value={form.Email}
-        onChange={handleChange}
-      />
-      <input
-        type="text"
-        name="PhoneNumber"
-        placeholder="Phone Number"
-        value={form.PhoneNumber}
-        onChange={handleChange}
-      />
+        <ul>
+          {cartData.map((item, idx) => (
+            <li key={idx}>
+              {item.productName} ({item.size}) - ₹{item.price} × {item.qty} = ₹
+              {item.price * item.qty}
+            </li>
+          ))}
+        </ul>
+        <h3>Total: ₹{totalAmount}</h3>
 
-      {/* Cart Summary */}
-      <h3>Order Summary</h3>
-      {cart.map((item, idx) => (
-        <div key={idx} className="summary-row">
-          {item.productName} – {item.variant} × {item.quantity} = ₹
-          {item.price * item.quantity}
-        </div>
-      ))}
-      <h3>Total: ₹{total}</h3>
+        <input
+          type="text"
+          name="name"
+          placeholder="Enter Name"
+          value={form.name}
+          onChange={handleChange}
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Enter Email"
+          value={form.email}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="contact"
+          placeholder="Enter Contact"
+          value={form.contact}
+          onChange={handleChange}
+        />
 
-      <button onClick={handlePayment}>Pay with Razorpay</button>
+        <button onClick={createOrder}>Place Order</button>
+        <button onClick={onClose}>Cancel</button>
+      </div>
     </div>
   );
 };
