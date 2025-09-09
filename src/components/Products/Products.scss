@@ -7,6 +7,27 @@
     text-align: center;
     margin-bottom: 2rem;
     font-weight: 600;
+    color: #AA2423;
+    font-size: 20px;
+     font-family: "Barlow";
+     @include md{
+      font-size: 30px;
+    }
+    @include sm{
+      font-size: 40px;
+    }
+  }
+
+  p{
+    font-size: 18px;
+    color: #707070;
+     font-family: "Barlow";
+     @include md{
+      font-size: 20px;
+    }
+    @include sm{
+      font-size: 24px;
+    }
   }
 
   .products-container {
@@ -28,10 +49,18 @@
     }
 
     h3 {
-      font-size: 1.3rem;
+      
       font-weight: 600;
       margin-bottom: 1rem;
       color: #a42222;
+      font-family: "Barlow";
+      font-size: 20px;
+      @include md{
+        font-size: 25px;
+      }
+      @include sm{
+        font-size: 30px;
+      }
     }
 
     img {
