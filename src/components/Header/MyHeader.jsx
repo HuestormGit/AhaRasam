@@ -64,7 +64,7 @@ const MyHeader = () => {
               {/* <a className="nav-link" to="/cart">
                 Cart({cartCount})
               </a> */}
-              <Link to="/cart">Cart ({cart.length})</Link>
+              <Link to="/cart" className="nav-link">Cart ({cart.length})</Link>
               {/* <Link to="/cart">Cart({cartCount})</Link> */}
             </li>
             <li className="nav-item">
