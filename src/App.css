@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+.thank-you-popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #4caf50;
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+  opacity: 1;
+  transition: opacity 1s ease-in-out;
+  z-index: 9999;
+}
+
+.thank-you-popup.hide {
+  opacity: 0;
+}

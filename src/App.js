@@ -12,10 +12,21 @@ function HomeWrapper() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const showThankYou = params.get("thankyou");
+   const [visible, setVisible] = useState(!!showThankYou);
+
+  useEffect(() => {
+    if (showThankYou) {
+      setVisible(true);
+      const timer = setTimeout(() => {
+        setVisible(false);
+      }, 5000); // hide after 5 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [showThankYou]);
 
   return (
     <>
-      {showThankYou && (
+      {visible  && (
         <div className="thank-you-popup">
           🎉 Thank you for your order!
         </div>
