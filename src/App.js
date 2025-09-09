@@ -6,6 +6,7 @@ import MyHeader from "./components/Header/MyHeader";
 import Footer from "./components/Footer/Footer";
 import Cart from "./components/Cart/Cart";
 import { CartProvider } from "./context/CartContext";
+import { useEffect, useState } from "react";
 // import Order from "./components/Order/Order";
 
 function HomeWrapper() {
@@ -26,7 +27,7 @@ function HomeWrapper() {
 
   return (
     <>
-      {visible  && (
+      {visible && (
         <div className="thank-you-popup">
           🎉 Thank you for your order!
         </div>
