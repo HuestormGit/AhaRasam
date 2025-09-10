@@ -125,7 +125,7 @@ const Products = () => {
               {/* ✅ Ingredients Section */}
               {product.Ingredients?.length > 0 && (
                 <div className="ingredients text-start">
-                  <h4>Ingredients</h4>
+                  <h4>Ingredients : </h4>
                   {product.Ingredients.map((block, i) =>
                     block.children?.map((c, j) => (
                       <p key={i + "-" + j}>{c.text}</p>
