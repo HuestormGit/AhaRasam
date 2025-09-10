@@ -3,7 +3,7 @@
 .VideoSection {
   background-color: #E1AD3F;
   position: relative;
-  padding: 120px 0;
+  padding: 100px 0;
   overflow: hidden; // ✅ ensures overlay doesn’t overflow outside
 
   &::after {
@@ -21,7 +21,7 @@
     opacity: 1;
 
     @include md {
-      height: 400px; /* taller for tablets */
+      height: 355px; /* taller for tablets */
     }
   }
 

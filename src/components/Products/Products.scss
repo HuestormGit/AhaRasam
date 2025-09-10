@@ -212,8 +212,10 @@
     padding-left: 0;
 
     li {
+      font-size: 24px;
+      line-height: 28px;
       counter-increment: custom-counter;
-      margin-bottom: 1rem;
+      margin-bottom: 10px;
       position: relative;
       padding-left: 2.5rem; // space for circle
 
