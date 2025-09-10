@@ -18,19 +18,21 @@
     }
   }
 
-  p{
-    font-size: 18px;
-    color: #707070;
-    font-family: "Barlow";
-    text-align: center;
-    width: 100%;
-    @include md{
-      font-size: 20px;
-      width: 95%;
-    }
-    @include sm{
-      font-size: 24px;
-      width: 75%;
+  .sub-heading{
+    p{
+      font-size: 18px;
+      color: #707070;
+      font-family: "Barlow";
+      text-align: center;
+      width: 100%;
+      @include md{
+        font-size: 20px;
+        width: 95%;
+      }
+      @include sm{
+        font-size: 24px;
+        width: 75%;
+      }
     }
   }
 
@@ -186,17 +188,51 @@
         }
       }
 
-      p,
-      li {
-        font-size: 0.95rem;
-        line-height: 1.4;
+      p{
+        font-size: 20px;
+        line-height: 20px;
         margin-bottom: 0.3rem;
+        @include md{
+          font-size: 22px;
+          line-height: 22px;
+        }
+        @include sm{
+          font-size: 24px;
+          line-height: 28px;
+        }
       }
 
-      ul {
-        padding-left: 1.2rem;
-        margin: 0;
+      ol{
+        li{
+          font-size: 20px;
+          line-height: 20px;
+        
+          @include md{
+            font-size: 22px;
+            line-height: 22px;
+          }
+          @include sm{
+            font-size: 24px;
+            line-height: 28px;
+          }
+        }
+        &::marker{
+
+          font-size: 20px;
+          line-height: 20px;
+          background-color: #a42222;
+        
+          @include md{
+            font-size: 22px;
+            line-height: 22px;
+          }
+          @include sm{
+            font-size: 24px;
+            line-height: 28px;
+          }
+        }
       }
+
     }
   }
 

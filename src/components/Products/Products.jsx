@@ -63,7 +63,7 @@ const Products = () => {
   return (
     <div className="products-grid container">
       <h2>Products</h2>
-      <div className="d-flex justify-content-center ">
+      <div className="sub-heading d-flex justify-content-center ">
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus dictum, mi non maximus accumsan, tortor nunc laoreet dolor, ac ullamcorper massa lacus vel felis.</p>
       </div>
       <div className="products-container d-flex justify-content-center ">
@@ -139,11 +139,11 @@ const Products = () => {
                 <div className="howto text-start">
                   <h4>How to Prepare</h4>
                   {product.HOWTOPREPAREAHARASAM.map((block, i) => (
-                    <ul key={i}>
+                    <ol key={i}>
                       {block.children?.map((li, j) => (
                         <li key={j}>{li.children?.[0]?.text}</li>
                       ))}
-                    </ul>
+                    </ol>
                   ))}
                 </div>
               )}
