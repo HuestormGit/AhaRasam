@@ -63,8 +63,9 @@ const Products = () => {
   return (
     <div className="products-grid container">
       <h2>Products</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus dictum, mi non maximus accumsan, tortor nunc laoreet dolor, ac ullamcorper massa lacus vel felis.</p>
-
+      <div className="d-flex justify-content-center ">
+      <p style={{width:60%;}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus dictum, mi non maximus accumsan, tortor nunc laoreet dolor, ac ullamcorper massa lacus vel felis.</p>
+      </div>
       <div className="products-container d-flex justify-content-center ">
         {products.map((product) => {
           // ✅ Image (full URL already in Strapi response)
