@@ -202,39 +202,41 @@
         }
       }
 
-      ol{
-        li{
-          font-size: 20px;
-          line-height: 20px;
-        
-          @include md{
-            font-size: 22px;
-            line-height: 22px;
-          }
-          @include sm{
-            font-size: 24px;
-            line-height: 28px;
-          }
-        }
-        &::marker{
-
-          font-size: 20px;
-          line-height: 20px;
-          background-color: #a42222;
-        
-          @include md{
-            font-size: 22px;
-            line-height: 22px;
-          }
-          @include sm{
-            font-size: 24px;
-            line-height: 28px;
-          }
-        }
-      }
 
     }
   }
+  .howto {
+  ol {
+    counter-reset: custom-counter; // reset counter
+    list-style: none; // remove default numbers
+    padding-left: 0;
+
+    li {
+      counter-increment: custom-counter;
+      margin-bottom: 1rem;
+      position: relative;
+      padding-left: 2.5rem; // space for circle
+
+      &::before {
+        content: counter(custom-counter);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #a42222; // same red as design
+        color: #fff;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
 
   // Responsive with mixins
   // @include lg {
