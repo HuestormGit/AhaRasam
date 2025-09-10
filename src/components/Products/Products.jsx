@@ -72,11 +72,11 @@ const Products = () => {
 
           return (
             <div key={product.id} className="product-card col-sm-12 col-md-4">
-              <h3>{product.Title}</h3>
+              
 
               {/* ✅ Display product image */}
               <img src={imgUrl} alt={product.Title} width="300" />
-
+              <h3>{product.Title}</h3>
               {/* ✅ Variants Section */}
               {product.Variant?.map((v, idx) => (
                 <div key={idx} className="variant-row">
