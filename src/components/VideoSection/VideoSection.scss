@@ -3,7 +3,7 @@
 .VideoSection {
   background-color: #E1AD3F;
   position: relative;
-  padding: 100px 0;
+  padding: 100px 0 0;
   overflow: hidden; // ✅ ensures overlay doesn’t overflow outside
 
   &::after {
@@ -12,13 +12,13 @@
     bottom: 0;   /* ✅ stick to bottom */
     left: 0;
     width: 100%; /* ✅ span full width */
-    height: 200px; /* adjust depending on your overlay image height */
+    height: 150px; /* adjust depending on your overlay image height */
     background-image: url("../../assets/video-bottom.png");
     background-size: cover;  /* ✅ stretch to cover full width */
     background-repeat: no-repeat;
     background-position: center bottom; /* ✅ keep aligned at bottom */
     z-index: 0; /* behind content */
-    opacity: 1;
+    // opacity: 1;
 
     @include md {
       height: 355px; /* taller for tablets */
@@ -28,6 +28,10 @@
   .container {
     position: relative;
     z-index: 1; /* ✅ keeps text & video above overlay */
+    .spacer {
+      width: 100%;
+      height: 60px; // adjust based on XD spacing
+    }
     .videosectionheading{
         color: #FFFFFF;
         font-family: "Barlow", sans-serif;

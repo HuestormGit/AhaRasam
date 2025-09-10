@@ -17,10 +17,11 @@ function VideoSection() {
 
           </div>
           <div className="col-lg-7 col-md-12">
+            <div className="spacer"></div>
             <h3 className="videosectionheading">How to make a perfect Rasam</h3>
-          <p className="videosectionpara">
-           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus dictum, mi non maximus accumsan, tortor nunc laoreet dolor, ac ullamcorper massa lacus vel felis.
-          </p>
+            <p className="videosectionpara">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus dictum, mi non maximus accumsan, tortor nunc laoreet dolor, ac ullamcorper massa lacus vel felis.
+            </p>
           </div>
         </div>
       </div>
