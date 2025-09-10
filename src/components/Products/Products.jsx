@@ -88,7 +88,7 @@ const Products = () => {
                   <span>
                     {v.size} – ₹{v.price}
                   </span> */}
-                  <div className="d-flex">
+                  <div className="d-flex align-items-center">
                     <button className="trash-btn">🗑</button>
                     <div className="varqty-sec">
                       <button
