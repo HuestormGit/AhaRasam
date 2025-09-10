@@ -13,17 +13,24 @@ function HomeWrapper() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const showThankYou = params.get("thankyou");
-   const [visible, setVisible] = useState(!!showThankYou);
+  const [visible, setVisible] = useState(!!showThankYou);
+  const scrollTarget = params.get("scroll");
 
   useEffect(() => {
     if (showThankYou) {
       setVisible(true);
-      const timer = setTimeout(() => {
-        setVisible(false);
-      }, 5000); // hide after 5 seconds
+      const timer = setTimeout(() => { setVisible(false);}, 5000); // hide after 5 seconds
       return () => clearTimeout(timer);
     }
   }, [showThankYou]);
+
+   useEffect(() => {
+    if (scrollTarget) {
+      setTimeout(() => {
+        document.getElementById(scrollTarget)?.scrollIntoView({ behavior: "smooth" });
+      }, 300); // wait a bit for page render
+    }
+  }, [scrollTarget]);
 
   return (
     <>
