@@ -42,11 +42,11 @@ const Cart = () => {
           />
           
         )} */}
-        <p>with razorpay check data save in strapi or not :-</p>
+        {/* <p>with razorpay check data save in strapi or not :-</p>
           <CheckoutPopup
             cartData={cart}
             onClose={() => setShowCheckout(false)}
-          />
+          /> */}
         {/* <p>without razorpay data save in strapi </p> */}
         {showCheckout && (
           <Checkout
