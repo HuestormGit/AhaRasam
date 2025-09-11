@@ -17,7 +17,7 @@ const CheckoutPopup = ({ cartData, onClose }) => {
     try {
       // 1️⃣ Ask Strapi backend to create Razorpay order
       const res = await axios.post(
-        `${process.env.REACT_APP_STRAPI_URL}/api/razorpay/order`,
+        `${process.env.REACT_APP_STRAPI_URL}api/razorpay/order`,
         { amount: totalAmount, currency: "INR" }
       );
 
@@ -35,7 +35,7 @@ const CheckoutPopup = ({ cartData, onClose }) => {
           try {
             // 3️⃣ Send payment details + customer/order data to backend
             const verifyRes = await axios.post(
-              `${process.env.REACT_APP_STRAPI_URL}/api/razorpay/verify`,
+              `${process.env.REACT_APP_STRAPI_URL}api/razorpay/verify`,
               {
                 ...response,
                 customerName: form.name,
