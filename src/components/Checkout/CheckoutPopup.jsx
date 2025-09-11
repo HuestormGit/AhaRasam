@@ -94,6 +94,7 @@ const CheckoutPopup = ({ cartData, onClose }) => {
       rzp.open();
     } catch (err) {
       console.error("Payment error:", err);
+      ctx.throw(500, err.message);
       alert("❌ Failed to create Razorpay order");
     }
   };
