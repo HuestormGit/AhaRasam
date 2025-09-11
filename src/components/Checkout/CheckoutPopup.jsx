@@ -93,8 +93,8 @@ const CheckoutPopup = ({ cartData, onClose }) => {
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (err) {
-      console.error("Payment error:", err);
-      ctx.throw(500, err.message);
+      console.error("Payment error:", err.message);
+      // ctx.throw(500, err.message);
       alert("❌ Failed to create Razorpay order");
     }
   };
