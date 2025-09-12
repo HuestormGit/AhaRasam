@@ -1,9 +1,7 @@
 @import "../../css-config/mixins.scss";
 
 .VideoSection {
-  background: url("../../assets/video-bottom.png") no-repeat center/cover, yellow; 
-
-  // background-color: #E1AD3F;
+  background: url("../../assets/video-bottom.png") no-repeat center bottom / cover, #E1AD3F;
   position: relative;
   padding: 100px 0 0;
   overflow: hidden; // ✅ ensures overlay doesn’t overflow outside
