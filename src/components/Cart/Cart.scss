@@ -7,23 +7,91 @@
 .cart-container{
     margin: 150px 0;
     text-align: center;
-    @include xl{
+    cart-section{
+        @include xl{
         width: 1200px;
-    }
-    h2{
-        font-family: Barlow, Condensed SemiBold;
-        color: #AA2423;
-        font-weight: 600;
-        font-size: 20px;
-        line-height: 28px;
-        @include md{
-            font-size: 30px;
-            line-height: 38px;
         }
-        @include lg{
-            font-size: 40px;
-            line-height: 48px;
+        h2{
+            font-family: Barlow, Condensed SemiBold;
+            color: #AA2423;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 28px;
+            @include md{
+                font-size: 30px;
+                line-height: 38px;
+            }
+            @include lg{
+                font-size: 40px;
+                line-height: 48px;
+            }
         }
+        p{
+            text-align: center;
+            font-size: 20px;
+            font-family: Barlow, Condensed;
+            font-weight: 400; 
+            color: #000000;
+            padding: 50px 0;
+            @include md{
+                font-size: 24px;     
+                padding: 110px 0 40px;
+            }
+        }
+        thead.red-dark{
+            background-color: #AA2423;
+            color: #fff;
+            th{
+                font-family: Barlow, Condensed;
+                font-size: 18px;
+                line-height: 20px;
+                font-weight: 400;
+                @include md{
+                    font-size: 20px;
+                    line-height: 24px;
+                }
+                @include lg{
+                    font-size: 24px;
+                    line-height: 28px;
+                }
+            }
+        }
+        tbody{
+            tr{
+                h4{
+                    color: #AA2423;
+                    font-family: Barlow, Condensed SemiBold;
+                    font-size: 20px;
+                    line-height: 18px;
+                    font-weight: 600;
+                    @include md{
+                        font-size: 25px;
+                        line-height: 23px;
+                    }
+                    @include lg{
+                        font-size: 30px;
+                        line-height: 28px;
+                    }
+                }
+                p{
+                    font-family: Barlow, Condensed;
+                    color: #000;
+                    font-size: 18px;
+                    line-height: 18px;
+                    font-weight: 400;
+                    @include md{
+                        font-size: 20px;
+                        line-height: 18px;
+                    }
+                    @include lg{
+                        font-size: 24px;
+                        line-height: 28px;
+                    }
+                }
+            }
+        }
+
     }
+    
 
 }
