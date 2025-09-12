@@ -104,7 +104,7 @@ function Contact() {
         <div className="contact-form-box">
           <h2 className="form-title">Enquiry</h2>
           <p className="form-subtitle">
-            Have Questions or Want to Connect? We’d love to chat!
+            Have Questions or Want to Connect? <br></br>We’d love to chat!
           </p>
 
           <form className="contact-form" onSubmit={handleSubmit}>

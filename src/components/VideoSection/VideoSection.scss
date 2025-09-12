@@ -5,7 +5,7 @@
   background-color:#E1AD3F ;
   position: relative;
   // padding: 100px 0 0;
-  overflow: hidden; // ✅ ensures overlay doesn’t overflow outside
+  // overflow: hidden; // ✅ ensures overlay doesn’t overflow outside
   
   &::after {
     content: "";

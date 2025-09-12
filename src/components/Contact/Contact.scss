@@ -135,6 +135,10 @@
         .btn-container{
           display: flex;
           justify-content: flex-end;
+          width: 90%;
+          @include md{
+            width: 70%;
+          }
           .btn-submit {
             font-family: Barlow, Condensed SemiBold;
             display: inline-block;

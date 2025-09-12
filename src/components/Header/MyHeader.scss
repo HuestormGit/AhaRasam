@@ -39,11 +39,17 @@
     align-items: baseline;
     .nav-link{
       color: #fff;
-      font-size: 1.1em;
+      font-size: 20px;
+      line-height: 22px;
       padding: 0.5em 1em;
-      font-family: "Barlow";
+      font-family: Barlow, Condensed Medium;
       @include md{
+        font-size: 22px;
+        line-height: 25px;
+      }
+      @include lg{
         font-size: 24px;
+        line-height: 29px;
       }
     }
   }
@@ -56,8 +62,14 @@
     z-index: 5;
     img{
     width: 85px;
+    height: 85px;
     @include md{
       width: 90px;
+      width: 90px;
+    }
+    @include lg{
+      height: 100px;
+      width: 100px;
     }
   }
   }
@@ -72,12 +84,12 @@
   }
 }
 
-@media screen and (min-width: 768px) {
-  // .navbar-brand img {
-  //   width: 100px;
-  // }
-  .navbar-brand {
-    margin-right: 0;
-    padding: 0 1em;
-  }
-}
+// @media screen and (min-width: 768px) {
+//   // .navbar-brand img {
+//   //   width: 100px;
+//   // }
+//   .navbar-brand {
+//     margin-right: 0;
+//     padding: 0 1em;
+//   }
+// }
