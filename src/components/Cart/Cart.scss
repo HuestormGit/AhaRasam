@@ -6,4 +6,24 @@
 // }
 .cart-container{
     margin: 150px 0;
+    text-align: center;
+    @include xl{
+        width: 1200px;
+    }
+    h2{
+        font-family: Barlow, Condensed SemiBold;
+        color: #AA2423;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 28px;
+        @include md{
+            font-size: 30px;
+            line-height: 38px;
+        }
+        @include lg{
+            font-size: 40px;
+            line-height: 48px;
+        }
+    }
+
 }

@@ -14,11 +14,49 @@ const Cart = () => {
     <div className="cart-container container-fluid p-0">
       <div className="navbg"></div>
       <div className="container">
-        <h2>Your Cart</h2>
+        <h2>Cart</h2>
         {cart.length === 0 ? (
           <p>Your cart is empty!</p>
         ) : (
-          <>
+          <>.
+            <table>
+              <tr className="tableheadingrow">
+                <th>Product</th>
+                <th>Weight</th>
+                <th>Amout</th>
+                <th>Quantity</th>
+              </tr>
+              {cart.map((item, idx) => ( 
+                <tr key={idx} className="tabledatarow">
+                  <td><h4>{item.productName}</h4></td>
+                  <td><p>{item.size}</p></td>
+                  <td><p> ₹{item.price * item.qty} </p></td>
+                  <td>
+                    <div className="d-flex align-items-center">
+                    <button className="trash-btn">🗑</button>
+                    <div className="varqty-sec">
+                      <button
+                        className="qty-btn qty-btn-left"
+                        // onClick={() => handleQtyChange(product.id, idx, -1)}
+                      >
+                        -
+                      </button>
+                      <span className="qty-value">
+                        {item.qty}
+                      </span>
+                      <button
+                        className="qty-btn qty-btn-right"
+                        // onClick={() => handleQtyChange(product.id, idx, 1)}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                  </td>
+                </tr>
+              ))}
+
+            </table>
             <ul>
               {cart.map((item, idx) => (
                 <li key={idx}>
@@ -31,7 +69,7 @@ const Cart = () => {
               ))}
             </ul>
             <h3>Total: ₹{totalAmount}</h3>
-            <button onClick={() => setShowCheckout(true)}>Proceed to Pay</button>
+            <button onClick={() => setShowCheckout(true)}>Proceed To Chekout</button>
           </>
         )}
 
