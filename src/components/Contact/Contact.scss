@@ -2,7 +2,7 @@
 .contact-section {
   padding: 60px 20px;
   background: #fff;
-
+  
   .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -10,157 +10,222 @@
     flex-wrap: wrap;
     gap: 50px;
     align-items: flex-start;
-     @include md{
+    
+    @include md{
+      // min-width: 768px
       gap: 100px;
       flex-wrap: wrap;
-     }
-     @include lg{
-       gap: 130px;
-       flex-wrap: nowrap;
-     }
+    }
+    @include lg{
+      // min-width: 1024px
+      gap: 130px;
+      flex-wrap: nowrap;
+    }
+    
 
-     
-  }
+    /* LEFT FORM */
+    .contact-form-box {
+      flex: 1 1 470px;
 
-  /* LEFT FORM */
-  .contact-form-box {
-    flex: 1 1 470px;
-
-    .form-title {
-      font-family: Barlow, Condensed SemiBold;
-      font-style: normal;
-      font-variant: normal;
-      font-weight: 600;
-      font-size: 25px;
-      line-height: 28px;
-      color: #aa2423;
-      margin-bottom: 10px;
-      @include md{
-            font-size: 30px;
-            line-height: 38px;     
+      .form-title {
+        font-family: Barlow, Condensed SemiBold;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: 600;
+        font-size: 25px;
+        line-height: 28px;
+        color: #aa2423;
+        margin-bottom: 10px;
+        @include md{
+          font-size: 30px;
+          line-height: 38px;     
         }
         @include lg{
-            font-size: 40px;
-            line-height: 48px;    
-        }
-    }
-
-    .form-subtitle {
-      font-family: Barlow, Condensed;
-      font-size: 20px;
-      line-height: 25px;
-      font-weight: normal;
-      color: #707070;
-      margin-bottom: 40px;
-      max-width: 470px;
-      @include md{
-        font-size: 22px;
-        line-height: 25px;     
-      }
-      @include lg{
-        font-size: 24px;
-        line-height: 28px;    
-      }
-    }
-
-    .contact-form {
-      .form-group {
-        position: relative;
-        margin-bottom: 20px;
-
-        input,
-        textarea {
-          width: 100%;
-          border: none;
-          border-bottom: 1px solid #ddd;
-          padding: 10px 5px;
-          font-size: 16px;
-          font-family: Barlow, sans-serif;
-          outline: none;
-          background: transparent;
-        }
-
-        textarea {
-          resize: none;
-          height: 100px;
-        }
-
-        label {
-          display: block;
-          margin-bottom: 6px;
-          font-size: 14px;
-          color: #333;
+          font-size: 40px;
+          line-height: 48px;    
         }
       }
 
-      .radio-group {
-        display: flex;
-        align-items: center;
-        gap: 25px;
-        margin: 15px 0;
+      .form-subtitle {
+        font-family: Barlow, Condensed;
+        font-size: 20px;
+        line-height: 25px;
+        font-weight: normal;
+        color: #707070;
+        margin-bottom: 40px;
+        max-width: 470px;
+        @include md{
+          font-size: 22px;
+          line-height: 25px;     
+        }
+        @include lg{
+          font-size: 24px;
+          line-height: 28px;    
+        }
+      }
 
-        label {
+      .contact-form {
+        .form-group {
+          position: relative;
+          margin-bottom: 20px;
+
+          input,textarea {
+            width: 100%;
+            // border: none;
+            border-bottom: 1px solid #707070;
+            padding: 10px 5px;
+            font-size: 16px;
+            font-family: Barlow, Condensed;
+            outline: none;
+            background: transparent;
+            color: #707070;
+            @include md{
+              width: 70%;
+              font-size: 22px;
+              line-height: 25px;     
+            }
+            @include lg{
+              font-size: 24px;
+              line-height: 28px;    
+            }
+          }
+
+          input::placeholder,textarea::placeholder {
+            color: #707070;
+            @include md{
+              width: 70%;
+              font-size: 22px;
+              line-height: 25px;     
+            }
+            @include lg{
+              width: 75%;
+              font-size: 24px;
+              line-height: 28px;    
+            }
+          }
+
+        }
+
+        .radio-group {
+          display: flex;
+          align-items: center;
+          gap: 25px;
+          margin: 15px 0;
+
+          label {
             display: flex;
-          font-size: 16px;
-          color: #333;
-        }
+            font-size: 20px;
+            line-height: 20px; 
+            color: #707070;
+            @include md{
+              font-size: 22px;
+              line-height: 25px;     
+            }
+            @include lg{
+              font-size: 24px;
+              line-height: 28px;    
+            }
+          }
 
-        input[type="radio"] {
-          accent-color: #aa2423; // modern browsers support
-          margin-right: 6px;
+          input[type="radio"] {
+            accent-color: #aa2423; // modern browsers support
+            margin-right: 6px;
+          }
+        }
+        .btn-container{
+          display: flex;
+          justify-content: flex-end;
+          .btn-submit {
+            font-family: Barlow, Condensed SemiBold;
+            display: inline-block;
+            background-color: #E1AD3F;
+            color: #fff;
+            border: none;
+            padding: 6px 30px;
+            border-radius: 20px;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s ease;
+            @include md{
+              font-size: 22px;
+              line-height: 25px;     
+            }
+            @include lg{
+              font-size: 24px;
+              line-height: 28px;    
+            }
+
+            &:hover {
+            opacity: 0.9;
+            }
+          }
+        }
+        
+      }
+    }
+
+    /* RIGHT INFO */
+    .contact-info {
+      flex: 1 1 470px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .company-logo {
+        max-width: 200px;
+        margin-bottom: 20px;
+        @include md{
+        // min-width: 768px
+          max-width: 225px;
+        }
+        @include lg{
+        // min-width: 1024px
+          max-width: 250px;
         }
       }
-      .btn-container{
-        display: flex;
-        justify-content: flex-end;
-        .btn-submit {
-        // float : right;
-       
-        display: inline-block;
-        // background: linear-gradient(90deg, #aa2423 0%, #e8b64a 100%);
-        background-color: #E1AD3F;
-        color: #fff;
-        border: none;
-        padding: 12px 40px;
-        border-radius: 20px;
-        font-size: 16px;
+
+      .company-name {
+        font-family: Barlow, Condensed SemiBold;
+        font-style: normal;
+        font-variant: normal;
         font-weight: 600;
-        cursor: pointer;
-        transition: 0.3s ease;
-
-        &:hover {
-          opacity: 0.9;
+        font-size: 25px;
+        line-height: 28px;
+        color: #aa2423;
+        margin-bottom: 10px;
+        @include md{
+          font-size: 30px;
+          line-height: 38px;     
+        }
+        @include lg{
+          font-size: 40px;
+          line-height: 48px;    
         }
       }
+
+      .company-address {
+        font-family: Barlow, Condensed;
+        font-size: 20px;
+        line-height: 25px;
+        font-weight: normal;
+        color: #707070;
+        margin-bottom: 40px;
+        max-width: 470px;
+        @include md{
+          font-size: 22px;
+          line-height: 25px;     
+        }
+        @include lg{
+          font-size: 24px;
+          line-height: 28px;    
+        }
       }
-      
     }
+
   }
 
-  /* RIGHT INFO */
-  .contact-info {
-    flex: 1 1 470px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-
-    .company-logo {
-      max-width: 200px;
-      margin-bottom: 20px;
-    }
-
-    .company-name {
-      font: normal normal 600 40px/48px Barlow;
-      color: #aa2423;
-      margin-bottom: 12px;
-    }
-
-    .company-address {
-      font: normal normal normal 24px/28px Barlow;
-      color: #707070;
-      max-width: 400px;
-    }
-  }
+  
 }
 
 /* ✅ Responsive */
