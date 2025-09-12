@@ -5,7 +5,7 @@
   position: relative;
   padding: 100px 0 0;
   overflow: hidden; // ✅ ensures overlay doesn’t overflow outside
-
+  min-height: 860px;
   &::after {
     content: "";
     position: absolute;
