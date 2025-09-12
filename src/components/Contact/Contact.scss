@@ -17,15 +17,20 @@
     flex: 1 1 470px;
 
     .form-title {
+      font-family: Barlow, Condensed;
+
       font: normal normal 600 40px/48px Barlow, sans-serif;
       color: #aa2423;
       margin-bottom: 10px;
     }
 
     .form-subtitle {
-      font: normal normal normal 24px/28px Barlow, sans-serif;
+      font-family: Barlow, Condensed;
+      font-size: 24px;
+      line-height: 28px;
+      font-weight: normal;
       color: #707070;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
       max-width: 470px;
     }
 

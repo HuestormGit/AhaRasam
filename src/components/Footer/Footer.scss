@@ -13,6 +13,7 @@ footer {
         padding: 50px 0;
         @include md{
             font-size: 24px;     
+            padding: 110px 0 50px;
         }
     }
     .footer {
@@ -20,12 +21,12 @@ footer {
         min-height: 85px;
         color: #868c96;
         background-image: url(../../assets/footer-bg.png);
-        background-position: 0% 0%;
+        background-position: bottom ;
         background-repeat: no-repeat;
         background-size: cover;
         // background: transparent url('img/Mask Group 13.png') 0% 0% no-repeat padding-box;
         @include md{
-            min-height: 150px;
+            min-height: 191px;
 
         }
     }
