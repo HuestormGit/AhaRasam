@@ -70,9 +70,14 @@
         .sub-heading{
             text-align: center;
             font-size: 20px;
-            font-family: "Barlow Condensed", sans-serif;
+            line-height: 26px;
+            font-family: Barlow, Condensed;
             font-weight: 400; 
             color: #000000;
+            @include lg{
+                font-size: 30px;
+                line-height: 36px;
+            }
             
 
         }

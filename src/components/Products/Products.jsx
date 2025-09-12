@@ -64,7 +64,7 @@ const Products = () => {
     <div className="products-grid container">
       <h2>Products</h2>
       <div className="sub-heading d-flex justify-content-center ">
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus dictum, mi non maximus accumsan, tortor nunc laoreet dolor, ac ullamcorper massa lacus vel felis.</p>
+      <p>Experience Rasam, Rooted in Tradition.<br></br> Delight all your senses with Rasam from the roots. Taste the tradition today!</p>
       </div>
       <div className="products-container d-flex justify-content-center ">
         {products.map((product) => {
@@ -81,7 +81,7 @@ const Products = () => {
               {/* ✅ Variants Section */}
               {product.Variant?.map((v, idx) => (
                 <div key={idx} className="variant-row">
-                  <span>
+                  <span className="weight">
                     {v.size} 
                   </span>
                   {/* with price 
@@ -92,7 +92,7 @@ const Products = () => {
                     <button className="trash-btn">🗑</button>
                     <div className="varqty-sec">
                       <button
-                        className="qty-btn"
+                        className="qty-btn qty-btn-left"
                         onClick={() => handleQtyChange(product.id, idx, -1)}
                       >
                         -
@@ -101,7 +101,7 @@ const Products = () => {
                         {quantities[product.id]?.[idx] || 0}
                       </span>
                       <button
-                        className="qty-btn"
+                        className="qty-btn qty-btn-right"
                         onClick={() => handleQtyChange(product.id, idx, 1)}
                       >
                         +

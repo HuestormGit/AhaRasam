@@ -9,28 +9,34 @@
     font-weight: 600;
     color: #AA2423;
     font-size: 20px;
-     font-family: "Barlow";
+    line-height: 28px;
+    font-family: Barlow, Condensed SemiBold;
     @include md{
       font-size: 30px;
+      line-height: 38px;
     }
-    @include sm{
+    @include lg{
       font-size: 40px;
+      line-height: 48px;
     }
   }
 
   .sub-heading{
     p{
       font-size: 18px;
+      line-height: 18px;
       color: #707070;
-      font-family: "Barlow";
+      font-family: Barlow, Condensed;
       text-align: center;
       width: 100%;
       @include md{
         font-size: 20px;
+        line-height: 20px;
         width: 95%;
       }
-      @include sm{
+      @include lg{
         font-size: 24px;
+        line-height: 28px;
         width: 75%;
       }
     }
@@ -54,27 +60,44 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     }
 
+    img {
+      width: 100%;
+      width: 250px;
+      height: 250px;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      @include md{
+        width: 350px;
+        height: 350px;
+      }
+      @include lg{
+        width: 450px;
+        height: 450px;
+      }
+      @include xl{
+        width: 540px;
+        height: 540px;
+      }
+    }
+
     h3 {
       text-align: left;
       font-weight: 600;
       margin-bottom: 1rem;
       color: #a42222;
-      font-family: "Barlow";
+      font-family: Barlow, Condensed SemiBold;
       font-size: 20px;
       @include md{
         font-size: 25px;
+        line-height: 25px;
       }
-      @include sm{
+      @include lg{
         font-size: 30px;
+        line-height: 28px;
       }
     }
 
-    img {
-      width: 100%;
-      max-width: 250px;
-      margin-bottom: 1rem;
-      border-radius: 8px;
-    }
+    
 
     .variant-row {
       display: flex;
@@ -83,17 +106,24 @@
       gap: 0.6rem;
       margin-bottom: 0.8rem;
 
-      span {
+      span.weight {
         font-weight: 500;
+        font-family: Barlow, Condensed;
+        font-size: 20px;
+        line-height: 24px;
+        @include lg{
+          font-size: 24px;
+        line-height: 28px;
+        }
       }
 
       .trash-btn {
         background: #fce5e5;
-        color: #d9534f;
+        color: #000000;
         border: none;
-        border-radius: 50%;
-        width: 32px;
-        height: 32px;
+        // border-radius: 50%;
+        width: 30px;
+        height: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -112,10 +142,13 @@
         align-items: center;
       }
 
+      .qty-btn-left{border-radius: 10px 1px 1px 10px;}
+      .qty-btn-right{border-radius: 1px 10px 10px 1px;}
+
       .qty-btn {
         background: #E1AD3F;
         border: 0px solid #ddd;
-        border-radius: 6px;
+        // border-radius: 6px;
         width: 32px;
         height: 32px;
         display: flex;
@@ -165,6 +198,18 @@
         border-width: 0;
         border-radius: 20px;
         background-color: #E1AD3F;
+        padding: 5px 29px;
+        font-family: Barlow, Condensed;
+        font-size: 18px;
+        line-height: 20px;
+        @include md{
+          font-size: 20px;
+          line-height: 25px;
+        }
+        @include lg{
+          font-size: 24px;
+          line-height: 29px;
+        }
         &:hover{
           background: #c9302c;
 
@@ -177,19 +222,24 @@
       margin-top: 1.5rem;
 
       h4 {
+        font-family: Barlow, Condensed SemiBold;
         font-size: 20px;
         font-weight: 600;
         margin-bottom: 0.5rem;
         color: #a42222;
+        line-height: 20px;
         @include md{
           font-size: 22px;
+          line-height: 25px;
         }
-        @include sm{
+        @include lg{
           font-size: 24px;
+          line-height: 28px;
         }
       }
 
       p{
+        font-family: Barlow, Condensed;
         font-size: 20px;
         line-height: 20px;
         margin-bottom: 0.3rem;
@@ -197,7 +247,7 @@
           font-size: 22px;
           line-height: 22px;
         }
-        @include sm{
+        @include lg{
           font-size: 24px;
           line-height: 28px;
         }
@@ -213,6 +263,7 @@
     padding-left: 0;
 
     li {
+      font-family: Barlow, Condensed;
       font-size: 24px;
       line-height: 28px;
       counter-increment: custom-counter;
