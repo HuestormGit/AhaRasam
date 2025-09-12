@@ -32,7 +32,7 @@
     z-index: 1; /* ✅ keeps text & video above overlay */
     .videoimg{
       .VideoSectionimg{
-        position: ;
+        position: absolute;
         height: 100%;
         width: 100%;
         // @include md{

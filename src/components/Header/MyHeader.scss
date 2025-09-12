@@ -2,12 +2,34 @@
 .navbar-brand {
   img{
     width: 85px;
-    @include md{
-      width: 250px;
-    }
-    @include sm{
-      width: 150px;
-    }
+    height: 85px;
+
+       @include sm{
+        // min-width: 640px
+        width: 150px;
+        height: 150px;
+      }
+      @include md{
+        // min-width: 768px
+        width: 200px;
+        height: 200px;
+      }
+      @include lg{
+        // min-width: 1024px
+        width: 220px;
+        height: 220px;
+      }
+      @include xl{
+        // min-width: 1280px
+        width: 220px;
+        height: 220px;
+      }
+      @include xxl{
+        // min-width: 1536px
+        width: 220px;
+        height: 220px;
+      }
+    
   }
   
 }
