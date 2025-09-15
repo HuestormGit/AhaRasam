@@ -5,32 +5,31 @@ import Checkout from "../Checkout/Checkout";
 import trash from "../../assets/trash.png";
 
 const Cart = () => {
-  const { cart, setCart } = useContext(CartContext);
+  const { cart, setCart } = useContext(CartContext); // ✅ make sure CartContext provides setCart
   const [showCheckout, setShowCheckout] = useState(false);
 
-  // ✅ Calculate totals dynamically
   const totalAmount = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+  const totalQty = cart.reduce((sum, item) => sum + item.qty, 0); // ✅ total quantity
 
-  // ✅ Increase qty
+  // 🔹 Increase qty
   const handleIncrease = (idx) => {
     const updatedCart = [...cart];
     updatedCart[idx].qty += 1;
     setCart(updatedCart);
   };
 
-  // ✅ Decrease qty
+  // 🔹 Decrease qty
   const handleDecrease = (idx) => {
     const updatedCart = [...cart];
     if (updatedCart[idx].qty > 1) {
       updatedCart[idx].qty -= 1;
       setCart(updatedCart);
     } else {
-      handleRemove(idx); // remove if qty goes to 0
+      handleRemove(idx); // if qty = 0 → remove product
     }
   };
 
-  // ✅ Remove product
+  // 🔹 Delete product
   const handleRemove = (idx) => {
     const updatedCart = cart.filter((_, i) => i !== idx);
     setCart(updatedCart);
@@ -42,7 +41,6 @@ const Cart = () => {
       <div className="container">
         <section className="cart-section">
           <h2>Cart</h2>
-
           {cart.length === 0 ? (
             <p className="no-product">Your cart is empty!</p>
           ) : (
@@ -71,15 +69,14 @@ const Cart = () => {
                         </td>
                         <td>
                           <div className="d-flex align-items-center">
-                            {/* 🗑 Remove button */}
-                            <img
-                              src={trash}
-                              alt="remove"
-                              className="trash"
+                            {/* <button
+                              className="trash-btn"
                               onClick={() => handleRemove(idx)}
-                            />
-
-                            {/* Quantity controls */}
+                            >
+                              🗑
+                            </button> */}
+                            <img src={trash} alt="remove" className="trash"/>
+                            
                             <div className="varqty-sec">
                               <button
                                 className="qty-btn qty-btn-left"
@@ -100,8 +97,6 @@ const Cart = () => {
                       </tr>
                     ))}
                   </tbody>
-
-                  {/* ✅ Footer showing totals */}
                   <tfoot>
                     <tr>
                       <td colSpan="2">
