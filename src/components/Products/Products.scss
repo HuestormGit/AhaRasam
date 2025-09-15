@@ -135,7 +135,17 @@
         &:hover {
           background: #f8b9b9;
         }
-        img.trash{
+        
+      }
+      img.trash
+      {
+        width: 18px;
+        height: 20px;
+        @include md{
+          width: 20px;
+          height: 24px;
+        }
+        @include lg{
           width: 26px;
           height: 30px;
         }
