@@ -86,7 +86,8 @@ const Cart = () => {
                   ))}
                 </ul> */}
                 
-                <button onClick={() => setShowCheckout(true)}>Proceed To Chekout</button>
+                {/* <button onClick={() => setShowCheckout(true)}>Proceed To Chekout</button> */}
+                <button className="checkout-btn" onClick={() => setShowCheckout(true)}> Proceed To Checkout</button>
               </>
             )
           }

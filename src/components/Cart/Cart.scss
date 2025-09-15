@@ -9,7 +9,9 @@
     text-align: center;
     cart-section{
         @include xl{
-        width: 1200px;
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
         }
         h2{
             font-family: Barlow, Condensed SemiBold;
@@ -17,6 +19,7 @@
             font-weight: 600;
             font-size: 20px;
             line-height: 28px;
+            margin-bottom: 30px;
             @include md{
                 font-size: 30px;
                 line-height: 38px;
@@ -38,50 +41,24 @@
                 padding: 110px 0 40px;
             }
         }
-        .red-dark{
-            background-color: #AA2423;
-            color: #fff;
-            th{
-                font-family: Barlow, Condensed;
-                font-size: 18px;
-                line-height: 20px;
-                font-weight: 400;
-                @include md{
-                    font-size: 20px;
-                    line-height: 24px;
-                }
-                @include lg{
-                    font-size: 24px;
-                    line-height: 28px;
-                }
-            }
-        }
-        tbody{
-            tr{
-                h4{
-                    color: #AA2423;
-                    font-family: Barlow, Condensed SemiBold;
-                    font-size: 20px;
-                    line-height: 18px;
-                    font-weight: 600;
-                    @include md{
-                        font-size: 25px;
-                        line-height: 23px;
-                    }
-                    @include lg{
-                        font-size: 30px;
-                        line-height: 28px;
-                    }
-                }
-                p{
+        table
+        {
+            width: 100%;
+            border-collapse: collapse;
+            thead.red-dark
+            {
+                background-color: #AA2423;
+                color: #fff;
+                th{
                     font-family: Barlow, Condensed;
-                    color: #000;
                     font-size: 18px;
-                    line-height: 18px;
+                    line-height: 20px;
                     font-weight: 400;
+                    padding: 15px;
+                    text-align: left;
                     @include md{
                         font-size: 20px;
-                        line-height: 18px;
+                        line-height: 24px;
                     }
                     @include lg{
                         font-size: 24px;
@@ -89,7 +66,67 @@
                     }
                 }
             }
+            tbody
+            {
+                tr
+                {
+                    td
+                    {
+                        padding: 20px;
+                        text-align: left;
+                        vertical-align: middle;
+                        h4
+                        {
+                            color: #AA2423;
+                            font-family: Barlow, Condensed SemiBold;
+                            font-size: 20px;
+                            line-height: 18px;
+                            font-weight: 600;
+                            @include md
+                            {
+                                font-size: 25px;
+                                line-height: 23px;
+                            }
+                            @include lg
+                            {
+                                font-size: 30px;
+                                line-height: 28px;
+                            }
+                        }
+                        p
+                        {
+                            font-family: Barlow, Condensed;
+                            color: #000;
+                            font-size: 18px;
+                            line-height: 18px;
+                            font-weight: 400;
+                            @include md
+                            {
+                                font-size: 20px;
+                                line-height: 18px;
+                            }
+                            @include lg
+                            {
+                                font-size: 24px;
+                                line-height: 28px;
+                            }
+                        }
+                    }
+                }
+            }
+            tfoot 
+            {
+                border-top: 2px solid #000;
+                td 
+                {
+                    padding: 20px;
+                    font-family: "Barlow Condensed SemiBold";
+                    font-size: 22px;
+                    text-align: right;
+                }
+            }
         }
+        
 
     }
     
