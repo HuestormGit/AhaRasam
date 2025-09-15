@@ -91,7 +91,7 @@ const Products = () => {
                   </span> */}
                   <div className="d-flex align-items-center">
                     <button className="trash-btn">🗑
-                      <img src={trash} alt="remove" />
+                      <img src={trash} alt="remove" className="trash"/>
                     </button>
                     <div className="varqty-sec">
                       <button
