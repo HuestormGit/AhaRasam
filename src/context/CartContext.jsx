@@ -16,8 +16,21 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("cartList", JSON.stringify(cart));
   }, [cart]);
 
+  // ✅ Smarter addToCart (merge qty if product+size exists)
   const addToCart = (item) => {
-    setCart((prevCart) => [...prevCart, item]);
+    setCart((prevCart) => {
+      const existingIndex = prevCart.findIndex(
+        (p) => p.productId === item.productId && p.size === item.size
+      );
+
+      if (existingIndex >= 0) {
+        const updatedCart = [...prevCart];
+        updatedCart[existingIndex].qty += item.qty;
+        return updatedCart;
+      } else {
+        return [...prevCart, item];
+      }
+    });
   };
 
   const removeFromCart = (index) => {
@@ -25,7 +38,7 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ cart, setCart, addToCart, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );
