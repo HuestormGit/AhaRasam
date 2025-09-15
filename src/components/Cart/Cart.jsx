@@ -67,12 +67,14 @@ const Cart = () => {
                         </td>
                         <td>
                           <div className="d-flex align-items-center">
-                            <button
+                            {/* <button
                               className="trash-btn"
                               onClick={() => handleRemove(idx)}
                             >
                               🗑
-                            </button>
+                            </button> */}
+                            <img src={trash} alt="remove" className="trash"/>
+                            
                             <div className="varqty-sec">
                               <button
                                 className="qty-btn qty-btn-left"
