@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { fetchDataFromApi } from "../../utils/Api";
 import "./Products.scss";
 import { CartContext } from "../../context/CartContext";
+import trash from "../../assets/trash.png"
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -89,7 +90,9 @@ const Products = () => {
                     {v.size} – ₹{v.price}
                   </span> */}
                   <div className="d-flex align-items-center">
-                    <button className="trash-btn">🗑</button>
+                    <button className="trash-btn">🗑
+                      <img src={trash} alt="remove" />
+                    </button>
                     <div className="varqty-sec">
                       <button
                         className="qty-btn qty-btn-left"
