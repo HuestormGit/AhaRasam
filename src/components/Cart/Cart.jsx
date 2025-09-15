@@ -9,6 +9,7 @@ const Cart = () => {
   const [showCheckout, setShowCheckout] = useState(false);
 
   const totalAmount = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  const totalQty = cart.reduce((sum, item) => sum + item.qty, 0); // ✅ total quantity
 
   // 🔹 Increase qty
   const handleIncrease = (idx) => {
@@ -105,7 +106,7 @@ const Cart = () => {
                         <h3>₹{totalAmount}</h3>
                       </td>
                       <td>
-                        <h3>₹{totalAmount}</h3>
+                        <h3>{totalQty}</h3>
                       </td>
                     </tr>
                   </tfoot>
