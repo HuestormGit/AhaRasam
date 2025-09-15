@@ -47,8 +47,6 @@
             border-collapse: collapse;
             thead.red-dark
             {
-                background-color: #AA2423 !important;
-                color: #fff;
                 th{
                     font-family: Barlow, Condensed;
                     font-size: 18px;
@@ -56,6 +54,8 @@
                     font-weight: 400;
                     padding: 15px;
                     text-align: left;
+                    background-color: #AA2423 !important;
+                    color: #fff;
                     @include md{
                         font-size: 20px;
                         line-height: 24px;
