@@ -98,9 +98,11 @@ const Cart = () => {
                   </tbody>
                   <tfoot>
                     <tr>
-                      <td colSpan="2"></td>
-                      <td>
+                      <td colSpan="2">
                         <h3>Total</h3>
+                      </td>
+                      <td>
+                        <h3>₹{totalAmount}</h3>
                       </td>
                       <td>
                         <h3>₹{totalAmount}</h3>

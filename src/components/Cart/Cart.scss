@@ -172,13 +172,17 @@
                 padding: 20px;
                 text-align: left;
                 vertical-align: middle;
-                td 
-                {
-                    padding: 20px;
-                    font-family: "Barlow Condensed SemiBold";
-                    font-size: 22px;
-                    text-align: right;
+                tr{
+                    border-bottom-style: hidden;
+                    td 
+                    {
+                        padding: 20px;
+                        font-family: "Barlow Condensed SemiBold";
+                        font-size: 22px;
+                        text-align: right;
+                    }
                 }
+                
             }
         }
         
