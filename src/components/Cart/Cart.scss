@@ -7,7 +7,7 @@
 .cart-container{
     margin: 150px 0;
     text-align: center;
-    cart-section{
+    .cart-section{
         @include xl{
             width: 100%;
             max-width: 1200px;
