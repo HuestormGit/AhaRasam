@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { CartContext } from "../../context/CartContext";
 import "./Cart.scss";
-import Checkout from "../Checkout/Checkout";.
+import Checkout from "../Checkout/Checkout";
 import { trash } from "../../assets/trash.png";
 
 const Cart = () => {
