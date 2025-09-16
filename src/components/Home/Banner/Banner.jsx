@@ -35,30 +35,38 @@ const Banner = () => {
             </div>
 
         </div>
-        <div className="banner-box2 container">
+        <div className="banner-box2 container d-lg-none d-flex">
             <div className="sec-1">
                 <img src={leftpoint} className="sec1img" alt="Heart" />
-                {/* <img src={sec11} className="sec11img" alt="Heart" />
-                <img src={sec12} className="sec12img" alt="Digestive" />
-                <img src={sec13} className="sec13img" alt="Improves" /> */}
             </div>
 
             <div className="sec-2">
-            <img
-                src={bannerImg}
-                alt="Rasam Bowl"
-                style={{
-                transform: `rotate(${rotation}deg)`,
-                transition: "transform 0.1s linear"
-                }}
+            <img src={bannerImg} alt="Rasam Bowl" style={{ transform: `rotate(${rotation}deg)`,
+                transition: "transform 0.1s linear"}}
             />
             </div>
 
             <div className="sec-3">
                 <img src={Rightpoints} className="sec3img" alt="Boosts Immunity" />
-                {/* <img src={sec31} className="sec31img" alt="Boosts Immunity" />
+            </div>
+
+        </div>
+        <div className="banner-box3 container d-flex d-lg-none">
+            <div className="sec-1">
+                <img src={sec11} className="sec11img" alt="Heart" />
+                <img src={sec12} className="sec12img" alt="Digestive" />
+                <img src={sec13} className="sec13img" alt="Improves" />
+            </div>
+
+            <div className="sec-2">
+            <img src={bannerImg} alt="Rasam Bowl" style={{ transform: `rotate(${rotation}deg)`,transition: "transform 0.1s linear"}}
+            />
+            </div>
+
+            <div className="sec-3">
+                <img src={sec31} className="sec31img" alt="Boosts Immunity" />
                 <img src={sec32} className="sec32img" alt="Rich in Antioxidants" />
-                <img src={sec33} className="sec33img" alt="Other" /> */}
+                <img src={sec33} className="sec33img" alt="Other" />
             </div>
 
         </div>

@@ -177,5 +177,19 @@
         .sec32img { top: 120px; right: -150px; }
         .sec33img { top: 320px; right: -100px; }
     }
+    .banner-box3 {
+        
+
+        .sec-2 img {
+            width: clamp(280px, 40vw, 800px);
+            z-index: 2;
+            position: relative;
+        }
+
+        .sec-1, .sec-3 {
+            
+        }
+
+    }
 
 }
