@@ -1,5 +1,62 @@
 @import "../../css-config/mixins.scss";
 
+.navbar {
+  background-color: #E1AD3F;
+  padding: 0;
+  .navbar-nav{
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; // equal spacing left/right
+    width: 100%;
+    .nav-item {
+      display: flex;
+      align-items: center;
+      .nav-link{
+        color: #fff;
+        font-size: 20px;
+        line-height: 22px;
+        padding: 0.5em 1em;
+        font-family: "Barlow Condensed";
+        font-weight: 500;
+        transition: color 0.3s ease;
+        &:hover {
+          color: #b30000; // red hover like XD
+        }
+        @include md{
+          font-size: 22px;
+          line-height: 25px;
+          height: 170px;
+        }
+        @include lg{
+          font-size: 24px;
+          line-height: 29px;
+          height: 170px;
+        }
+      }
+    }
+  }
+  &.sticky-nav{
+    position: sticky;
+    background-color: #E1AD3F;
+    top: 0;
+    transform: translateY(-100px);
+    animation: Stickey-nav 0.2s ease forwards;
+    z-index: 5;
+    img{
+    width: 85px;
+    height: 85px;
+    @include md{
+      width: 90px;
+      width: 90px;
+    }
+    @include lg{
+      height: 100px;
+      width: 100px;
+    }
+  }
+  }
+}
 
 .navbar-brand {
   img{
@@ -34,48 +91,6 @@
     
   }
   
-}
-.navbar {
-  background-color: #E1AD3F;
-  .navbar-nav{
-    align-items: baseline;
-    .nav-link{
-      color: #fff;
-      font-size: 20px;
-      line-height: 22px;
-      padding: 0.5em 1em;
-      font-family: Barlow, Condensed Medium;
-      @include md{
-        font-size: 22px;
-        line-height: 25px;
-      }
-      @include lg{
-        font-size: 24px;
-        line-height: 29px;
-        height: 170px;
-      }
-    }
-  }
-  &.sticky-nav{
-    position: sticky;
-    background-color: #E1AD3F;
-    top: 0;
-    transform: translateY(-100px);
-    animation: Stickey-nav 0.2s ease forwards;
-    z-index: 5;
-    img{
-    width: 85px;
-    height: 85px;
-    @include md{
-      width: 90px;
-      width: 90px;
-    }
-    @include lg{
-      height: 100px;
-      width: 100px;
-    }
-  }
-  }
 }
 
 @keyframes Stickey-nav {
