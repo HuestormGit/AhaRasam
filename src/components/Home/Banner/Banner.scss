@@ -94,43 +94,43 @@
        
     }
     .banner-box2 {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: -300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: -300px;
 
-  .sec-2 img {
-    width: clamp(280px, 40vw, 550px);
-    z-index: 2;
-    position: relative;
-  }
+        .sec-2 img {
+            width: clamp(280px, 40vw, 800px);
+            z-index: 2;
+            position: relative;
+        }
 
-  .sec-1, .sec-3 {
-    position: relative;
-    flex: 1;
+        .sec-1, .sec-3 {
+            position: relative;
+            flex: 1;
 
-    img {
-      position: absolute;
-      width: 100px;
+            img {
+            position: absolute;
+            width: 100px;
 
-      @include md {
-        width: 120px;
-      }
-      @include lg {
-        width: 140px;
-      }
+            @include md {
+                width: 120px;
+            }
+            @include lg {
+                width: 140px;
+            }
+            }
+        }
+
+        // Left icons
+        .sec11img { top: -50px; left: -100px; }
+        .sec12img { top: 120px; left: -150px; }
+        .sec13img { top: 320px; left: -100px; }
+
+        // Right icons
+        .sec31img { top: -50px; right: -100px; }
+        .sec32img { top: 120px; right: -150px; }
+        .sec33img { top: 320px; right: -100px; }
     }
-  }
-
-  // Left icons
-  .sec11img { top: -50px; left: -100px; }
-  .sec12img { top: 120px; left: -150px; }
-  .sec13img { top: 320px; left: -100px; }
-
-  // Right icons
-  .sec31img { top: -50px; right: -100px; }
-  .sec32img { top: 120px; right: -150px; }
-  .sec33img { top: 320px; right: -100px; }
-}
 
 }
