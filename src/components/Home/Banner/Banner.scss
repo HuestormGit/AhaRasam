@@ -130,15 +130,20 @@
             img {
                 position: absolute;
                 width: 100px;
-
+                @include sm{
+                    width: 150px;
+                }
                 @include md {
                     width: 200px;
                 }
                 @include lg {
-                    width: 250px;
+                    width: 225px;
                 }
                 @include xl {
-                width: 300px;
+                    width: 250px;
+                }
+                @include xxl{
+                    width: 300px;
                 }
             }
         }
