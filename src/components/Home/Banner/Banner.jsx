@@ -35,7 +35,7 @@ const Banner = () => {
             </div>
 
         </div>
-        <div className="banner-box2 container d-lg-none d-flex">
+        <div className="banner-box2 container d-sm-none d-md-flex  d-lg-flex">
             <div className="sec-1">
                 <img src={leftpoint} className="sec1img" alt="Heart" />
             </div>
@@ -51,7 +51,7 @@ const Banner = () => {
             </div>
 
         </div>
-        <div className="banner-box3 container d-flex d-lg-none">
+        <div className="banner-box3 container d-sm-flex d-lg-none d-md-none">
             <div className="sec-1">
                 <img src={sec11} className="sec11img" alt="Heart" />
                 <img src={sec12} className="sec12img" alt="Digestive" />
