@@ -150,6 +150,9 @@
 
         // Left icons
         .sec1img{
+            @include sm{
+
+            }
             @include md{
                 top: -250px;
                 left: 100px;
@@ -160,6 +163,10 @@
                 left: -225px;
             }
             @include xl{
+                top: -275px;
+                left: -75px;
+            }
+            @include xxl{
                 top: -400px;
                 left: 0;
             }
@@ -171,6 +178,10 @@
 
         // Right icons
         .sec3img{
+            @include sm{
+                top: -300px; 
+                right: 0;
+            }
             @include md{
                 top: -300px; 
                 right: 0;
@@ -178,6 +189,14 @@
             @include lg{
                 top: -400px; 
                 right: 0;
+            }
+            @include xl{
+                top: -275px;
+                left: -75px;
+            }
+            @include xxl{
+                top: -400px;
+                left: 0;
             }
             
         }
