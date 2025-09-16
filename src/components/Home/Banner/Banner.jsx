@@ -4,6 +4,7 @@ import sec11 from  "../../../assets/sec11.png";
 import sec12 from  "../../../assets/sec12.png";
 import sec13 from  "../../../assets/sec13.png";
 import leftpoint from "../../../assets/Leftpoint.png"
+import Rightpoints from "../../../assets/Rightpoints.png"
 import sec31 from  "../../../assets/sec11.png";
 import sec32 from  "../../../assets/sec12.png";
 import sec33 from  "../../../assets/sec13.png";
@@ -48,9 +49,10 @@ const Banner = () => {
 
             </div>
             <div className="sec-3">
-                <img src={sec31} className="sec31img" alt="Healthy replacement of tea or Coffee" />
-                <img src={sec32} className="sec32img" alt="Healthy replacement of tea or Coffee" />
-                <img src={sec33} className="sec33img" alt="Healthy replacement of tea or Coffee" />
+                <img src={Rightpoints} className="sec1img d-none d-lg-block" alt="Healthy replacement of tea or Coffee" />
+                <img src={sec31} className="sec31img d-lg-none d-block" alt="Healthy replacement of tea or Coffee" />
+                <img src={sec32} className="sec32img d-lg-none d-block" alt="Healthy replacement of tea or Coffee" />
+                <img src={sec33} className="sec33img d-lg-none d-block" alt="Healthy replacement of tea or Coffee" />
             </div>
         </div>
 
