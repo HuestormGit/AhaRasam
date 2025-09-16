@@ -113,7 +113,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-top: -300px;
+        @include lg{
+            margin-top: -300px;
+        }
 
         .sec-2 img {
             width: clamp(280px, 40vw, 800px);
@@ -146,6 +148,10 @@
             }
 
             @include lg{
+                top: 185px;
+                left: -225px;
+            }
+            @include xl{
                 top: -400px;
                 left: 0;
             }
