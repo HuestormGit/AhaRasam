@@ -131,16 +131,16 @@
                 position: absolute;
                 width: 100px;
                 @include sm{
-                    width: 150px;
+                    width: 125px;
                 }
                 @include md {
-                    width: 200px;
+                    width: 150px;
                 }
                 @include lg {
-                    width: 225px;
+                    width: 200px;
                 }
                 @include xl {
-                    width: 250px;
+                    width: 215px;
                 }
                 @include xxl{
                     width: 300px;
