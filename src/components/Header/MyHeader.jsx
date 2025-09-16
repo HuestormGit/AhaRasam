@@ -70,13 +70,13 @@ const MyHeader = () => {
               </button>
             </li>
 
-            <li className="nav-item">
+            <li className="nav-item pt-5">
               <a className="navbar-brand d-none d-md-block" href="/">
                 <img src={logo} alt="Logo" />
               </a>
             </li>
             
-            <li className="nav-item pt-5">
+            <li className="nav-item ">
               <Link to="/cart" className="nav-link btn-link">
                 Cart ({cart.length})
               </Link>

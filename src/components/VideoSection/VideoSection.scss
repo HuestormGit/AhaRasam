@@ -39,8 +39,9 @@
         @include md{
           // min-width: 768px
           position: relative;
-          height: 817px;
-          width: 455px;
+          height: 100%;
+          width: 100%;
+          top: 30px;
         }
         @include lg{
           // min-width: 1024px
