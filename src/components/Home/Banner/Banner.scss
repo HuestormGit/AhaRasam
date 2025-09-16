@@ -128,15 +128,18 @@
             flex: 1;
 
             img {
-            position: absolute;
-            width: 100px;
+                position: absolute;
+                width: 100px;
 
-            @include md {
-                width: 200px;
-            }
-            @include lg {
+                @include md {
+                    width: 200px;
+                }
+                @include lg {
+                    width: 250px;
+                }
+                @include xl {
                 width: 300px;
-            }
+                }
             }
         }
 
@@ -177,17 +180,6 @@
         .sec32img { top: 120px; right: -150px; }
         .sec33img { top: 320px; right: -100px; }
     }
-    .banner-box3 {
-        
-
-        .sec-2 img {
-            width: clamp(280px, 40vw, 800px);
-            z-index: 2;
-            position: relative;
-        }
-
-        
-
-    }
+    
 
 }
