@@ -3,39 +3,43 @@
 .navbar {
   background-color: #E1AD3F;
   padding: 0;
-  .navbar-nav{
+  #navbarNav{
+    max-height: 170px;
+    .navbar-nav{
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    .nav-item {
-      display: flex;
-      align-items: center;
-      .nav-link{
-        color: #fff;
-        font-size: 20px;
-        line-height: 22px;
-        padding: 0.5em 1em;
-        font-family: "Barlow Condensed";
-        font-weight: 500;
-        transition: color 0.3s ease;
-        &:hover {
-          color: #b30000; // red hover like XD
-        }
-        @include md{
-          font-size: 22px;
-          line-height: 25px;
-          height: 170px;
-        }
-        @include lg{
-          font-size: 24px;
-          line-height: 29px;
-          height: 170px;
+      .nav-item {
+        display: flex;
+        align-items: center;
+        .nav-link{
+          display: flex;         // ✅ flex on link itself
+          align-items: center;  
+          color: #fff;
+          font-size: 20px;
+          line-height: 22px;
+          padding: 0.5em 1em;
+          font-family: "Barlow Condensed";
+          font-weight: 500;
+          transition: color 0.3s ease;
+          &:hover {
+            color: #b30000; // red hover like XD
+          }
+          @include md{
+            font-size: 22px;
+            line-height: 25px;
+            height: 170px;
+          }
+          @include lg{
+            font-size: 24px;
+            line-height: 29px;
+            height: 170px;
+          }
         }
       }
     }
-  }
   &.sticky-nav{
     position: sticky;
     background-color: #E1AD3F;
@@ -56,6 +60,8 @@
     }
   }
   }
+  }
+  
 }
 
 .navbar-brand {
