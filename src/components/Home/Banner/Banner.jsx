@@ -36,10 +36,10 @@ const Banner = () => {
         </div>
         <div className="banner-box2 container">
             <div className="sec-1">
-                <img src={leftpoint} className="sec11img" alt="Healthy replacement of tea or Coffee" />
-                <img src={sec11} className="sec11img" alt="Healthy replacement of tea or Coffee" />
-                <img src={sec12} className="sec12img" alt="Healthy replacement of tea or Coffee" />
-                <img src={sec13} className="sec13img" alt="Healthy replacement of tea or Coffee" />
+                <img src={leftpoint} className="sec1img d-none d-lg-block" alt="Healthy replacement of tea or Coffee" />
+                <img src={sec11} className="sec11img d-lg-none d-block" alt="Healthy replacement of tea or Coffee" />
+                <img src={sec12} className="sec12img d-lg-none d-block" alt="Healthy replacement of tea or Coffee" />
+                <img src={sec13} className="sec13img d-lg-none d-block" alt="Healthy replacement of tea or Coffee" />
 
             </div>
             <div className="sec-2">
