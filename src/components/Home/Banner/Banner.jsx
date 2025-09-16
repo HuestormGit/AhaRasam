@@ -1,13 +1,13 @@
 import "./Banner.scss";
 import bannerImg from  "../../../assets/banner-image.png";
-// import sec11 from  "../../../assets/sec11.png";
-// import sec12 from  "../../../assets/sec12.png";
-// import sec13 from  "../../../assets/sec13.png";
+import sec11 from  "../../../assets/sec11.png";
+import sec12 from  "../../../assets/sec12.png";
+import sec13 from  "../../../assets/sec13.png";
 import leftpoint from "../../../assets/Leftpoint.png"
 import Rightpoints from "../../../assets/Rightpoints.png"
-// import sec31 from  "../../../assets/sec11.png";
-// import sec32 from  "../../../assets/sec12.png";
-// import sec33 from  "../../../assets/sec13.png";
+import sec31 from  "../../../assets/sec11.png";
+import sec32 from  "../../../assets/sec12.png";
+import sec33 from  "../../../assets/sec13.png";
 import { useEffect, useState } from "react";
 
 
