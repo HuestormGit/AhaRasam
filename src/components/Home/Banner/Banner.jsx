@@ -31,7 +31,7 @@ const Banner = () => {
                 </h1>
                 <h6 className="sub-heading">
                     Healthy replacement of tea or Coffee
-                </h6>
+                </h6>sec3img
             </div>
 
         </div>
@@ -49,7 +49,7 @@ const Banner = () => {
 
             </div>
             <div className="sec-3">
-                <img src={Rightpoints} className="sec1img d-none d-lg-block" alt="Healthy replacement of tea or Coffee" />
+                <img src={Rightpoints} className=" d-none d-lg-block" alt="Healthy replacement of tea or Coffee" />
                 <img src={sec31} className="sec31img d-lg-none d-block" alt="Healthy replacement of tea or Coffee" />
                 <img src={sec32} className="sec32img d-lg-none d-block" alt="Healthy replacement of tea or Coffee" />
                 <img src={sec33} className="sec33img d-lg-none d-block" alt="Healthy replacement of tea or Coffee" />

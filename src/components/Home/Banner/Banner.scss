@@ -56,7 +56,7 @@
         align-items: center;
         justify-content: center;
         @include md{
-            padding: 300px 0px 350px 0;
+            // padding: 300px 0px 350px 0;
             margin-top: -250px;
             min-height: 942px;
         }
@@ -103,10 +103,16 @@
         
         @include md{
            flex-direction: row;
+           margin-top: -300px;
         }
         .sec-1{
             position: relative;
             // margin-top: -45px;
+            img.sec1img{
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
 
             // img.sec11img{
             //     width: 85px;
@@ -157,11 +163,12 @@
         }
         
         .sec-2{
+            position: relative;
             img
             {
                 width: 300px;
                 @include sm{
-                    width:550px;
+                    width:650px;
                     margin-top: -250PX;
 
                 }
@@ -170,6 +177,11 @@
 
         .sec-3{
             position: relative;
+            img.sec3img{
+                position: absolute;
+                top: 0;
+                right: 0;
+            }
 
             // img.sec31img{
             //     width: 85px;
