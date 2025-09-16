@@ -6,11 +6,11 @@
   h2 {
     text-align: center;
     margin-bottom: 2rem;
-    font-weight: 600;
+    font-weight: 500;
     color: #AA2423;
     font-size: 20px;
     line-height: 28px;
-    font-family: Barlow, Condensed SemiBold;
+    font-family: "Barlow Condensed";
     @include md{
       font-size: 30px;
       line-height: 38px;
@@ -26,7 +26,7 @@
       font-size: 18px;
       line-height: 18px;
       color: #707070;
-      font-family: Barlow, Condensed;
+      font-family: "Barlow Condensed";
       text-align: center;
       width: 100%;
       @include md{
@@ -82,10 +82,10 @@
 
     h3 {
       text-align: left;
-      font-weight: 600;
+      font-weight: 500;
       margin-bottom: 1rem;
       color: #a42222;
-      font-family: Barlow, Condensed SemiBold;
+      font-family: "Barlow Condensed";
       font-size: 20px;
       @include md{
         font-size: 25px;
@@ -108,7 +108,7 @@
 
       span.weight {
         font-weight: 500;
-        font-family: Barlow, Condensed;
+        font-family: "Barlow Condensed";
         font-size: 20px;
         line-height: 24px;
         @include lg{
@@ -214,7 +214,7 @@
         border-radius: 20px;
         background-color: #E1AD3F;
         padding: 5px 29px;
-        font-family: Barlow, Condensed;
+        font-family: "Barlow Condensed";
         font-size: 18px;
         line-height: 20px;
         @include md{
@@ -237,9 +237,9 @@
       margin-top: 1.5rem;
 
       h4 {
-        font-family: Barlow, Condensed SemiBold;
+        font-family: "Barlow Condensed";
         font-size: 20px;
-        font-weight: 600;
+        font-weight: 500;
         margin-bottom: 0.5rem;
         color: #a42222;
         line-height: 20px;
@@ -254,7 +254,7 @@
       }
 
       p{
-        font-family: Barlow, Condensed;
+        font-family: "Barlow Condensed";
         font-size: 20px;
         line-height: 20px;
         margin-bottom: 0.3rem;
@@ -278,7 +278,7 @@
     padding-left: 0;
 
     li {
-      font-family: Barlow, Condensed;
+      font-family: "Barlow Condensed";
       font-size: 24px;
       line-height: 28px;
       counter-increment: custom-counter;

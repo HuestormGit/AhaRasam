@@ -28,10 +28,10 @@
       flex: 1 1 470px;
 
       .form-title {
-        font-family: Barlow, Condensed SemiBold;
+        font-family: "Barlow Condensed";
         font-style: normal;
         font-variant: normal;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 25px;
         line-height: 28px;
         color: #aa2423;
@@ -47,7 +47,7 @@
       }
 
       .form-subtitle {
-        font-family: Barlow, Condensed;
+        font-family: "Barlow Condensed";
         font-size: 20px;
         line-height: 25px;
         font-weight: normal;
@@ -75,7 +75,7 @@
             border-bottom: 1px solid #707070;
             padding: 10px 5px;
             font-size: 16px;
-            font-family: Barlow, Condensed;
+            font-family: "Barlow Condensed";
             outline: none;
             background: transparent;
             color: #707070;
@@ -140,7 +140,7 @@
             width: 70%;
           }
           .btn-submit {
-            font-family: Barlow, Condensed SemiBold;
+            font-family: "Barlow Condensed";
             display: inline-block;
             background-color: #E1AD3F;
             color: #fff;
@@ -148,7 +148,7 @@
             padding: 6px 30px;
             border-radius: 20px;
             font-size: 20px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             transition: 0.3s ease;
             @include md{
@@ -190,10 +190,10 @@
       }
 
       .company-name {
-        font-family: Barlow, Condensed SemiBold;
+        font-family: "Barlow Condensed";
         font-style: normal;
         font-variant: normal;
-        font-weight: 600;
+        font-weight: 500;
         font-size: 25px;
         line-height: 28px;
         color: #aa2423;
@@ -209,7 +209,7 @@
       }
 
       .company-address {
-        font-family: Barlow, Condensed;
+        font-family: "Barlow Condensed";
         font-size: 20px;
         line-height: 25px;
         font-weight: normal;
