@@ -76,7 +76,7 @@ const MyHeader = () => {
               </a>
             </li>
             
-            <li className="nav-item">
+            <li className="nav-item pt-5">
               <Link to="/cart" className="nav-link btn-link">
                 Cart ({cart.length})
               </Link>

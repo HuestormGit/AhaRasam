@@ -35,15 +35,17 @@
         position: absolute;
         height: 100%;
         width: 100%;
-        // @include md{
-        //   // min-width: 768px
-        //   height: 817px;
-        //   width: 455px;
-        // }
+
+        @include md{
+          // min-width: 768px
+          height: 817px;
+          width: 455px;
+        }
         @include lg{
           // min-width: 1024px
           height: 817px;
           width: 455px;
+          top: 100px;
         }
       }
     }

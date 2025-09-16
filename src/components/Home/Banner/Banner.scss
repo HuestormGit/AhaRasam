@@ -17,8 +17,8 @@
                 height: 515px;
             }
             @include lg{
-                width: 460px;
-                height: 1153px;
+                width: 420px;
+                height: 1000px;
             }
         }
         &::after {
@@ -40,8 +40,8 @@
                 opacity: 1;
             }
             @include lg{
-                height: 1153px;
-                width: 360px;
+                height: 1010px;
+                width: 315px;
             }
         }
         
