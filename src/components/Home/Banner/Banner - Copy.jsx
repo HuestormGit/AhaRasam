@@ -37,28 +37,23 @@ const Banner = () => {
         </div>
         <div className="banner-box2 container">
             <div className="sec-1">
-  <img src={sec11} className="sec11img" alt="Heart" />
-  <img src={sec12} className="sec12img" alt="Digestive" />
-  <img src={sec13} className="sec13img" alt="Improves" />
-</div>
+                <img src={leftpoint} className="sec1img d-none d-lg-block" alt="Healthy replacement of tea or Coffee" />
+                <img src={sec11} className="sec11img d-lg-none d-block" alt="Healthy replacement of tea or Coffee" />
+                <img src={sec12} className="sec12img d-lg-none d-block" alt="Healthy replacement of tea or Coffee" />
+                <img src={sec13} className="sec13img d-lg-none d-block" alt="Healthy replacement of tea or Coffee" />
 
-<div className="sec-2">
-  <img
-    src={bannerImg}
-    alt="Rasam Bowl"
-    style={{
-      transform: `rotate(${rotation}deg)`,
-      transition: "transform 0.1s linear"
-    }}
-  />
-</div>
+            </div>
+            <div className="sec-2">
+                <img src={bannerImg} alt="Healthy replacement of tea or Coffee" style={{
+                    transform: `rotate(${rotation}deg)`,transition: "transform 0.1s linear"}} />
 
-<div className="sec-3">
-  <img src={sec31} className="sec31img" alt="Boosts Immunity" />
-  <img src={sec32} className="sec32img" alt="Rich in Antioxidants" />
-  <img src={sec33} className="sec33img" alt="Other" />
-</div>
-
+            </div>
+            <div className="sec-3">
+                <img src={Rightpoints} className=" d-none d-lg-block" alt="Healthy replacement of tea or Coffee" />
+                <img src={sec31} className="sec31img d-lg-none d-block" alt="Healthy replacement of tea or Coffee" />
+                <img src={sec32} className="sec32img d-lg-none d-block" alt="Healthy replacement of tea or Coffee" />
+                <img src={sec33} className="sec33img d-lg-none d-block" alt="Healthy replacement of tea or Coffee" />
+            </div>
         </div>
 
     </section>;

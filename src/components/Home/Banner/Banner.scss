@@ -94,271 +94,43 @@
        
     }
     .banner-box2 {
-        // background-color: #FFFFFF;
-        display: flex;
-        // flex-direction: column;
-        // align-content: center;
-        // align-items: center;
-        // justify-content: center;
-        
-        @include md{
-        //    flex-direction: row;
-           margin-top: -300px;
-        }
-        .sec-1{
-            position: relative;
-            // margin-top: -45px;
-            img.sec1img{
-                position: absolute;
-                top: 0;
-                left: 0;
-            }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -300px;
 
-            // img.sec11img{
-            //     width: 85px;
-            //     @include sm{
-            //         width:8vw;
-            //         position: absolute;
-            //         top: -535px;
-            //         left: -90px;
-            //     }
-            //     @include md{
-            //         width:10vw;
-            //         position: absolute;
-            //         top: -440px;
-            //         left: -35px;
-            //     }
-            // }
+  .sec-2 img {
+    width: clamp(280px, 40vw, 550px);
+    z-index: 2;
+    position: relative;
+  }
 
-            // img.sec12img{
-            //      width: 85px;
-            //     @include sm{
-            //         width:8vw;
-            //         position: absolute;
-            //         top: -315px;
-            //         right: 0px;
-            //     }
-            //     @include md{
-            //         width:10vw;
-            //         position: absolute;
-            //         top: -220px;
-            //         right: -30px;
-            //     }
-            // }
-            // img.sec13img{
-            //     width: 85px;
-            //     @include sm{
-            //         width:8vw;
-            //         position: absolute;
-            //         top: -220px;
-            //         left: -75px;
-            //     }
-            //     @include md{
-            //         width:10vw;
-            //         position: absolute;
-            //         top: 0px;
-            //         left: -35px;
-            //     }
-            // }
-        }
-        
-        .sec-2{
-            position: relative;
-            img
-            {
-                width: 300px;
-                @include sm{
-                    width:650px;
-                    margin-top: -250PX;
+  .sec-1, .sec-3 {
+    position: relative;
+    flex: 1;
 
-                }
-            }
-        }
+    img {
+      position: absolute;
+      width: 100px;
 
-        .sec-3{
-            position: relative;
-            img.sec3img{
-                position: absolute;
-                top: 0;
-                right: 0;
-            }
-
-            // img.sec31img{
-            //     width: 85px;
-            //     @include sm{
-            //         width:8vw;
-            //         position: absolute;
-            //         top: -535px;
-            //         left: -90px;
-            //     }
-            //     @include md{
-            //         width:10vw;
-            //         position: absolute;
-            //          top: -440px;
-            //         left: -35px;
-            //     }
-            // }
-
-            // img.sec32img{
-            //     width: 85px;
-            //     @include sm{
-            //         width:8vw;
-            //         position: absolute;
-            //         top: -315px;
-            //         left: 0px;
-            //     }
-            //     @include md{
-            //         width: 10vw;
-            //         position: absolute;
-            //         top: -220px;
-            //         right: -30px;
-            //     }
-
-            // }
-            // img.sec33img{
-            //     width: 85px;
-            //     @include sm{
-            //         width:8vw;
-            //         position: absolute;
-            //         top: -120px;
-            //         left: -75px;
-            //     }
-            //      @include md{
-            //         width:10vw;
-            //         position: absolute;
-            //         top: 0px;
-            //         left: -35px;
-            //     }
-            // }
-        }
-        
+      @include md {
+        width: 120px;
+      }
+      @include lg {
+        width: 140px;
+      }
     }
-    // .banner-box2 {
-    //     background-color: #FFFFFF;
-    //     display: flex;
-    //     flex-direction: column;
-    //     align-content: center;
-    //     align-items: center;
-    //     justify-content: center;
-        
-    //     @include md{
-    //        flex-direction: row;
-    //     }
-    //     .sec-1{
-    //         position: relative;
-    //         margin-top: -45px;
+  }
 
-    //         img.sec11img{
-    //             width: 85px;
-    //             @include sm{
-    //                 width:8vw;
-    //                 position: absolute;
-    //                 top: -535px;
-    //                 left: -90px;
-    //             }
-    //             @include md{
-    //                 width:10vw;
-    //                 position: absolute;
-    //                 top: -440px;
-    //                 left: -35px;
-    //             }
-    //         }
+  // Left icons
+  .sec11img { top: -50px; left: -100px; }
+  .sec12img { top: 120px; left: -150px; }
+  .sec13img { top: 320px; left: -100px; }
 
-    //         img.sec12img{
-    //              width: 85px;
-    //             @include sm{
-    //                 width:8vw;
-    //                 position: absolute;
-    //                 top: -315px;
-    //                 right: 0px;
-    //             }
-    //             @include md{
-    //                 width:10vw;
-    //                 position: absolute;
-    //                 top: -220px;
-    //                 right: -30px;
-    //             }
-    //         }
-    //         img.sec13img{
-    //             width: 85px;
-    //             @include sm{
-    //                 width:8vw;
-    //                 position: absolute;
-    //                 top: -220px;
-    //                 left: -75px;
-    //             }
-    //             @include md{
-    //                 width:10vw;
-    //                 position: absolute;
-    //                 top: 0px;
-    //                 left: -35px;
-    //             }
-    //         }
-    //     }
-        
-    //     .sec-2{
-    //         img
-    //         {
-    //             width: 300px;
-    //             @include sm{
-    //                 width:550px;
-    //                 margin-top: -250PX;
+  // Right icons
+  .sec31img { top: -50px; right: -100px; }
+  .sec32img { top: 120px; right: -150px; }
+  .sec33img { top: 320px; right: -100px; }
+}
 
-    //             }
-    //         }
-    //     }
-
-    //     .sec-3{
-    //         position: relative;
-
-    //         img.sec31img{
-    //             width: 85px;
-    //             @include sm{
-    //                 width:8vw;
-    //                 position: absolute;
-    //                 top: -535px;
-    //                 left: -90px;
-    //             }
-    //             @include md{
-    //                 width:10vw;
-    //                 position: absolute;
-    //                  top: -440px;
-    //                 left: -35px;
-    //             }
-    //         }
-
-    //         img.sec32img{
-    //             width: 85px;
-    //             @include sm{
-    //                 width:8vw;
-    //                 position: absolute;
-    //                 top: -315px;
-    //                 left: 0px;
-    //             }
-    //             @include md{
-    //                 width: 10vw;
-    //                 position: absolute;
-    //                 top: -220px;
-    //                 right: -30px;
-    //             }
-
-    //         }
-    //         img.sec33img{
-    //             width: 85px;
-    //             @include sm{
-    //                 width:8vw;
-    //                 position: absolute;
-    //                 top: -120px;
-    //                 left: -75px;
-    //             }
-    //              @include md{
-    //                 width:10vw;
-    //                 position: absolute;
-    //                 top: 0px;
-    //                 left: -35px;
-    //             }
-    //         }
-    //     }
-        
-    // }
 }
