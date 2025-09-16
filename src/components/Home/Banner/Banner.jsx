@@ -37,7 +37,7 @@ const Banner = () => {
         </div>
         <div className="banner-box2 container">
             <div className="sec-1">
-                <img src={leftpoint} className="sec11img" alt="Heart" />
+                <img src={leftpoint} className="sec1img" alt="Heart" />
                 {/* <img src={sec11} className="sec11img" alt="Heart" />
                 <img src={sec12} className="sec12img" alt="Digestive" />
                 <img src={sec13} className="sec13img" alt="Improves" /> */}
@@ -55,7 +55,7 @@ const Banner = () => {
             </div>
 
             <div className="sec-3">
-                <img src={Rightpoints} className="sec31img" alt="Boosts Immunity" />
+                <img src={Rightpoints} className="sec3img" alt="Boosts Immunity" />
                 {/* <img src={sec31} className="sec31img" alt="Boosts Immunity" />
                 <img src={sec32} className="sec32img" alt="Rich in Antioxidants" />
                 <img src={sec33} className="sec33img" alt="Other" /> */}
