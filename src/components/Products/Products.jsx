@@ -12,7 +12,7 @@ const Products = () => {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const res = await fetchDataFromApi("/api/products?populate=*");
+        const res = await fetchDataFromApi("/api/products?populate=*&sort=id:desc");
         if (res) setProducts(res.data);
       } catch (err) {
         console.error("❌ Failed to fetch products:", err);
