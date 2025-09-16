@@ -12,14 +12,23 @@
             background-size: cover;
             background-repeat: no-repeat;
             z-index: 1; 
+            @include sm{
+                width: 200px;  
+                height: 500px;
+            }
             @include md{
                 width: 250px;  
                 height: 515px;
             }
             @include lg{
+                width: 350px;
+                height: 800px;
+            }
+            @include xl{
                 width: 420px;
                 height: 1000px;
             }
+            
         }
         &::after {
             content: "";
@@ -33,6 +42,9 @@
             background-repeat: no-repeat;
             z-index: 1;
             opacity: 0.5;
+            @includesm{
+
+            }
             @include md{
                 width: 250px;  
                 height: 515px;
@@ -40,6 +52,10 @@
                 opacity: 1;
             }
             @include lg{
+                height: 1010px;
+                width: 315px;
+            }
+            @include xl{
                 height: 1010px;
                 width: 315px;
             }
@@ -114,7 +130,7 @@
             width: 100px;
 
             @include md {
-                width: 300px;
+                width: 200px;
             }
             @include lg {
                 width: 300px;
@@ -123,13 +139,34 @@
         }
 
         // Left icons
-        .sec1img{ top: -400px; left: 0;}
+        .sec1img{
+            @include md{
+                top: -250px;
+                left: 100px;
+            }
+
+            @include lg{
+                top: -400px;
+                left: 0;
+            }
+            
+        }
         .sec11img { top: -50px; left: -100px; }
         .sec12img { top: 120px; left: -150px; }
         .sec13img { top: 320px; left: -100px; }
 
         // Right icons
-        .sec3img{ top: -400px; right: 0;}
+        .sec3img{
+            @include md{
+                top: -300px; 
+                right: 0;
+            }
+            @include lg{
+                top: -400px; 
+                right: 0;
+            }
+            
+        }
         .sec31img { top: -50px; right: -100px; }
         .sec32img { top: 120px; right: -150px; }
         .sec33img { top: 320px; right: -100px; }
