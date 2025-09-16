@@ -67,7 +67,7 @@ const Products = () => {
       <div className="sub-heading d-flex justify-content-center ">
       <p>Experience Rasam, Rooted in Tradition.<br></br> Delight all your senses with Rasam from the roots. Taste the tradition today!</p>
       </div>
-      <div className="products-container d-flex justify-content-center ">
+      <div className="products-container d-flex flex-column flex-md-row justify-content-center flex-wrap">
         {products.map((product) => {
           // ✅ Image (full URL already in Strapi response)
           const imgUrl = product.Image?.url || "https://placehold.co/300";
@@ -77,7 +77,7 @@ const Products = () => {
               
 
               {/* ✅ Display product image */}
-              <img src={imgUrl} alt={product.Title} width="300" />
+              <img src={imgUrl} alt={product.Title} width="3004" />
               <h3>{product.Title}</h3>
               {/* ✅ Variants Section */}
               {product.Variant?.map((v, idx) => (

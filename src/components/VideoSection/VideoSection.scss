@@ -32,17 +32,19 @@
     z-index: 1; /* ✅ keeps text & video above overlay */
     .videoimg{
       .VideoSectionimg{
-        position: absolute;
+        position: relative;
         height: 100%;
         width: 100%;
 
         @include md{
           // min-width: 768px
+          position: relative;
           height: 817px;
           width: 455px;
         }
         @include lg{
           // min-width: 1024px
+          position: absolute;
           height: 817px;
           width: 455px;
           top: 60px;
