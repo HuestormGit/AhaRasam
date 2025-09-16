@@ -31,7 +31,7 @@ const Banner = () => {
                 </h1>
                 <h6 className="sub-heading">
                     Healthy replacement of tea or Coffee
-                </h6>sec3img
+                </h6>
             </div>
 
         </div>

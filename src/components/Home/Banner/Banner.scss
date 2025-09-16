@@ -96,13 +96,13 @@
     .banner-box2 {
         // background-color: #FFFFFF;
         display: flex;
-        flex-direction: column;
-        align-content: center;
-        align-items: center;
-        justify-content: center;
+        // flex-direction: column;
+        // align-content: center;
+        // align-items: center;
+        // justify-content: center;
         
         @include md{
-           flex-direction: row;
+        //    flex-direction: row;
            margin-top: -300px;
         }
         .sec-1{
