@@ -28,6 +28,10 @@
                 width: 420px;
                 height: 1000px;
             }
+            @include xxl{
+                width: 420px;
+                height: 1000px;
+            }
             
         }
         &::after {
@@ -42,7 +46,7 @@
             background-repeat: no-repeat;
             z-index: 1;
             opacity: 0.5;
-            @includesm{
+            @include sm{
 
             }
             @include md{
@@ -59,6 +63,10 @@
                 height: 1010px;
                 width: 315px;
             }
+            @include xxl{
+                height: 1010px;
+                width: 315px;
+            }
         }
         
     // height: 450px;
@@ -72,6 +80,9 @@
         align-items: center;
         justify-content: center;
         @include md{
+            min-height:700px;
+        }
+        @include lg{
             // padding: 300px 0px 350px 0;
             margin-top: -250px;
             min-height: 942px;
@@ -113,7 +124,16 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        @include md{
+            margin-top: -150px;
+        }
         @include lg{
+            margin-top: -200px;
+        }
+        @include xl{
+            margin-top: -250px;
+        }
+        @include xxl{
             margin-top: -300px;
         }
 
@@ -164,7 +184,7 @@
             }
             @include xl{
                 top: -275px;
-                left: -75px;
+                left: 190px;
             }
             @include xxl{
                 top: -400px;
