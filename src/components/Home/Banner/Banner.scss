@@ -171,7 +171,7 @@
         // Left icons
         .sec1img{
             @include sm{
-
+                display: none;
             }
             @include md{
                 top: -250px;
@@ -198,23 +198,27 @@
 
         // Right icons
         .sec3img{
+            display: none;
             @include sm{
-                top: -300px; 
-                right: 0;
+                display: none;
             }
             @include md{
+                display: block;
                 top: -300px; 
                 right: 0;
             }
             @include lg{
+                display: block;
                 top: -400px; 
                 right: 0;
             }
             @include xl{
+                display: block;
                 top: -275px;
                 left: -75px;
             }
             @include xxl{
+                display: block;
                 top: -400px;
                 left: 0;
             }
