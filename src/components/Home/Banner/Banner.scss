@@ -179,14 +179,17 @@
             }
 
             @include lg{
+                display: block;
                 top: -270px;
                 left: 140px;
             }
             @include xl{
+                display: block;
                 top: -275px;
                 left: 190px;
             }
             @include xxl{
+                display: block;
                 top: -400px;
                 left: 0;
             }
