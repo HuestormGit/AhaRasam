@@ -121,19 +121,25 @@
        
     }
     .banner-box2 {
-        display: flex;
+        // display: flex;
+
+        display: none;
         justify-content: center;
         align-items: center;
         @include md{
+            display: none;
             margin-top: -150px;
         }
         @include lg{
+            display: flex;
             margin-top: -200px;
         }
         @include xl{
+            display: flex;
             margin-top: -250px;
         }
         @include xxl{
+            display: flex;
             margin-top: -300px;
         }
 
@@ -170,10 +176,12 @@
 
         // Left icons
         .sec1img{
+            display: none;
             @include sm{
                 display: none;
             }
             @include md{
+                display: none;
                 top: -250px;
                 left: 100px;
             }
@@ -206,7 +214,7 @@
                 display: none;
             }
             @include md{
-                display: block;
+                display: none;
                 top: -300px; 
                 right: 0;
             }

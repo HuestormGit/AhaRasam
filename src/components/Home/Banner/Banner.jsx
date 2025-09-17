@@ -1,13 +1,13 @@
 import "./Banner.scss";
 import bannerImg from  "../../../assets/banner-image.png";
-// import sec11 from  "../../../assets/sec11.png";
-// import sec12 from  "../../../assets/sec12.png";
-// import sec13 from  "../../../assets/sec13.png";
+import sec11 from  "../../../assets/sec11.png";
+import sec12 from  "../../../assets/sec12.png";
+import sec13 from  "../../../assets/sec13.png";
 import leftpoint from "../../../assets/Leftpoint.png"
 import Rightpoints from "../../../assets/Rightpoints.png"
-// import sec31 from  "../../../assets/sec11.png";
-// import sec32 from  "../../../assets/sec12.png";
-// import sec33 from  "../../../assets/sec13.png";
+import sec31 from  "../../../assets/sec11.png";
+import sec32 from  "../../../assets/sec12.png";
+import sec33 from  "../../../assets/sec13.png";
 import { useEffect, useState } from "react";
 
 
@@ -51,7 +51,7 @@ const Banner = () => {
             </div>
 
         </div>
-        {/* <div className="banner-box3 container d-sm-flex d-lg-none d-md-none">
+        <div className="banner-box3 container d-sm-flex d-lg-none d-md-none">
             <div className="sec-1">
                 <img src={sec11} className="sec11img" alt="Heart" />
                 <img src={sec12} className="sec12img" alt="Digestive" />
@@ -69,7 +69,7 @@ const Banner = () => {
                 <img src={sec33} className="sec33img" alt="Other" />
             </div>
 
-        </div> */}
+        </div>
 
     </section>;
 };
