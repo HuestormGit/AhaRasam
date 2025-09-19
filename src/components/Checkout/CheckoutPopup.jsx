@@ -1,144 +1,140 @@
-import React, { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
+import { CartContext } from "../../context/CartContext";
 
-const CheckoutPopup = ({ cartData, onClose }) => {
-  const [form, setForm] = useState({ name: "", email: "", contact: "" });
+const CheckoutPopup = ({ onClose }) => {
+  const { cart, clearCart } = useContext(CartContext);
+  const [form, setForm] = useState({
+    customerName: "",
+    email: "",
+    phoneNumber: "",
+  });
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const totalAmount = cartData.reduce(
-    (sum, item) => sum + item.price * item.qty,
-    0
-  );
-
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
-  };
 
-  const createOrder = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!cart.length) return setMessage("Cart is empty!");
+
     try {
-      // 1️⃣ Ask Strapi backend to create Razorpay order
+      setLoading(true);
+      const totalAmount = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+
       const res = await axios.post(
-        `${process.env.REACT_APP_STRAPI_URL}api/razorpay/order`,
-        { amount: totalAmount, currency: "INR" }
+        `${process.env.REACT_APP_DEV_URL}/api/orders/razorpay/create`,
+        { amount: totalAmount }
       );
 
-      const { order } = res.data;
+      const rzpOrder = res.data.data;
 
-      // 2️⃣ Open Razorpay Checkout
+      if (!rzpOrder?.id) {
+        setMessage("❌ Invalid Razorpay order ID");
+        return;
+      }
+
       const options = {
         key: process.env.REACT_APP_RAZORPAY_KEY,
-        amount: order.amount,
-        currency: order.currency,
-        name: "Aha Rasam",
+        amount: rzpOrder.amount,
+        currency: rzpOrder.currency,
+        order_id: rzpOrder.id,
+        name: "AHA Rasam",
         description: "Order Payment",
-        order_id: order.id,
         handler: async function (response) {
           try {
-            // 3️⃣ Send payment details + customer/order data to backend
             const verifyRes = await axios.post(
-              `${process.env.REACT_APP_STRAPI_URL}api/razorpay/verify`,
+              `${process.env.REACT_APP_DEV_URL}/api/orders/razorpay/verify`,
               {
-                ...response,
-                customerName: form.name,
-                email: form.email,
-                phoneNumber: form.contact,
-                items: cartData,
-                total: totalAmount,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                orderData: {
+                  customerName: form.customerName,
+                  email: form.email,
+                  phoneNumber: form.phoneNumber,
+                  totalAmount,
+                  items: cart.map((i) => ({
+                    productName: i.productName,
+                    quantity: i.qty,
+                    price: i.price,
+                    size: i.size || "",
+                  })),
+                },
               }
             );
 
             if (verifyRes.data.success) {
-              alert("✅ Payment Verified & Order Saved!");
-              localStorage.removeItem("cartList");
-              window.location.href = "/?thankyou=true";
+              setMessage("✅ Payment successful! Order completed.");
+              clearCart();
+              onClose();
             } else {
-              alert("❌ Payment verification failed. Order saved as failed.");
+              setMessage("❌ Payment verification failed!");
             }
           } catch (err) {
-            console.error("Verification error:", err);
-            alert("Payment captured, but verification failed.");
+            console.error("❌ Verification API error:", err);
+            setMessage("❌ Verification API error!");
           }
         },
-        prefill: {
-          name: form.name,
-          email: form.email,
-          contact: form.contact,
-        },
-        theme: { color: "#3399cc" },
         modal: {
-          // 4️⃣ Capture if user closes Razorpay popup → Save as cancelled
-          ondismiss: async () => {
-            try {
-              await axios.post(
-                `${process.env.REACT_APP_STRAPI_URL}/api/orders`,
-                {
-                  data: {
-                    customerName: form.name,
-                    email: form.email,
-                    phoneNumber: form.contact,
-                    items: cartData,
-                    total: totalAmount,
-                    status: "cancelled",
-                    razorpayOrderId: order.id,
-                  },
-                }
-              );
-              alert("⚠️ Payment cancelled. Order saved as cancelled.");
-            } catch (err) {
-              console.error("Cancel save error:", err);
-            }
-          },
+          ondismiss: () => setMessage("Payment cancelled."),
+        },
+        theme: {
+          color: "#F37254",
         },
       };
+
+      if (typeof window.Razorpay === "undefined") {
+        setMessage("Razorpay SDK not loaded. Please refresh and try again.");
+        return;
+      }
 
       const rzp = new window.Razorpay(options);
       rzp.open();
     } catch (err) {
-      console.error("Payment error:", err.message);
-      // ctx.throw(500, err.message);
-      alert("❌ Failed to create Razorpay order");
+      console.error("❌ Payment process error:", err);
+      setMessage("Payment process failed. Try again!");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="popup-overlay">
-      <div className="popup-content">
-        <h2>Checkout</h2>
-
-        <ul>
-          {cartData.map((item, idx) => (
-            <li key={idx}>
-              {item.productName} ({item.size}) - ₹{item.price} × {item.qty} = ₹
-              {item.price * item.qty}
-            </li>
-          ))}
-        </ul>
-        <h3>Total: ₹{totalAmount}</h3>
-
+    <div className="checkout-popup">
+      <h2>Checkout</h2>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
-          name="name"
-          placeholder="Enter Name"
-          value={form.name}
+          name="customerName"
+          placeholder="Name"
+          value={form.customerName}
           onChange={handleChange}
+          required
         />
         <input
           type="email"
           name="email"
-          placeholder="Enter Email"
+          placeholder="Email"
           value={form.email}
           onChange={handleChange}
+          required
         />
         <input
           type="text"
-          name="contact"
-          placeholder="Enter Contact"
-          value={form.contact}
+          name="phoneNumber"
+          placeholder="Phone"
+          value={form.phoneNumber}
           onChange={handleChange}
         />
-
-        <button onClick={createOrder}>Pay Now</button>
-        <button onClick={onClose}>Cancel</button>
-      </div>
+        <button type="submit" disabled={loading}>
+          {loading ? "Processing..." : "Place Order"}
+        </button>
+        <button type="button" onClick={onClose}>
+          Cancel
+        </button>
+      </form>
+      {message && <p>{message}</p>}
     </div>
   );
 };
