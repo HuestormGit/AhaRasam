@@ -20,9 +20,7 @@ const Checkout = ({ cartData, onClose }) => {
       const res = await axios.post("https://fantastic-flame-08d6b9922b.strapiapp.com/api/orders/razorpay/create", {
         amount: totalAmount,
       });
-      // const res = await axios.post(`${process.env.REACT_APP_STRAPI_URL}api/orders/razorpay/create`, {
-      //   amount: totalAmount,
-      // });
+      
 
       const { id: razorpayOrderId, amount } = res.data.data;
 
@@ -38,7 +36,6 @@ const Checkout = ({ cartData, onClose }) => {
           // 3️⃣ Verify + Save in Strapi
           // await axios.post("http://localhost:1337/api/orders/razorpay/verify", {
           await axios.post("https://fantastic-flame-08d6b9922b.strapiapp.com/api/orders/razorpay/verify", {
-          // await axios.post(`${process.env.REACT_APP_STRAPI_URL}api/orders/razorpay/verify`, {
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
