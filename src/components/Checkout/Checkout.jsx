@@ -17,10 +17,17 @@ const Checkout = ({ cartData, onClose }) => {
       // const res = await axios.post("http://localhost:1337/api/orders/razorpay/create", {
       //   amount: totalAmount,
       // });
-      const res = await axios.post("https://fantastic-flame-08d6b9922b.strapiapp.com/api/orders/razorpay/create", {
-        amount: totalAmount,
-      });
+      // const res = await axios.post("https://fantastic-flame-08d6b9922b.strapiapp.com/api/orders/razorpay/create", {
+      //   amount: totalAmount,
+      // });
       
+      const res = await axios.post(
+  `${process.env.REACT_APP_STRAPI_URL}/api/orders/razorpay/create`,
+  {
+    amount: totalAmount * 100, // Razorpay expects paise
+    currency: "INR"
+  }
+);
 
       const { id: razorpayOrderId, amount } = res.data.data;
 
