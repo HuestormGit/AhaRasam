@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { postDataToApi } from "../../utils/Api";
 
 const Checkout = ({ cartData, onClose }) => {
@@ -10,30 +11,57 @@ const Checkout = ({ cartData, onClose }) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const createOrder = async () => {
+  const handlePayment = async () => {
     try {
-      // Save order directly in Strapi as "pending"
-      const orderPayload = {
-        customerName: form.name,
-        email: form.email,
-        phoneNumber: form.contact,
-        items: cartData,
-        total: totalAmount,
-        status: "pending", // always start with pending
+      // 1️⃣ Call Strapi to create Razorpay order
+      const res = await axios.post("http://localhost:1337/api/orders/razorpay/create", {
+        amount: totalAmount,
+      });
+
+      const { id: razorpayOrderId, amount } = res.data.data;
+
+      // 2️⃣ Razorpay Checkout
+      const options = {
+        key: process.env.REACT_APP_RAZORPAY_KEY,
+        amount,
+        currency: "INR",
+        name: "AHA! Rasam",
+        description: "Order Payment",
+        order_id: razorpayOrderId,
+        handler: async function (response) {
+          // 3️⃣ Verify + Save in Strapi
+          await axios.post("http://localhost:1337/api/orders/razorpay/verify", {
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+            orderData: {
+              customerName: form.name,
+              email: form.email,
+              phoneNumber: form.contact,
+              totalAmount,
+              items: cartData,
+            },
+          });
+
+          alert("✅ Payment successful & order saved!");
+          localStorage.removeItem("cartList");
+          window.location.href = "/?thankyou=true";
+        },
+        prefill: {
+          name: form.name,
+          email: form.email,
+          contact: form.contact,
+        },
+        theme: { color: "#3399cc" },
       };
 
-      await postDataToApi("/api/orders", { data: orderPayload });
-
-      alert("✅ Order saved successfully! (Pending status)");
-      localStorage.removeItem("cartList");
-      window.location.href = "/?thankyou=true";
+      const rzp = new window.Razorpay(options);
+      rzp.open();
     } catch (err) {
-      console.error("Order save error:", err);
-      alert("❌ Failed to save order.");
+      console.error("❌ Payment error:", err);
+      alert("Something went wrong during payment!");
     }
   };
-
-  console.log("🛒 CheckoutPopup received cartData:", cartData);
 
   return (
     <div className="popup-overlay">
@@ -72,7 +100,7 @@ const Checkout = ({ cartData, onClose }) => {
           onChange={handleChange}
         />
 
-        <button onClick={createOrder}>Place Order</button>
+        <button onClick={handlePayment}>Pay with Razorpay</button>
         <button onClick={onClose}>Cancel</button>
       </div>
     </div>
