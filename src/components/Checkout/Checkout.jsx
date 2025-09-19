@@ -14,7 +14,10 @@ const Checkout = ({ cartData, onClose }) => {
   const handlePayment = async () => {
     try {
       // 1️⃣ Call Strapi to create Razorpay order
-      const res = await axios.post("http://localhost:1337/api/orders/razorpay/create", {
+      // const res = await axios.post("http://localhost:1337/api/orders/razorpay/create", {
+      //   amount: totalAmount,
+      // });
+      const res = await axios.post(`${process.env.REACT_APP_STRAPI_URL}api/orders/razorpay/create`, {
         amount: totalAmount,
       });
 
@@ -30,7 +33,8 @@ const Checkout = ({ cartData, onClose }) => {
         order_id: razorpayOrderId,
         handler: async function (response) {
           // 3️⃣ Verify + Save in Strapi
-          await axios.post("http://localhost:1337/api/orders/razorpay/verify", {
+          // await axios.post("http://localhost:1337/api/orders/razorpay/verify", {
+          await axios.post(`${process.env.REACT_APP_STRAPI_URL}api/orders/razorpay/verify`, {
             razorpay_order_id: response.razorpay_order_id,
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_signature: response.razorpay_signature,
