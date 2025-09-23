@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { postDataToApi } from "../../utils/Api";
+import "./Checkout.scss";
 
 const Checkout = ({ cartData, onClose }) => {
   const [form, setForm] = useState({ name: "", email: "", contact: "" });

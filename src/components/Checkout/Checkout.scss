@@ -1,0 +1,142 @@
+@import "../../css-config/mixins.scss";
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); // dark overlay
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: #fff;
+  width: 95%;
+  max-width: 380px;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  animation: fadeInUp 0.3s ease-in-out;
+
+  // 📱 Small devices (≥640px)
+  @include sm {
+    max-width: 420px;
+    padding: 2rem;
+  }
+
+  // 📱 Medium devices (≥768px)
+  @include md {
+    max-width: 500px;
+  }
+
+  // 💻 Large devices (≥1024px)
+  @include lg {
+    max-width: 600px;
+  }
+
+  // 🖥 Extra large devices (≥1280px)
+  @include xl {
+    max-width: 650px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #333;
+
+    @include md {
+      font-size: 1.8rem;
+    }
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1rem;
+
+    li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #eee;
+      font-size: 0.95rem;
+      color: #555;
+
+      @include md {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+    text-align: right;
+    color: #111;
+    font-weight: 600;
+
+    @include md {
+      font-size: 1.3rem;
+    }
+  }
+
+  input {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: #3399cc;
+      outline: none;
+      box-shadow: 0 0 4px rgba(51, 153, 204, 0.4);
+    }
+  }
+
+  button {
+    padding: 0.8rem 1.2rem;
+    margin-right: 0.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:first-of-type {
+      background: #3399cc;
+      color: white;
+
+      &:hover {
+        background: #2a89b5;
+      }
+    }
+
+    &:last-of-type {
+      background: #eee;
+      color: #333;
+
+      &:hover {
+        background: #ddd;
+      }
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
