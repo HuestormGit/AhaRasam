@@ -117,6 +117,15 @@
       &:hover {
         background: #2a89b5;
       }
+
+      &:disabled {
+        background: #b5d9eb; // lighter blue
+        cursor: not-allowed;
+        opacity: 0.6;
+        &:hover {
+          background: #b5d9eb; // prevent hover color
+        }
+      }
     }
 
     &:last-of-type {
@@ -127,6 +136,14 @@
         background: #ddd;
       }
     }
+  }
+
+   // ✅ Error text styling
+  .error {
+    color: #e63946;
+    font-size: 0.85rem;
+    margin: -0.5rem 0 0.8rem 0;
+    display: block;
   }
 }
 

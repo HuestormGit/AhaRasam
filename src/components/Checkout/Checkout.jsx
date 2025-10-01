@@ -1,16 +1,47 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { postDataToApi } from "../../utils/Api";
 import "./Checkout.scss";
 
 const Checkout = ({ cartData, onClose }) => {
   const [form, setForm] = useState({ name: "", email: "", contact: "" });
+  const [errors, setErrors] = useState({});
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const totalAmount = cartData.reduce((sum, item) => sum + item.price * item.qty, 0);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
   };
+
+  // ✅ Validation Function
+  const validate = () => {
+    let newErrors = {};
+
+    if (!form.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+    if (!form.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(form.email)) {
+      newErrors.email = "Enter a valid email";
+    }
+    if (!form.contact.trim()) {
+      newErrors.contact = "Contact number is required";
+    } else if (!/^[0-9]{10}$/.test(form.contact)) {
+      newErrors.contact = "Enter a valid 10-digit number";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // ✅ valid if no errors
+  };
+
+  // 🔄 Check validity whenever form changes
+  useEffect(() => {
+    setIsFormValid(validate());
+    // eslint-disable-next-line
+  }, [form]);
 
   const handlePayment = async () => {
     try {
@@ -91,6 +122,7 @@ const Checkout = ({ cartData, onClose }) => {
           value={form.name}
           onChange={handleChange}
         />
+         {errors.name && <p className="error">{errors.name}</p>}
         <input
           type="email"
           name="email"
@@ -98,6 +130,7 @@ const Checkout = ({ cartData, onClose }) => {
           value={form.email}
           onChange={handleChange}
         />
+        {errors.email && <p className="error">{errors.email}</p>}
         <input
           type="text"
           name="contact"
@@ -105,8 +138,8 @@ const Checkout = ({ cartData, onClose }) => {
           value={form.contact}
           onChange={handleChange}
         />
-
-        <button onClick={handlePayment}>Pay with Razorpay</button>
+        {errors.contact && <p className="error">{errors.contact}</p>}
+        <button onClick={handlePayment} disabled={!isFormValid}>Pay with Razorpay</button>
         <button onClick={onClose}>Cancel</button>
       </div>
     </div>
