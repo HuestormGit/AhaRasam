@@ -2,18 +2,21 @@ import { useEffect, useState, useContext } from "react";
 import { fetchDataFromApi } from "../../utils/Api";
 import "./Products.scss";
 import { CartContext } from "../../context/CartContext";
-import trash from "../../assets/trash.png"
+import trash from "../../assets/trash.png";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [quantities, setQuantities] = useState({});
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const res = await fetchDataFromApi("/api/products?populate=*&sort=id:desc");
-        if (res) setProducts(res.data);
+        const res = await fetchDataFromApi("/api/products?populate=*&sort=id:asc");
+        if (res?.data?.length > 0) {
+          setProducts(res.data);
+        }
       } catch (err) {
         console.error("❌ Failed to fetch products:", err);
       }
@@ -54,106 +57,117 @@ const Products = () => {
         });
       }
     });
-
     alert("Items added to cart!");
   };
 
+  const totalItems = Object.values(quantities)
+    .flatMap((v) => Object.values(v))
+    .reduce((a, b) => a + b, 0);
+
   if (!products || products.length === 0)
-    return <p className="text-center mt-5">No products available.</p>;
+    return (
+      <div className="products-wrapper container text-center">
+        <h2>Buy Aha! Rasam</h2>
+        <p>
+          Experience Rasam, Rooted in Tradition. <br />
+          Delight all your senses with Rasam from the roots. Taste the
+          tradition today!
+        </p>
+        <div className="sticky-proceed">
+          <button className="proceed-btn">
+            Proceed to Pay {totalItems > 0 && `(${totalItems} added)`}
+          </button>
+        </div>
+      </div>
+    );
+
+  const selectedProduct = products[selectedIndex];
+  const imgUrl = selectedProduct.Image?.url || "https://placehold.co/300";
 
   return (
-    <div className="products-grid container">
-      <h2>Products</h2>
-      <div className="sub-heading d-flex justify-content-center ">
-      <p>Experience Rasam, Rooted in Tradition.<br></br> Delight all your senses with Rasam from the roots. Taste the tradition today!</p>
+    <div className="products-wrapper container">
+      <h2>Buy Aha! Rasam</h2>
+      <div className="sub-heading d-flex justify-content-center">
+        <p>
+          Experience Rasam, Rooted in Tradition.
+          <br /> Delight all your senses with Rasam from the roots. Taste the
+          tradition today!
+        </p>
       </div>
-      <div className="products-container d-flex flex-column flex-md-row justify-content-center flex-wrap">
-        {products.map((product) => {
-          // ✅ Image (full URL already in Strapi response)
-          const imgUrl = product.Image?.url || "https://placehold.co/300";
 
-          return (
-            <div key={product.id} className="product-card col-sm-12 col-md-5">
-              
+      <div className="product-main">
+        {/* LEFT: Image */}
+        <div className="product-image">
+          <img src={imgUrl} alt={selectedProduct.Title} />
+        </div>
 
-              {/* ✅ Display product image */}
-              <img src={imgUrl} alt={product.Title} width="3004" />
-              <h3>{product.Title}</h3>
-              {/* ✅ Variants Section */}
-              {product.Variant?.map((v, idx) => (
-                <div key={idx} className="variant-row">
-                  <span className="weight">
-                    {v.size} 
-                  </span>
-                  {/* with price 
-                  <span>
-                    {v.size} – ₹{v.price}
-                  </span> */}
-                  <div className="d-flex align-items-center">
-                    <img src={trash} alt="remove" className="trash"/>
+        {/* CENTER: Product Info */}
+        <div className="product-info">
+          <h3 className="title">{selectedProduct.Title}</h3>
+          <p className="desc">
+            {selectedProduct.Description ||
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit."}
+          </p>
 
-                    {/* <button className="trash-btn">🗑
-                    </button> */}
-                    <div className="varqty-sec">
-                      <button
-                        className="qty-btn qty-btn-left"
-                        onClick={() => handleQtyChange(product.id, idx, -1)}
-                      >
-                        -
-                      </button>
-                      <span className="qty-value">
-                        {quantities[product.id]?.[idx] || 0}
-                      </span>
-                      <button
-                        className="qty-btn qty-btn-right"
-                        onClick={() => handleQtyChange(product.id, idx, 1)}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                  
-                </div>
+          <p className="mrp">MRP: ₹{selectedProduct.Variant?.[0]?.price || "—"}</p>
+
+          {selectedProduct.Variant?.length > 0 && (
+            <select className="variant-select">
+              {selectedProduct.Variant.map((v, idx) => (
+                <option key={idx}>{v.size}</option>
               ))}
-              
-              <div className="process-ctn-cls">
-              <button
-                className="proceed-btn"
-                onClick={() => handleAddToCart(product.id, product)}
-              >
-                Proceed to Pay
-              </button>
-              </div>
-              <hr></hr>
+            </select>
+          )}
 
-              {/* ✅ Ingredients Section */}
-              {product.Ingredients?.length > 0 && (
-                <div className="ingredients text-start">
-                  <h4>Ingredients : </h4>
-                  {product.Ingredients.map((block, i) =>
-                    block.children?.map((c, j) => (
-                      <p key={i + "-" + j}>{c.text}</p>
-                    ))
-                  )}
-                </div>
-              )}
+          <div className="varqty-sec">
+            <button
+              className="qty-btn"
+              onClick={() => handleQtyChange(selectedProduct.id, 0, -1)}
+            >
+              -
+            </button>
+            <span className="qty-value">
+              {quantities[selectedProduct.id]?.[0] || 0}
+            </span>
+            <button
+              className="qty-btn"
+              onClick={() => handleQtyChange(selectedProduct.id, 0, 1)}
+            >
+              +
+            </button>
+          </div>
 
-              {/* ✅ Preparation Steps Section */}
-              {product.HOWTOPREPAREAHARASAM?.length > 0 && (
-                <div className="howto text-start">
-                  <h4>How to Prepare</h4>
-                  {product.HOWTOPREPAREAHARASAM.map((block, i) => (
-                    <ol key={i}>
-                      {block.children?.map((li, j) => (
-                        <li key={j}>{li.children?.[0]?.text}</li>
-                      ))}
-                    </ol>
-                  ))}
-                </div>
-              )}
+          <button
+            className="add-btn"
+            onClick={() =>
+              handleAddToCart(selectedProduct.id, selectedProduct)
+            }
+          >
+            ADD TO CART
+          </button>
+        </div>
+
+        {/* RIGHT: Product List */}
+        <div className="product-list">
+          {products.map((p, idx) => (
+            <div
+              key={p.id}
+              className={`list-item ${
+                selectedIndex === idx ? "active" : ""
+              }`}
+              onClick={() => setSelectedIndex(idx)}
+            >
+              {p.Title}
             </div>
-          );
-        })}
+          ))}
+        </div>
+      </div>
+
+      {/* Sticky Proceed */}
+      <div className="sticky-proceed">
+        <button className="proceed-btn">
+          Proceed to Pay {totalItems > 0 && `(${totalItems} added)`}
+        </button>
       </div>
     </div>
   );
