@@ -11,34 +11,30 @@
     font-size: 20px;
     line-height: 28px;
     font-family: "Barlow Condensed";
-
-    @include md {
+    @include md{
       font-size: 30px;
       line-height: 38px;
     }
-
-    @include lg {
+    @include lg{
       font-size: 40px;
       line-height: 48px;
     }
   }
 
-  .sub-heading {
-    p {
+  .sub-heading{
+    p{
       font-size: 18px;
       line-height: 18px;
       color: #707070;
       font-family: "Barlow Condensed";
       text-align: center;
       width: 100%;
-
-      @include md {
+      @include md{
         font-size: 20px;
         line-height: 20px;
         width: 95%;
       }
-
-      @include lg {
+      @include lg{
         font-size: 24px;
         line-height: 28px;
         width: 75%;
@@ -46,38 +42,19 @@
     }
   }
 
-  /* ✅ Product Slider Container */
   .products-container {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
+    // display: flex;
+    // flex-wrap: wrap;
     gap: 2rem;
-    scroll-behavior: smooth;
-    padding-bottom: 1rem;
-
-    &::-webkit-scrollbar {
-      height: 8px;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: #ccc;
-      border-radius: 10px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: #f9f9f9;
-    }
   }
 
   .product-card {
-    flex: 0 0 80%;
-    scroll-snap-align: center;
     background: #fff;
+    //border: 1px solid #eee;
     border-radius: 12px;
     padding: 1.5rem;
     text-align: center;
     transition: box-shadow 0.3s ease;
-    cursor: pointer; // ✅ NEW - clickable card
 
     &:hover {
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -89,18 +66,15 @@
       height: 250px;
       margin-bottom: 1rem;
       border-radius: 8px;
-
-      @include md {
+      @include md{
         width: 350px;
         height: 350px;
       }
-
-      @include lg {
+      @include lg{
         width: 450px;
         height: 450px;
       }
-
-      @include xl {
+      @include xl{
         width: 540px;
         height: 540px;
       }
@@ -113,17 +87,17 @@
       color: #a42222;
       font-family: "Barlow Condensed";
       font-size: 20px;
-
-      @include md {
+      @include md{
         font-size: 25px;
         line-height: 25px;
       }
-
-      @include lg {
+      @include lg{
         font-size: 30px;
         line-height: 28px;
       }
     }
+
+    
 
     .variant-row {
       display: flex;
@@ -137,10 +111,9 @@
         font-family: "Barlow Condensed";
         font-size: 20px;
         line-height: 24px;
-
-        @include lg {
+        @include lg{
           font-size: 24px;
-          line-height: 28px;
+        line-height: 28px;
         }
       }
 
@@ -148,6 +121,7 @@
         background: #fce5e5;
         color: #000000;
         border: none;
+        // border-radius: 50%;
         width: 30px;
         height: 30px;
         display: flex;
@@ -161,40 +135,35 @@
         &:hover {
           background: #f8b9b9;
         }
+        
       }
-
-      img.trash {
+      img.trash
+      {
         width: 18px;
         height: 20px;
         margin: auto 5px;
-
-        @include md {
+        @include md{
           width: 20px;
           height: 24px;
         }
-
-        @include lg {
+        @include lg{
           width: 26px;
           height: 30px;
         }
       }
 
-      .varqty-sec {
+      .varqty-sec{
         display: flex;
         align-items: center;
       }
 
-      .qty-btn-left {
-        border-radius: 10px 1px 1px 10px;
-      }
-
-      .qty-btn-right {
-        border-radius: 1px 10px 10px 1px;
-      }
+      .qty-btn-left{border-radius: 10px 1px 1px 10px;}
+      .qty-btn-right{border-radius: 1px 10px 10px 1px;}
 
       .qty-btn {
         background: #E1AD3F;
         border: 0px solid #ddd;
+        // border-radius: 6px;
         width: 32px;
         height: 32px;
         display: flex;
@@ -237,11 +206,10 @@
       }
     }
 
-    .process-ctn-cls {
+    .process-ctn-cls{
       display: flex;
       justify-content: flex-end;
-
-      .proceed-btn {
+      .proceed-btn{
         border-width: 0;
         border-radius: 20px;
         background-color: #E1AD3F;
@@ -249,19 +217,17 @@
         font-family: "Barlow Condensed";
         font-size: 18px;
         line-height: 20px;
-
-        @include md {
+        @include md{
           font-size: 20px;
           line-height: 25px;
         }
-
-        @include lg {
+        @include lg{
           font-size: 24px;
           line-height: 29px;
         }
-
-        &:hover {
+        &:hover{
           background: #c9302c;
+
         }
       }
     }
@@ -277,117 +243,80 @@
         margin-bottom: 0.5rem;
         color: #a42222;
         line-height: 20px;
-
-        @include md {
+        @include md{
           font-size: 22px;
           line-height: 25px;
         }
-
-        @include lg {
+        @include lg{
           font-size: 24px;
           line-height: 28px;
         }
       }
 
-      p {
+      p{
         font-family: "Barlow Condensed";
         font-size: 20px;
         line-height: 20px;
         margin-bottom: 0.3rem;
-
-        @include md {
+        @include md{
           font-size: 22px;
           line-height: 22px;
         }
-
-        @include lg {
+        @include lg{
           font-size: 24px;
           line-height: 28px;
         }
       }
+
+
     }
   }
-
   .howto {
-    ol {
-      counter-reset: custom-counter;
-      list-style: none;
-      padding-left: 0;
+  ol {
+    counter-reset: custom-counter; // reset counter
+    list-style: none; // remove default numbers
+    padding-left: 0;
 
-      li {
-        font-family: "Barlow Condensed";
-        font-size: 24px;
-        line-height: 28px;
-        counter-increment: custom-counter;
-        margin-bottom: 10px;
-        position: relative;
-        padding-left: 2.5rem;
-
-        &::before {
-          content: counter(custom-counter);
-          position: absolute;
-          left: 0;
-          top: 0;
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          background-color: #a42222;
-          color: #fff;
-          font-weight: 600;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 16px;
-        }
-      }
-    }
-  }
-
-  /* ✅ Product Detail Modal */
-  .product-modal {
-    display: none; // hidden by default
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-
-    &.active {
-      display: flex;
-    }
-
-    .modal-content {
-      background: #fff;
-      border-radius: 12px;
-      padding: 2rem;
-      max-width: 600px;
-      width: 90%;
+    li {
+      font-family: "Barlow Condensed";
+      font-size: 24px;
+      line-height: 28px;
+      counter-increment: custom-counter;
+      margin-bottom: 10px;
       position: relative;
+      padding-left: 2.5rem; // space for circle
 
-      h3 {
-        color: #a42222;
-        margin-bottom: 1rem;
-        font-family: "Barlow Condensed";
-      }
-
-      p {
-        font-family: "Barlow Condensed";
-        font-size: 20px;
-        line-height: 26px;
-        color: #333;
-      }
-
-      .close-btn {
+      &::before {
+        content: counter(custom-counter);
         position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 1.5rem;
-        background: none;
-        border: none;
-        color: #a42222;
-        cursor: pointer;
+        left: 0;
+        top: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #a42222; // same red as design
+        color: #fff;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
       }
     }
   }
+}
+
+
+  // Responsive with mixins
+  // @include lg {
+  //   .product-card {
+  //     flex: 0 0 calc(50% - 1rem);
+  //   }
+  // }
+
+  // @include md {
+  //   .product-card {
+  //     flex: 0 0 100%;
+  //   }
+  // }
 }
