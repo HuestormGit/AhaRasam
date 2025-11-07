@@ -1,5 +1,5 @@
 import React from 'react'
-
+import "./AboutUs.scss";
 function AboutUs() {
   return (
     <section className="AboutUs" id="AboutUs">
