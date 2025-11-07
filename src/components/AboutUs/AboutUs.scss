@@ -2,10 +2,10 @@
 #AboutUs{
     padding: 100px 0;
     @include md {
-      height: 50px; 
+      padding: 50px 0; 
     }
     @include lg{
-      height: 75px;
+      padding: 75px 0;
     }
     .AboutUsHeading{
         color: #AA2423;

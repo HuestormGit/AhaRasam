@@ -10,12 +10,12 @@ function AboutUs() {
                 </h2>
                 <div className="row ">
                     <div className="col-6">
-                        <p className='text-left'>
+                        <p className='text-start'>
                             For us, rasam is more than a beverage, it’s a heritage passed down through generations, a perfect balance of flavor, nourishment, and care that has long been a part of Indian kitchens.
                         </p>
                     </div>
                     <div className="col-6">
-                        <p className='text-left'>
+                        <p className='text-start'>
                            We honor this tradition by crafting each cup with authentic ingredients like toor dal, tamarind, pepper, and curry leaves, preserving its wholesome essence while making it accessible for modern life. We celebrate this heritage by keeping its spirit alive in every cup, connecting people to the simple joys and mindful living of the past.
                         </p>
                     </div>
