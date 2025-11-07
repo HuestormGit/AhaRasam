@@ -6,6 +6,7 @@ import Contact from '../Contact/Contact';
 import Products from '../Products/Products';
 // import Checkout from "../Checkout/Checkout";
 import { useState } from "react";
+import AboutUs from '../AboutUs/AboutUs';
 
 function Home() {
   const [cart, setCart] = useState([]);
@@ -24,6 +25,7 @@ function Home() {
 
       <div className="spacer"></div>
       <VideoSection />
+      <AboutUs/>
       <Contact />
     </div>
   )
