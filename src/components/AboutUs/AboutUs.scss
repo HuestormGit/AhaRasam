@@ -7,7 +7,15 @@
     @include lg{
       height: 75px;
     }
-    p{
+    .AboutUsHeading{
+        color: #AA2423;
+        font-family: "Barlow Condensed";
+        font-style: normal;
+        font-weight: 500;
+        font-size: 40px;
+        line-height: 48px;
+    }
+    h6{
         max-width: 900px;
     }
 }
