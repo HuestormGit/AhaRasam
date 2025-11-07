@@ -8,7 +8,7 @@ function AboutUs() {
                 <h2 className='AboutUsHeading'>At Aha! Rasam, we believe life’s best comforts 
                     <br></br>don’t need invention, only rediscovery.
                 </h2>
-                <div className="row ">
+                <div className="row pt-50">
                     <div className="col-lg-1 col-md-1 col-sm-12"></div>
                     <div className="col-lg-5 col-md-5 col-sm-12">
                         <p className='text-start'>
