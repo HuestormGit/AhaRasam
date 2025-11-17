@@ -94,6 +94,10 @@ const Products = () => {
           tradition today!
         </p>
       </div>
+      <div className="products-flex ">
+
+      </div>
+
 
       <div className="product-main">
         {/* LEFT: Image */}
