@@ -2,12 +2,11 @@ import { useEffect, useState, useContext } from "react";
 import { fetchDataFromApi } from "../../utils/Api";
 import "./Products.scss";
 import { CartContext } from "../../context/CartContext";
-import trash from "../../assets/trash.png";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [quantities, setQuantities] = useState({});
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState({});
   const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
@@ -24,69 +23,47 @@ const Products = () => {
     loadProducts();
   }, []);
 
-  const handleQtyChange = (productId, variantIndex, delta) => {
+  const handleQtyChange = (productId, delta) => {
     setQuantities((prev) => {
-      const productQtys = prev[productId] || {};
-      const current = productQtys[variantIndex] || 0;
-      return {
-        ...prev,
-        [productId]: {
-          ...productQtys,
-          [variantIndex]: Math.max(current + delta, 0),
-        },
-      };
+      const current = prev[productId] || 0;
+      return { ...prev, [productId]: Math.max(current + delta, 0) };
     });
+  };
+
+  const handleVariantChange = (productId, index) => {
+    setSelectedVariantIndex((prev) => ({
+      ...prev,
+      [productId]: index,
+    }));
   };
 
   const handleAddToCart = (productId, product) => {
-    const selected = quantities[productId];
-    if (!selected || Object.values(selected).every((q) => q === 0)) {
-      alert("Please select at least one quantity before adding to cart.");
+    const qty = quantities[productId] || 0;
+    if (qty === 0) {
+      alert("Please select quantity before adding to cart.");
       return;
     }
 
-    product.Variant.forEach((v, idx) => {
-      const qty = selected[idx] || 0;
-      if (qty > 0) {
-        addToCart({
-          productId: productId,
-          productName: product.Title,
-          size: v.size,
-          price: v.price,
-          qty,
-        });
-      }
+    const vIndex = selectedVariantIndex[productId] ?? 0;
+    const variant = product.Variant[vIndex];
+
+    addToCart({
+      productId,
+      productName: product.Title,
+      size: variant.size,
+      price: variant.price,
+      qty,
     });
-    alert("Items added to cart!");
+
+    alert(`${qty} item(s) added to cart`);
   };
 
-  const totalItems = Object.values(quantities)
-    .flatMap((v) => Object.values(v))
-    .reduce((a, b) => a + b, 0);
-
-  if (!products || products.length === 0)
-    return (
-      <div className="products-wrapper container text-center">
-        <h2>Buy Aha! Rasam</h2>
-        <p>
-          Experience Rasam, Rooted in Tradition. <br />
-          Delight all your senses with Rasam from the roots. Taste the
-          tradition today!
-        </p>
-        <div className="sticky-proceed">
-          <button className="proceed-btn">
-            Proceed to Pay {totalItems > 0 && `(${totalItems} added)`}
-          </button>
-        </div>
-      </div>
-    );
-
-  const selectedProduct = products[selectedIndex];
-  const imgUrl = selectedProduct.Image?.url || "https://placehold.co/300";
+  const totalItems = Object.values(quantities).reduce((a, b) => a + b, 0);
 
   return (
     <div className="products-wrapper container">
       <h2>Buy Aha! Rasam</h2>
+
       <div className="sub-heading d-flex justify-content-center">
         <p>
           Experience Rasam, Rooted in Tradition.
@@ -94,83 +71,70 @@ const Products = () => {
           tradition today!
         </p>
       </div>
-      <div className="products-flex ">
 
-      </div>
+      <div className="products-grid">
+        {products.map((product) => {
+          const productId = product.id;
+          const image = product.Image?.url || "https://placehold.co/300";
+          const variants = product.Variant || [];
+          const selectedIdx = selectedVariantIndex[productId] ?? 0;
+          const qty = quantities[productId] || 0;
 
+          return (
+            <div key={productId} className="product-card">
+              <img src={image} alt={product.Title} />
 
-      <div className="product-main">
-        {/* LEFT: Image */}
-        <div className="product-image">
-          <img src={imgUrl} alt={selectedProduct.Title} />
-        </div>
+              <h4 className="title">{product.Title}</h4>
+              <p className="desc">
+                {product.Description?.slice(0, 60) || "Traditional Rasam mix"}
+              </p>
 
-        {/* CENTER: Product Info */}
-        <div className="product-info">
-          <h3 className="title">{selectedProduct.Title}</h3>
-          <p className="desc">
-            {selectedProduct.Description ||
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit."}
-          </p>
+              {/* Price - Dynamic from selected variant */}
+              <p className="mrp">
+                MRP: ₹{variants[selectedIdx]?.price || "—"}
+              </p>
 
-          <p className="mrp">MRP: ₹{selectedProduct.Variant?.[0]?.price || "—"}</p>
+              {/* Variant Dropdown */}
+              {variants.length > 0 && (
+                <select
+                  className="variant-drop"
+                  value={selectedIdx}
+                  onChange={(e) =>
+                    handleVariantChange(productId, Number(e.target.value))
+                  }
+                >
+                  {variants.map((v, idx) => (
+                    <option value={idx} key={idx}>
+                      {v.size}
+                    </option>
+                  ))}
+                </select>
+              )}
 
-          {selectedProduct.Variant?.length > 0 && (
-            <select className="variant-select">
-              {selectedProduct.Variant.map((v, idx) => (
-                <option key={idx}>{v.size}</option>
-              ))}
-            </select>
-          )}
+              {/* Qty Selector */}
+              <div className="qty-box">
+                <button onClick={() => handleQtyChange(productId, -1)}>-</button>
+                <span>{qty}</span>
+                <button onClick={() => handleQtyChange(productId, 1)}>+</button>
+              </div>
 
-          <div className="varqty-sec">
-            <button
-              className="qty-btn"
-              onClick={() => handleQtyChange(selectedProduct.id, 0, -1)}
-            >
-              -
-            </button>
-            <span className="qty-value">
-              {quantities[selectedProduct.id]?.[0] || 0}
-            </span>
-            <button
-              className="qty-btn"
-              onClick={() => handleQtyChange(selectedProduct.id, 0, 1)}
-            >
-              +
-            </button>
-          </div>
-
-          <button
-            className="add-btn"
-            onClick={() =>
-              handleAddToCart(selectedProduct.id, selectedProduct)
-            }
-          >
-            ADD TO CART
-          </button>
-        </div>
-
-        {/* RIGHT: Product List */}
-        <div className="product-list">
-          {products.map((p, idx) => (
-            <div
-              key={p.id}
-              className={`list-item ${
-                selectedIndex === idx ? "active" : ""
-              }`}
-              onClick={() => setSelectedIndex(idx)}
-            >
-              {p.Title}
+              <button
+                className="add-btn"
+                onClick={() => handleAddToCart(productId, product)}
+              >
+                ADD TO CART
+              </button>
             </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
 
-      {/* Sticky Proceed */}
+      {/* Sticky Bottom Checkout */}
       <div className="sticky-proceed">
         <button className="proceed-btn">
-          Proceed to Pay {totalItems > 0 && `(${totalItems} added)`}
+          {totalItems > 0
+            ? `${totalItems} products added — Proceed to Pay`
+            : `Proceed to Pay`}
         </button>
       </div>
     </div>
