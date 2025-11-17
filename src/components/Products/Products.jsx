@@ -12,7 +12,10 @@ const Products = () => {
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const res = await fetchDataFromApi("/api/products?populate=*&sort=id:asc");
+        const res = await fetchDataFromApi(
+          "/api/products?populate=*&sort=id:asc"
+        );
+
         if (res?.data?.length > 0) {
           setProducts(res.data);
         }
@@ -20,6 +23,7 @@ const Products = () => {
         console.error("❌ Failed to fetch products:", err);
       }
     };
+
     loadProducts();
   }, []);
 
@@ -35,6 +39,17 @@ const Products = () => {
       ...prev,
       [productId]: index,
     }));
+  };
+
+  const extractText = (blocks) => {
+    if (!Array.isArray(blocks)) return "";
+    return blocks
+      .map((b) =>
+        Array.isArray(b.children)
+          ? b.children.map((c) => c.text).join(" ")
+          : ""
+      )
+      .join(" ");
   };
 
   const handleAddToCart = (productId, product) => {
@@ -73,29 +88,44 @@ const Products = () => {
       </div>
 
       <div className="products-grid">
-        {products.map((product) => {
+        {products.map((item) => {
+          const product = item;
           const productId = product.id;
-          const image = product.Image?.url || "https://placehold.co/300";
+
+          const image =
+            product.Image?.url ||
+            "https://placehold.co/300x300?text=No+Image";
+
           const variants = product.Variant || [];
           const selectedIdx = selectedVariantIndex[productId] ?? 0;
+
           const qty = quantities[productId] || 0;
+
+          const ingredientsText = extractText(product.Ingredients);
+          const howToPrepareText = extractText(product.HOWTOPREPAREAHARASAM);
 
           return (
             <div key={productId} className="product-card">
               <img src={image} alt={product.Title} />
 
-              <h4 className="title">{product.Title}</h4>
+              <h3 className="title">{product.Title}</h3>
+
+              {/* INGREDIENTS */}
+              <h4 className="sub-title">Ingredients:</h4>
               <p className="desc">
-                {product.Ingredients}
-                {product.Description?.slice(0, 60) || "Traditional Rasam mix"}
+                {ingredientsText || "No ingredients available"}
               </p>
 
-              {/* Price - Dynamic from selected variant */}
-              <p className="mrp">
-                MRP: ₹{variants[selectedIdx]?.price || "—"}
+              {/* HOW TO PREPARE */}
+              <h4 className="sub-title">How To Prepare:</h4>
+              <p className="desc">
+                {howToPrepareText || "No preparation steps available"}
               </p>
 
-              {/* Variant Dropdown */}
+              {/* Dynamic Price */}
+              <p className="mrp">MRP: ₹{variants[selectedIdx]?.price || "—"}</p>
+
+              {/* Variant */}
               {variants.length > 0 && (
                 <select
                   className="variant-drop"
@@ -112,13 +142,14 @@ const Products = () => {
                 </select>
               )}
 
-              {/* Qty Selector */}
+              {/* Qty */}
               <div className="qty-box">
                 <button onClick={() => handleQtyChange(productId, -1)}>-</button>
                 <span>{qty}</span>
                 <button onClick={() => handleQtyChange(productId, 1)}>+</button>
               </div>
 
+              {/* Add to cart */}
               <button
                 className="add-btn"
                 onClick={() => handleAddToCart(productId, product)}
