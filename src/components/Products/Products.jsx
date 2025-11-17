@@ -117,10 +117,10 @@ const Products = () => {
               </p>
 
               {/* HOW TO PREPARE */}
-              <h4 className="sub-title">How To Prepare:</h4>
+              {/* <h4 className="sub-title">How To Prepare:</h4>
               <p className="desc">
                 {howToPrepareText || "No preparation steps available"}
-              </p>
+              </p> */}
 
               {/* Dynamic Price */}
               <p className="mrp">MRP: ₹{variants[selectedIdx]?.price || "—"}</p>
