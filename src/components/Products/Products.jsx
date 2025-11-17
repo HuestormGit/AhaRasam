@@ -86,6 +86,7 @@ const Products = () => {
 
               <h4 className="title">{product.Title}</h4>
               <p className="desc">
+                {product.Ingredients}
                 {product.Description?.slice(0, 60) || "Traditional Rasam mix"}
               </p>
 
