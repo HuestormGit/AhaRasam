@@ -106,7 +106,10 @@ const Products = () => {
 
           return (
             <div key={productId} className="product-card">
+              <div className="product-thumb">
               <img src={image} alt={product.Title} />
+              </div>
+              <div className="product-details">
 
               <h3 className="title">{product.Title}</h3>
 
@@ -147,6 +150,7 @@ const Products = () => {
                 <button onClick={() => handleQtyChange(productId, -1)}>-</button>
                 <span>{qty}</span>
                 <button onClick={() => handleQtyChange(productId, 1)}>+</button>
+              </div>
               </div>
 
               {/* Add to cart */}
