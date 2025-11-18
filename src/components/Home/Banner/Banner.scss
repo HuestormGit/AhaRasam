@@ -144,9 +144,25 @@
         }
 
         .sec-2 img {
-            width: clamp(280px, 40vw, 800px);
+            // width: clamp(280px, 40vw, 800px);
             z-index: 2;
             position: relative;
+            width: 280px;
+                @include sm{
+                    width: 300px;
+                }
+                @include md {
+                    width: 500px;
+                }
+                @include lg {
+                    width: 750px;
+                }
+                @include xl {
+                    width: 800px;
+                }
+                @include xxl{
+                    width: 800px;
+                }
         }
 
         .sec-1, .sec-3 {

@@ -13,7 +13,8 @@ const Products = () => {
     const loadProducts = async () => {
       try {
         const res = await fetchDataFromApi(
-          "/api/products?populate=*&sort=id:asc"
+          "/api/products?populate=*"
+          // "/api/products?populate=*&sort=id:asc"
         );
 
         if (res?.data?.length > 0) {
