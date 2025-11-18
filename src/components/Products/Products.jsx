@@ -149,9 +149,9 @@ const Products = () => {
 
                 {/* Qty */}
                 <div className="qty-box">
-                  <button onClick={() => handleQtyChange(productId, -1)}>-</button>
+                  <button onClick={() => handleQtyChange(productId, -1)} className="qty-btn">-</button>
                   <span>{qty}</span>
-                  <button onClick={() => handleQtyChange(productId, 1)}>+</button>
+                  <button onClick={() => handleQtyChange(productId, 1)} className="qty-btn">+</button>
                 </div>
                 </div>
 

@@ -129,7 +129,10 @@
           align-items: center;
           gap: 15px;
           margin: 10px 0;
-
+          .qty-btn{
+            padding: 0px;
+            margin: 0px;
+          }
           button {
             width: 30px;
             height: 30px;
