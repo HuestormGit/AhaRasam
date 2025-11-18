@@ -109,7 +109,7 @@ const Products = () => {
             return (
               <div key={productId} className="product-card">
                 <div className="product-thumb">
-                <img src={image} alt={product.Title} />
+                  <img src={image} alt={product.Title} />
                 </div>
                 <div className="product-details">
 
