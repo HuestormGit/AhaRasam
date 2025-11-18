@@ -256,5 +256,77 @@
         .sec33img { top: 320px; right: -100px; }
     }
     
+    .banner-box3 {
+        // display: flex;
 
+        // display: none;
+        // justify-content: center;
+        // align-items: center;
+        // @include md{
+        //     display: none;
+        //     margin-top: -150px;
+        // }
+        // @include lg{
+        //     display: flex;
+        //     margin-top: -200px;
+        // }
+        // @include xl{
+        //     display: flex;
+        //     margin-top: -250px;
+        // }
+        // @include xxl{
+        //     display: flex;
+        //     margin-top: -300px;
+        // }
+
+        .sec-2 img {
+            // width: clamp(280px, 40vw, 800px);
+            z-index: 2;
+            position: relative;
+            width: 280px;
+                @include sm{
+                    width: 300px;
+                }
+                @include md {
+                    width: 500px;
+                }
+                @include lg {
+                    width: 750px;
+                }
+                @include xl {
+                    width: 800px;
+                }
+                @include xxl{
+                    width: 800px;
+                }
+        }
+
+        .sec-1, .sec-3 {
+            display: flex;
+
+            img {
+                // position: absolute;
+                width: 100px;
+                @include sm{
+                    width: 125px;
+                }
+                @include md {
+                    width: 150px;
+                }
+                @include lg {
+                    width: 200px;
+                }
+                @include xl {
+                    width: 215px;
+                }
+                @include xxl{
+                    width: 300px;
+                }
+            }
+        }
+
+        
+        
+        
+    }
 }
