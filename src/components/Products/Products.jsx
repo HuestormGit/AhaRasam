@@ -77,7 +77,7 @@ const Products = () => {
   const totalItems = Object.values(quantities).reduce((a, b) => a + b, 0);
 
   return (
-    <div className="products-wrapper container">
+    <div className="products-wrapper container-fluid">
       <h2>Buy Aha! Rasam</h2>
 
       <div className="sub-heading d-flex justify-content-center">
