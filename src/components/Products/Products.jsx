@@ -13,7 +13,7 @@ const Products = () => {
     const loadProducts = async () => {
       try {
         const res = await fetchDataFromApi(
-          "/api/products?populate=*&sort=id:desc"
+          "/api/products?populate=*&sort=id:asc"
           // "/api/products?populate=*&sort=id:asc"
         );
 
