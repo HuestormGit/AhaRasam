@@ -5,6 +5,7 @@ import "./StickyPayButton.scss";
 
 function StickyPayButton() {
     const {cart} =useContext(CartContext);
+    const navigate = useNavigate();  
      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
   return (
     <div className="sticky-proceed-global">
