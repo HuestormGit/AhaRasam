@@ -7,6 +7,7 @@ import Footer from "./components/Footer/Footer";
 import Cart from "./components/Cart/Cart";
 import { CartProvider } from "./context/CartContext";
 import { useEffect, useState } from "react";
+import StickyPayButton from "./components/StickyPayButton/StickyPayButton";
 // import Order from "./components/Order/Order";
 
 function HomeWrapper() {
@@ -55,7 +56,7 @@ function App() {
           <Route path="/" element={<HomeWrapper />} />
           <Route path="/cart" element={<Cart />} />
         </Routes>
-        <StickyPayButton />
+        <StickyPayButton/>
 
         <Footer />
       </BrowserRouter>
