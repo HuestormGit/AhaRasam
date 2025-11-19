@@ -174,7 +174,22 @@
       flex: 1 1 470px;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: flex-center;
+      @include sm{
+      align-items: flex-center;
+      }
+      @include md{
+        align-items: flex-start;
+      }
+      @include lg{
+        align-items: flex-start;
+      }
+      @include xl{
+        align-items: flex-start;
+      }
+      @include xxl{
+        align-items: flex-start;
+      }
 
       .company-logo {
         max-width: 200px;
