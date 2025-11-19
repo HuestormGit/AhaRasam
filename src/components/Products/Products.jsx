@@ -13,8 +13,7 @@ const Products = () => {
     const loadProducts = async () => {
       try {
         const res = await fetchDataFromApi(
-          "/api/products?populate=*&sort=id:asc"
-          // "/api/products?populate=*&sort=id:asc"
+          "/api/products?populate=*&sort=id:desc"
         );
 
         if (res?.data?.length > 0) {
@@ -89,6 +88,90 @@ const Products = () => {
           </p>
         </div>
 
+        {/* ---- MOBILE SLIDER ---- */}
+        <div className="mobile-slider">
+          <div className="slides-wrapper">
+            {products.map((product) => {
+              const productId = product.id;
+              const image =
+                product.Image?.url ||
+                "https://placehold.co/300x300?text=No+Image";
+
+              const variants = product.Variant || [];
+              const selectedIdx = selectedVariantIndex[productId] ?? 0;
+              const qty = quantities[productId] || 0;
+
+              const ingredientsText = extractText(product.Ingredients);
+
+              return (
+                <div key={productId} className="slide-card">
+                  <div className="product-card">
+                    <div className="product-thumb">
+                      <img src={image} alt={product.Title} />
+                    </div>
+
+                    <div className="product-details">
+                      <h3 className="title">{product.Title}</h3>
+
+                      <h4 className="sub-title">Ingredients:</h4>
+                      <p className="desc">
+                        {ingredientsText || "No ingredients available"}
+                      </p>
+
+                      <p className="mrp">
+                        MRP: ₹{variants[selectedIdx]?.price || "—"}
+                      </p>
+
+                      {variants.length > 0 && (
+                        <select
+                          className="variant-drop"
+                          value={selectedIdx}
+                          onChange={(e) =>
+                            handleVariantChange(
+                              productId,
+                              Number(e.target.value)
+                            )
+                          }
+                        >
+                          {variants.map((v, idx) => (
+                            <option value={idx} key={idx}>
+                              {v.size}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+
+                      <div className="qty-box">
+                        <button
+                          onClick={() => handleQtyChange(productId, -1)}
+                          className="qty-btn"
+                        >
+                          -
+                        </button>
+                        <span>{qty}</span>
+                        <button
+                          onClick={() => handleQtyChange(productId, 1)}
+                          className="qty-btn"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+
+                    <button
+                      className="add-btn"
+                      onClick={() => handleAddToCart(productId, product)}
+                    >
+                      ADD TO CART
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* ---- DESKTOP GRID ---- */}
         <div className="products-grid">
           {products.map((item) => {
             const product = item;
@@ -104,7 +187,6 @@ const Products = () => {
             const qty = quantities[productId] || 0;
 
             const ingredientsText = extractText(product.Ingredients);
-            const howToPrepareText = extractText(product.HOWTOPREPAREAHARASAM);
 
             return (
               <div key={productId} className="product-card">
@@ -112,50 +194,53 @@ const Products = () => {
                   <img src={image} alt={product.Title} />
                 </div>
                 <div className="product-details">
+                  <h3 className="title">{product.Title}</h3>
 
-                <h3 className="title">{product.Title}</h3>
+                  <h4 className="sub-title">Ingredients:</h4>
+                  <p className="desc">
+                    {ingredientsText || "No ingredients available"}
+                  </p>
 
-                {/* INGREDIENTS */}
-                <h4 className="sub-title">Ingredients:</h4>
-                <p className="desc">
-                  {ingredientsText || "No ingredients available"}
-                </p>
+                  <p className="mrp">
+                    MRP: ₹{variants[selectedIdx]?.price || "—"}
+                  </p>
 
-                {/* HOW TO PREPARE */}
-                {/* <h4 className="sub-title">How To Prepare:</h4>
-                <p className="desc">
-                  {howToPrepareText || "No preparation steps available"}
-                </p> */}
+                  {variants.length > 0 && (
+                    <select
+                      className="variant-drop"
+                      value={selectedIdx}
+                      onChange={(e) =>
+                        handleVariantChange(
+                          productId,
+                          Number(e.target.value)
+                        )
+                      }
+                    >
+                      {variants.map((v, idx) => (
+                        <option value={idx} key={idx}>
+                          {v.size}
+                        </option>
+                      ))}
+                    </select>
+                  )}
 
-                {/* Dynamic Price */}
-                <p className="mrp">MRP: ₹{variants[selectedIdx]?.price || "—"}</p>
-
-                {/* Variant */}
-                {variants.length > 0 && (
-                  <select
-                    className="variant-drop"
-                    value={selectedIdx}
-                    onChange={(e) =>
-                      handleVariantChange(productId, Number(e.target.value))
-                    }
-                  >
-                    {variants.map((v, idx) => (
-                      <option value={idx} key={idx}>
-                        {v.size}
-                      </option>
-                    ))}
-                  </select>
-                )}
-
-                {/* Qty */}
-                <div className="qty-box">
-                  <button onClick={() => handleQtyChange(productId, -1)} className="qty-btn">-</button>
-                  <span>{qty}</span>
-                  <button onClick={() => handleQtyChange(productId, 1)} className="qty-btn">+</button>
+                  <div className="qty-box">
+                    <button
+                      onClick={() => handleQtyChange(productId, -1)}
+                      className="qty-btn"
+                    >
+                      -
+                    </button>
+                    <span>{qty}</span>
+                    <button
+                      onClick={() => handleQtyChange(productId, 1)}
+                      className="qty-btn"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
-                </div>
 
-                {/* Add to cart */}
                 <button
                   className="add-btn"
                   onClick={() => handleAddToCart(productId, product)}
@@ -166,17 +251,7 @@ const Products = () => {
             );
           })}
         </div>
-
-          
       </div>
-      {/* Sticky Bottom Checkout */}
-        {/* <div className="sticky-proceed">
-          <button className="proceed-btn">
-            {totalItems > 0
-              ? `${totalItems} products added — Proceed to Pay`
-              : `Proceed to Pay`}
-          </button>
-        </div> */}
     </div>
   );
 };
