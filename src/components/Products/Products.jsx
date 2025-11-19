@@ -167,16 +167,16 @@ const Products = () => {
           })}
         </div>
 
-        
+          
       </div>
       {/* Sticky Bottom Checkout */}
-        <div className="sticky-proceed">
+        {/* <div className="sticky-proceed">
           <button className="proceed-btn">
             {totalItems > 0
               ? `${totalItems} products added — Proceed to Pay`
               : `Proceed to Pay`}
           </button>
-        </div>
+        </div> */}
     </div>
   );
 };

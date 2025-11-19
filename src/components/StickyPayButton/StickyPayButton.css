@@ -1,0 +1,23 @@
+@import "../../../css-config/mixins.scss";
+.sticky-proceed-global {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  padding: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  z-index: 9999;
+}
+
+.proceed-btn {
+  width: 100%;
+  background: #f44336; 
+  color: #fff;
+  padding: 14px 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}

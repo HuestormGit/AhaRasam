@@ -55,6 +55,7 @@ function App() {
           <Route path="/" element={<HomeWrapper />} />
           <Route path="/cart" element={<Cart />} />
         </Routes>
+        <StickyPayButton />
 
         <Footer />
       </BrowserRouter>
