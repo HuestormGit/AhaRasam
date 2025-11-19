@@ -9,10 +9,11 @@ function StickyPayButton() {
      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
   return (
     <div className="sticky-proceed-global">
+        {totalItems > 0
+              ? `${totalItems} products added`
+              : `0 Products added `}
           <button className="proceed-btn" onClick={() => navigate("/cart")}>
-            {totalItems > 0
-              ? `${totalItems} products added — Proceed to Pay`
-              : `Proceed to Pay`}
+            Proceed to Pay
           </button>
         </div>
   )
