@@ -187,10 +187,8 @@ function Contact() {
           <img src={logo} alt="Aha Rasam" className="company-logo" />
           <h3 className="company-name">Aha! Rasam</h3>
           <p className="company-address">
-            Gut No. 65, Property No. 317, Siddheshwar BK, Pali - Bhira Road,
-            <br />
-            Taluka Sudhagad, District Raigarh, Maharashtra,
-            <br />
+            Gut No. 65, Property No. 317, Siddheshwar BK, Pali - Bhira Road,<br/>
+            Taluka Sudhagad, District Raigarh, Maharashtra,<br/>
             India, 410205
           </p>
         </div>

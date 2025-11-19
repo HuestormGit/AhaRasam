@@ -134,10 +134,11 @@
         }
         .btn-container{
           display: flex;
-          justify-content: flex-end;
+          justify-content: flex-start;
           width: 90%;
           @include md{
             width: 70%;
+            justify-content: flex-end;
           }
           .btn-submit {
             font-family: "Barlow Condensed";
@@ -174,9 +175,9 @@
       flex: 1 1 470px;
       display: flex;
       flex-direction: column;
-      align-items: flex-center;
+      align-items: center;
       @include sm{
-      align-items: flex-center;
+        align-items: center;
       }
       @include md{
         align-items: flex-start;
@@ -209,12 +210,11 @@
         font-style: normal;
         font-variant: normal;
         font-weight: 500;
-        font-size: 25px;
+        font-size: 40px;
         line-height: 28px;
         color: #aa2423;
         margin-bottom: 10px;
         @include md{
-          font-size: 30px;
           line-height: 38px;     
         }
         @include lg{
@@ -225,19 +225,22 @@
 
       .company-address {
         font-family: "Barlow Condensed";
-        font-size: 20px;
+        font-size: 24px;
         line-height: 25px;
         font-weight: normal;
         color: #707070;
         margin-bottom: 40px;
         max-width: 470px;
+        text-align: center;
         @include md{
-          font-size: 22px;
-          line-height: 25px;     
+          font-size: 24px;
+          line-height: 25px;  
+          text-align: left;   
         }
         @include lg{
           font-size: 24px;
-          line-height: 28px;    
+          line-height: 28px;  
+          text-align: left;  
         }
       }
     }
@@ -247,30 +250,3 @@
   
 }
 
-/* ✅ Responsive */
-// @media (max-width: 768px) {
-//   .contact-section {
-//     padding: 40px 15px;
-
-//     .container {
-//       flex-direction: column;
-//       gap: 30px;
-//     }
-
-//     .contact-form-box,
-//     .contact-info {
-//       flex: 1 1 100%;
-//       max-width: 100%;
-//     }
-
-//     .form-title {
-//       font-size: 32px;
-//       line-height: 40px;
-//     }
-
-//     .form-subtitle {
-//       font-size: 16px;
-//       line-height: 22px;
-//     }
-//   }
-// }
