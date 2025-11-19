@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { CartContext } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
-import "./StickyPayButton.css";
+import "./StickyPayButton.scss";
 
 function StickyPayButton() {
     const {cart} =useContext(CartContext);
