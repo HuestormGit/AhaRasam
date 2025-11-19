@@ -2,9 +2,9 @@ import React from 'react'
 import "./AboutUs.scss";
 function AboutUs() {
   return (
-    <section className="AboutUs" id="AboutUs">
+    <section id="AboutUs">
         <div className="container-fluid">
-            <div className="container text-center">
+            <div className="container AboutUs">
                 <h2 className='AboutUsHeading'>At Aha! Rasam, we believe life’s best comforts 
                     don’t need invention, only rediscovery.
                 </h2>
