@@ -3,8 +3,8 @@ import bannerImg from  "../../../assets/banner-image.png";
 import mob1 from  "../../../assets/1.png";
 import mob2 from  "../../../assets/2.png";
 import mob3 from  "../../../assets/3.png";
-import leftpoint from "../../../assets/Leftpoint.png"
-import Rightpoints from "../../../assets/Rightpoints.png"
+import leftpoint from "../../../assets/left-point.png"
+import Rightpoints from "../../../assets/right-points.png"
 import mob4 from  "../../../assets/4.png";
 import mob5 from  "../../../assets/5.png";
 import mob6 from  "../../../assets/6.png";
