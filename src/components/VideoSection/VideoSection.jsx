@@ -20,7 +20,7 @@ function VideoSection() {
             <div className="spacer"></div>
             <h3 className="videosectionheading">Make the Perfect Rasam!</h3>
             <p className="videosectionpara">
-              Treat your family and friends to this authentic Rasam recipe.<br></br> Simple to make, bursting with flavor, and truly divine in taste! Let’s cook!
+              Treat your family and friends to this authentic Rasam recipe. Simple to make, bursting with flavor, and truly divine in taste! Let’s cook!
             </p>
           </div>
         </div>
