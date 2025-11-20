@@ -17,12 +17,7 @@ function Home() {
   return (
     <div className="home">
       <Banner />
-      {/* <Products products={products || []} /> 
-       */}
-       {/* <Products /> */}
-             <Products onAddToCart={handleAddToCart} />
-             {/* <Checkout cart={cart} /> */}
-
+      <Products onAddToCart={handleAddToCart} />
       <div className="spacer"></div>
       <VideoSection />
       <AboutUs/>
