@@ -11,28 +11,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  height: 90px;
-  @include sm{
-      flex-direction: column;
-      height: 90px;
-    }
-    @include md{
-      flex-direction: row;
-      height: 60px;
-    }
-    @include lg{
-      flex-direction: row;
-      height: 60px;
-    }
-    @include xl{
-      flex-direction: row;
-      height: 60px;
-    }
-    @include xxl{
-      flex-direction: row;
-      height: 60px;
-    }
+  flex-direction: row;
+  height: 60px;
+  
 
   .producttxt{
     margin: 0 30px;
