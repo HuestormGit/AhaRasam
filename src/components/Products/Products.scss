@@ -71,9 +71,14 @@
     }
 
     .slide-card {
-      min-width: 80%;
+      min-width: 50%;
+      width: 270px;
       flex-shrink: 0;
       scroll-snap-align: center;
+      @include md{
+        min-width: 80%;
+        width: 80%;
+      }
     }
 
     /* ---------------- DESKTOP GRID ---------------- */
