@@ -32,28 +32,32 @@ const Products = () => {
   const slider = sliderRef.current;
   if (!slider) return;
 
-  let scrollAmount = 0;
-  const slideWidth = slider.firstChild?.offsetWidth || 300;
-  const totalScroll = slider.scrollWidth;
+  let index = 0;
 
   const interval = setInterval(() => {
-    if (!slider) return;
+    if (!slider.children.length) return;
 
-    scrollAmount += slideWidth;
+    const cards = slider.children;
+    const cardWidth = cards[0].offsetWidth + 15; // card width + gap
 
-    // Reset to start if reached end
-    if (scrollAmount + slider.offsetWidth >= totalScroll) {
-      scrollAmount = 0;
+    index++;
+
+    // Infinite loop (restart from first)
+    if (index >= cards.length) {
+      index = 0;
+      slider.scrollTo({ left: 0, behavior: "smooth" });
+      return;
     }
 
     slider.scrollTo({
-      left: scrollAmount,
+      left: index * cardWidth,
       behavior: "smooth",
     });
-  }, 2500); // autoplay every 2.5 seconds
+  }, 2500); // 2.5 seconds autoplay
 
   return () => clearInterval(interval);
 }, [products]);
+
 
 
   const handleQtyChange = (productId, delta) => {
@@ -119,7 +123,7 @@ const Products = () => {
 
         {/* ---- MOBILE SLIDER ---- */}
         <div className="mobile-slider">
-          <div className="slides-wrapper">
+          <div className="slides-wrapper" ref={sliderRef}>
             {products.map((product) => {
               const productId = product.id;
               const image =
