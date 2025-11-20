@@ -39,6 +39,156 @@
       }
     }
 
+    .mobile-slider{
+      display: block;
+
+      @include md {
+        display: none;
+      }
+      .slides-wrapper{
+        display: flex;
+        gap: 27px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding: 10px;
+      }
+
+    }
+    .products-grid{
+       display: none;
+
+      @include md {
+        display: grid;
+        gap: 27px;
+        margin-top: 25px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        padding: 10px;
+      }
+      /* ---------------- PRODUCT CARD ---------------- */
+      .product-card {
+        padding: 15px;
+        background: #fff;
+        border: 1px solid #eee;
+        text-align: center;
+        transition: 0.3s ease;
+        border:1px solid #E4E4E4;
+        width: 270px;
+
+        &:hover {
+          border:1px solid #E1AD3F;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .product-thumb img {
+          height: 220px;
+          width: 220px;
+          // width: 100%;
+          // border-radius: 12px;
+          margin-bottom: 30px;
+        }
+
+        .product-details {
+          text-align: left;
+
+          .title {
+            font-family: "Barlow Condensed";
+            font-size: 30px;
+            font-weight: 600;
+            color: #aa2423;
+            // margin-bottom: 5px;
+          }
+
+          .sub-title {
+            font-family: "Barlow Condensed";
+            font-size: 18px;
+            font-weight: 500;
+            color: #AA2423;
+          }
+
+          .Ingredients{
+            font-family: "Barlow Condensed";
+            font-size: 18px;
+            font-weight: 400;
+            color: #000000cc;
+
+          }
+
+          .desc {
+            font-size: 18px;
+            color: #000000cc;
+            min-height: 88px;
+            font-family: "Barlow";
+            font-weight: 400;
+          }
+
+          .mrp {
+            font-family: "Barlow";
+            font-size: 24px;
+            margin: 8px 0;
+            color: #000;
+            font-weight: 400;
+          }
+
+          .variant-drop {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #000;
+            border-radius: 20px;
+            margin: 8px 0;
+            font-family: "Barlow Condensed";
+          }
+
+          .qty-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 10px 0;
+
+            .qty-btn {
+              width: 30px;
+              height: 30px;
+              border: none;
+              background: #aa2423;
+              border-radius: 4px;
+              font-size: 18px;
+              color: white;
+              cursor: pointer;
+            }
+
+            span {
+              font-size: 18px;
+              width: 20px;
+              text-align: center;
+            }
+          }
+        }
+
+        .add-btn {
+          width: 100%;
+          background:#AA2423;
+          color: #fff;
+          padding: 10px;
+          border-radius: 20px;
+          font-weight: bold;
+          font-family: "Barlow Condensed";
+          font-size: 24px;
+          margin-top: 10px;
+          cursor: pointer;
+          border: none;
+          transition: 0.3s;
+
+          &:hover {
+            background: #E1AD3F;
+          }
+        }
+
+      }
+
+
+
+    }
+
   }
 
 

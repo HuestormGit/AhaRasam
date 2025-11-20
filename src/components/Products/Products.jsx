@@ -137,16 +137,16 @@ const Products = () => {
               const ingredientsText = extractText(product.Ingredients);
 
               return (
-                <div key={productId} className="slide-card">
-                  <div className="product-card">
+                // <div key={productId} className="slide-card">
+                  <div key={productId} className="product-card">
                     <div className="product-thumb">
                       <img src={image} alt={product.Title} />
                     </div>
 
                     <div className="product-details">
                       <h3 className="title">{product.Title}</h3>
-
-                      <h4 className="sub-title">Ingredients:</h4>
+                      <h4 className="sub-title">{product.Title}</h4>
+                      <h5 className="Ingredients">Ingredients:</h5>
                       <p className="desc">
                         {ingredientsText || "No ingredients available"}
                       </p>
@@ -198,7 +198,7 @@ const Products = () => {
                       ADD TO CART
                     </button>
                   </div>
-                </div>
+                // </div>
               );
             })}
           </div>
@@ -228,8 +228,8 @@ const Products = () => {
                 </div>
                 <div className="product-details">
                   <h3 className="title">{product.Title}</h3>
-
-                  <h4 className="sub-title">Ingredients:</h4>
+                  <h4 className="sub-title">{product.Title}</h4>
+                  <h5 className="Ingredients">Ingredients:</h5>
                   <p className="desc">
                     {ingredientsText || "No ingredients available"}
                   </p>
