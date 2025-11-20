@@ -75,6 +75,7 @@
       width: 270px;
       flex-shrink: 0;
       scroll-snap-align: center;
+      height: 620px;
       @include md{
         min-width: 80%;
         width: 80%;
