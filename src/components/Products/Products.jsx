@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { fetchDataFromApi } from "../../utils/Api";
 import "./Products.scss";
 import { CartContext } from "../../context/CartContext";
@@ -8,6 +8,7 @@ const Products = () => {
   const [quantities, setQuantities] = useState({});
   const [selectedVariantIndex, setSelectedVariantIndex] = useState({});
   const { addToCart } = useContext(CartContext);
+  const sliderRef = useRef(null);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -26,6 +27,34 @@ const Products = () => {
 
     loadProducts();
   }, []);
+
+  useEffect(() => {
+  const slider = sliderRef.current;
+  if (!slider) return;
+
+  let scrollAmount = 0;
+  const slideWidth = slider.firstChild?.offsetWidth || 300;
+  const totalScroll = slider.scrollWidth;
+
+  const interval = setInterval(() => {
+    if (!slider) return;
+
+    scrollAmount += slideWidth;
+
+    // Reset to start if reached end
+    if (scrollAmount + slider.offsetWidth >= totalScroll) {
+      scrollAmount = 0;
+    }
+
+    slider.scrollTo({
+      left: scrollAmount,
+      behavior: "smooth",
+    });
+  }, 2500); // autoplay every 2.5 seconds
+
+  return () => clearInterval(interval);
+}, [products]);
+
 
   const handleQtyChange = (productId, delta) => {
     setQuantities((prev) => {

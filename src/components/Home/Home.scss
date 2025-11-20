@@ -3,8 +3,11 @@
 .home{
    margin-top: -110px;
    .spacer{
-      height: 80px;
+      height: 102px;
       background-image: url(../../assets/video-top.png);
       background-size: contain;
+      @include md{
+         height: 80px;
+      }
    }
 }
