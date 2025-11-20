@@ -262,6 +262,18 @@
         @include md{
             display: none;
         }
+        .sec-1 img{
+            width: 195px;
+            height: 195px;
+        }
+        .sec-2 .sec-3{
+            display: flex;
+            flex-direction: column;
+            img{
+                width: 70px;
+                height: 70px;
+            }
+        }
 
 
         // .sec-2 img {
