@@ -9,16 +9,17 @@
             left: 0;
             width: 100px;  
             height: 250px;
-            background-image: url("../../../assets/left.png");
             background-size: cover;
             background-repeat: no-repeat;
             z-index: 1; 
+            background-image: url("../../../assets/left.png");
             
             @include sm{
                 width: 200px;  
                 height: 500px;
             }
             @include md{
+                
                 width: 250px;  
                 height: 515px;
             }
