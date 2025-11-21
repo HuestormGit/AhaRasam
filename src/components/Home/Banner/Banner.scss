@@ -1,6 +1,7 @@
 @import "../../../css-config/mixins.scss";
 
 .hero-banner {
+    padding: 0px 0px 50px;
      &::before {
             content: "";
             position: absolute;
@@ -12,6 +13,7 @@
             background-size: cover;
             background-repeat: no-repeat;
             z-index: 1; 
+            
             @include sm{
                 width: 200px;  
                 height: 500px;
@@ -260,6 +262,7 @@
     .banner-box3 {
         background-color: #E1AD3F;
         display: flex;
+        padding: 0px 0px 50px;
         @include md{
             display: none;
         }
