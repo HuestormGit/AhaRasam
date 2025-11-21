@@ -57,15 +57,15 @@ const Banner = () => {
                     <img src={bannerImg} alt="Rasam Bowl" style={{ transform: `rotate(${rotation}deg)`,transition: "transform 0.1s linear"}}/>
                 </div>
                 <div className="sec-2 col-6">
-                    <img src={mob1} className="sec11img" alt="Heart" />
-                    <img src={mob3} className="sec12img" alt="Digestive" />
-                    <img src={mob5} className="sec13img" alt="Improves" />
+                    <img src={mob1} alt="Heart" />
+                    <img src={mob3} alt="Digestive" />
+                    <img src={mob5} alt="Improves" />
                 </div>
 
                 <div className="sec-3 col-6">
-                <img src={mob2} className="sec31img" alt="Boosts Immunity" />
-                <img src={mob4} className="sec32img" alt="Rich in Antioxidants" />
-                <img src={mob6} className="sec33img" alt="Other" />
+                <img src={mob2} alt="Boosts Immunity" />
+                <img src={mob4} alt="Rich in Antioxidants" />
+                <img src={mob6} alt="Other" />
             </div>
 
             </div>
