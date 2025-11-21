@@ -4,9 +4,15 @@
   font-weight: 400; 
   font-style: normal;
 }
+@font-face {
+  font-family: 'Barlow';
+  src: url('assets/fonts/Barlow.ttf') format('truetype');
+  font-weight: 400; 
+  font-style: normal;
+}
 body {
   margin: 0;
-  font-family: "Barlow";
+  font-family: 'Barlow';
 
 }
 #root{
