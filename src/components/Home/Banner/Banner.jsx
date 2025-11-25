@@ -35,7 +35,7 @@ const Banner = () => {
             </div>
 
         </div>
-        <div className="banner-box2 container d-sm-none d-md-flex  d-lg-flex">
+        <div className="banner-box2 container">
             <div className="sec-1">
                 <img src={leftpoint} className="sec1img" alt="Heart" />
             </div>
