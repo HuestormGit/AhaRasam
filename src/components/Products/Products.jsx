@@ -115,7 +115,7 @@ const Products = () => {
           <div className="col-12">
             <h2>Buy AHA! Rasam</h2>
           </div>
-          <div className="col-12">
+          <div className="col-12 d-flex justify-contenyt-center">
             <div className="sub-heading">
               <p>
                 Experience rasam rooted in tradition. A sensory journey crafted from age-old recipes. Taste true tradition.
