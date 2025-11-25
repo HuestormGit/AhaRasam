@@ -148,9 +148,10 @@
             align-content: center;
             justify-content: center;
             align-items: center;
-            position: relative;
+           
         }
         .sec1{
+            position: relative;
             width: 330px;
             img.sec1img{
                 position: absolute;
@@ -165,6 +166,7 @@
         }
         .sec-3{
             width: 330px;
+            position: relative;
             img.sec3img{
                 position: absolute;
                 top: 56%;
