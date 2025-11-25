@@ -60,7 +60,7 @@ const MyHeader = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav mx-auto">
             <li className="nav-item">
-              <button className="nav-link btn-link" onClick={() => goToSection("VideoSection")}>
+              <button className="nav-link btn-link" onClick={() => goToSection("AboutUs")}>
                 About us
               </button>
             </li>
@@ -70,7 +70,7 @@ const MyHeader = () => {
               </button>
             </li>
 
-            <li className="nav-item pt-5">
+            <li className="nav-item">
               <a className="navbar-brand d-none d-md-block" href="/">
                 <img src={logo} alt="Logo" />
               </a>

@@ -109,7 +109,7 @@ const Products = () => {
   const totalItems = Object.values(quantities).reduce((a, b) => a + b, 0);
 
   return (
-    <div className="container-fluid product-section">
+    <div className="container-fluid product-section" id="product">
       <div className="products-wrapper container">
         <div className="row">
           <div className="col-12">
