@@ -142,68 +142,37 @@
     .banner-box2 {
     display: none;
 
-        @include md {
-            display: flex;
-            margin-top: -420px;          // pulls bowl upward like UI
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            z-index: 2;
-        }
+    @include md {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;              // space between columns
+        margin-top: -250px;     // adjust based on design
+        position: relative;
+        z-index: 5;
+    }
 
-        .sec-1, .sec-3 {
-            width: 300px;
-            height: 100%;
-            position: relative;
-        }
+    .sec-1, .sec-3 {
+        width: 260px;           // FIXED width so icons don’t move
+        height: 500px;          // Give area for absolute icons
+        position: relative;
 
-        /* Left icon */
-        .sec-1 img.sec1img {
+        img.sec1img, img.sec3img {
             position: absolute;
             top: 50%;
-            right: -40px;                 // moves icon closer to bowl ✔
-            transform: translateY(-50%);
-            width: 180px;
-        }
-
-        /* Right icon */
-        .sec-3 img.sec3img {
-            position: absolute;
-            top: 50%;
-            left: -40px;                  // moves icon closer to bowl ✔
-            transform: translateY(-50%);
-            width: 180px;
-        }
-
-        /* Bowl */
-        .sec-2 img.desk-bowlimg {
-            width: 880px;                 // matching UI size
-            max-width: 100%;
-            position: relative;
-            z-index: 3;
-        }
-
-        @include lg {
-            .sec-1 img.sec1img,
-            .sec-3 img.sec3img {
-                width: 220px;
-                right: -60px;
-                left: -60px;
-            }
-
-            .sec-2 img.desk-bowlimg {
-                width: 1050px;
-            }
-        }
-
-        @include xl {
-            margin-top: -480px;
-
-            .sec-2 img.desk-bowlimg {
-                width: 1150px;
-            }
+            left: 50%;
+            transform: translate(-50%, -50%);   // center perfectly
         }
     }
+
+    .sec-2 img.desk-bowlimg {
+        width: 650px;     // FIXED optimized size (982px was too large)
+        max-width: 100%;
+        z-index: 10;
+        position: relative;
+    }
+}
+
 
 
     
