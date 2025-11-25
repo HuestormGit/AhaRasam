@@ -36,7 +36,8 @@ const Banner = () => {
 
         </div>
         <div className="banner-box2 container">
-            <div className="col-md-2 col-lg-2 sec-1">
+            <div className="row">
+                <div className="col-md-2 col-lg-2 sec-1">
                 <img src={leftpoint} className="sec1img" alt="Heart" />
             </div>
 
@@ -50,6 +51,9 @@ const Banner = () => {
                 <img src={Rightpoints} className="sec3img" alt="Boosts Immunity" />
             </div>
 
+
+            </div>
+            
         </div>
         <div className="banner-box3 container ">
             <div className="row">
