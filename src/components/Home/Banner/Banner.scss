@@ -124,140 +124,16 @@
 
        
     }
-    .banner-box2 {
-        // display: flex;
-
+    .banner-box2{
         display: none;
-        justify-content: center;
-        align-items: center;
         @include md{
-            display: none;
-            margin-top: -150px;
-        }
-        @include lg{
-            display: flex;
-            margin-top: -200px;
-        }
-        @include xl{
             display: flex;
             margin-top: -350px;
+            flex-direction: row;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
         }
-        @include xxl{
-            display: flex;
-            margin-top: -350px;
-        }
-
-        .sec-2 img {
-            // width: clamp(280px, 40vw, 800px);
-            z-index: 2;
-            position: relative;
-            width: 280px;
-                @include sm{
-                    width: 300px;
-                }
-                @include md {
-                    width: 500px;
-                }
-                @include lg {
-                    width: 750px;
-                }
-                @include xl {
-                    width: 800px;
-                }
-                @include xxl{
-                    width: 800px;
-                }
-        }
-
-        .sec-1, .sec-3 {
-            position: relative;
-            flex: 1;
-
-            img {
-                position: absolute;
-                width: 100px;
-                @include sm{
-                    width: 125px;
-                }
-                @include md {
-                    width: 150px;
-                }
-                @include lg {
-                    width: 200px;
-                }
-                @include xl {
-                    width: 215px;
-                }
-                @include xxl{
-                    width: 300px;
-                }
-            }
-        }
-
-        // Left icons
-        .sec1img{
-            display: none;
-            @include sm{
-                display: none;
-            }
-            @include md{
-                display: none;
-                top: -250px;
-                left: 100px;
-            }
-
-            @include lg{
-                display: block;
-                top: -270px;
-                left: 140px;
-            }
-            @include xl{
-                display: block;
-                top: -275px;
-                left: 190px;
-            }
-            @include xxl{
-                display: block;
-                top: -400px;
-                left: 0;
-            }
-            
-        }
-        .sec11img { top: -50px; left: -100px; }
-        .sec12img { top: 120px; left: -150px; }
-        .sec13img { top: 320px; left: -100px; }
-
-        // Right icons
-        .sec3img{
-            display: none;
-            @include sm{
-                display: none;
-            }
-            @include md{
-                display: none;
-                top: -300px; 
-                right: 0;
-            }
-            @include lg{
-                display: block;
-                top: -400px; 
-                right: 0;
-            }
-            @include xl{
-                display: block;
-                top: -275px;
-                left: -75px;
-            }
-            @include xxl{
-                display: block;
-                top: -400px;
-                left: 0;
-            }
-            
-        }
-        .sec31img { top: -50px; right: -100px; }
-        .sec32img { top: 120px; right: -150px; }
-        .sec33img { top: 320px; right: -100px; }
     }
     
     .banner-box3 {
