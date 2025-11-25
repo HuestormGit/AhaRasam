@@ -14,16 +14,21 @@
             background-size: cover;
             background-repeat: no-repeat;
             z-index: 1; 
-            background-image: url("../../../assets/left.png"); 
+            background-image: url("../../../assets/mobile-left.png"); 
+
             
             @include sm{
                 width: 200px;  
                 height: 500px;
+                background-image: url("../../../assets/mobile-left.png"); 
+
             }
             @include md{
                 
                 width: 250px;  
                 height: 515px;
+                background-image: url("../../../assets/left.png"); 
+
             }
             @include lg{
                 width: 350px;
@@ -39,14 +44,14 @@
             }
             
         }
-        &::after {
+    &::after {
             content: "";
             position: absolute;
             top: 0;
             right: 0;
             width: 100px;  
             height: 250px;
-            background-image: url("../../../assets/right.png");
+            background-image: url("../../../assets/mobile-right.png");
             background-size: cover;
             background-repeat: no-repeat;
             z-index: 1;
@@ -59,6 +64,8 @@
                 height: 515px;
                 z-index: 1;
                 opacity: 1;
+                background-image: url("../../../assets/right.png");
+
             }
             @include lg{
                 height: 1010px;
