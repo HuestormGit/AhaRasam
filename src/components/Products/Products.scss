@@ -96,7 +96,7 @@
           .Ingredients{
             font-family: "Barlow Condensed";
             font-size: 18px;
-            font-weight: 400;
+            font-weight: 500;
             color: #000000cc;
 
           }
@@ -119,11 +119,24 @@
 
           .variant-drop {
             width: 100%;
-            padding: 6px;
+            padding: 6px 15px;
             border: 1px solid #000;
             border-radius: 20px;
             margin: 8px 0;
             font-family: "Barlow Condensed";
+
+            /* hide default arrow */
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+
+            background-color: #fff;
+
+            /* add your custom icon */
+            background-image: url("../../assets/trash.png"); /* replace with your icon */
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 18px;
           }
 
           .qty-box {
