@@ -1,5 +1,5 @@
 import "./MyHeader.scss";
-import logo from "../../assets/rasamlogo.png";
+import logo from "../../assets/AhaRasamLogo.png";
 import { useEffect, useState, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
