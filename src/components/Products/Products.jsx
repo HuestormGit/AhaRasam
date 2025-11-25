@@ -270,7 +270,7 @@ const Products = () => {
                         >
                           <span>-</span>
                         </button>
-                        <span>{qty}</span>
+                        <span className="qty">{qty}</span>
                         <button
                           onClick={() => handleQtyChange(productId, 1)}
                           className="qty-btn"
