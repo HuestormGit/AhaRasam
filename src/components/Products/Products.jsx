@@ -111,13 +111,11 @@ const Products = () => {
   return (
     <div className="container-fluid product-section">
       <div className="products-wrapper container">
-        <h2>Buy Aha! Rasam</h2>
+        <h2>Buy AHA!I Rasam</h2>
 
         <div className="sub-heading d-flex justify-content-center">
           <p>
-            Experience Rasam, Rooted in Tradition.
-            Delight all your senses with Rasam from the roots. Taste the
-            tradition today!
+            Experience rasam rooted in tradition. A sensory journey crafted from age-old recipes. Taste true tradition.
           </p>
         </div>
 

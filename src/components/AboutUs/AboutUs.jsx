@@ -5,7 +5,7 @@ function AboutUs() {
     <section id="AboutUs">
         <div className="container-fluid">
             <div className="container AboutUs">
-                <h2 className='AboutUsHeading'>At Aha! Rasam, we believe life’s best comforts 
+                <h2 className='AboutUsHeading'>At AHA! I I Rasam, we believe life’s best comforts 
                     don’t need invention, only rediscovery.
                 </h2>
                 <div className="row pt-50">
@@ -24,7 +24,7 @@ function AboutUs() {
 
                 </div>
                 <h5>
-                    And because we believe that goodness is meant to be shared, every sip contributes to social impact, supporting education, healthcare, temple preservation, Gau Samrakshana, and the welfare of ex-army families, turning a simple daily ritual into a gesture of care for the wider community.               
+                    And because we believe goodness is meant to be shared, every sip contributes to social impact, supporting education, healthcare, preservation of places of worship, care for holy animals, and the welfare of ex-army families, turning a simple daily ritual into a gesture of care for the wider community.               
                 </h5>
             </div>
         </div>

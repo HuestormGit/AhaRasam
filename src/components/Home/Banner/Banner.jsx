@@ -30,7 +30,7 @@ const Banner = () => {
                     A Sip of Tradition, <br></br>A Taste of Wellness
                 </h1>
                 <h6 className="sub-heading">
-                    Healthy replacement of tea or Coffee
+                    A healthy replacement for Tea or Coffee
                 </h6>
             </div>
 
