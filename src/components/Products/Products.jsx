@@ -184,14 +184,14 @@ const Products = () => {
                               onClick={() => handleQtyChange(productId, -1)}
                               className="qty-btn"
                             >
-                              -
+                              <span>-</span>
                             </button>
                             <span>{qty}</span>
                             <button
                               onClick={() => handleQtyChange(productId, 1)}
                               className="qty-btn"
                             >
-                              +
+                              <span>+</span>
                             </button>
                           </div>
                         </div>
@@ -268,14 +268,14 @@ const Products = () => {
                           onClick={() => handleQtyChange(productId, -1)}
                           className="qty-btn"
                         >
-                          -
+                          <span>-</span>
                         </button>
                         <span>{qty}</span>
                         <button
                           onClick={() => handleQtyChange(productId, 1)}
                           className="qty-btn"
                         >
-                          +
+                          <span>+</span>
                         </button>
                       </div>
                     </div>
