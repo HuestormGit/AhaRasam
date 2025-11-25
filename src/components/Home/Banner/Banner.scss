@@ -12,7 +12,7 @@
             background-size: cover;
             background-repeat: no-repeat;
             z-index: 1; 
-            background-image: url("../../../assets/left.png");
+            background-image: url("../../../assets/left.png"); 
             
             @include sm{
                 width: 200px;  
