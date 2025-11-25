@@ -118,7 +118,10 @@ const Products = () => {
           <div className="col-12 d-flex justify-content-center">
             <div className="sub-heading">
               <p>
-                Experience rasam rooted in tradition. A sensory journey crafted from age-old recipes. Taste true tradition.
+                Experience rasam rooted in tradition.
+              </p>
+              <p>
+                A sensory journey crafted from age-old recipes. Taste true tradition.
               </p>
             </div>
           </div>
