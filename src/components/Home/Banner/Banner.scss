@@ -102,10 +102,15 @@
             // line-height: 1.1;
             // letter-spacing: 0;
             // opacity: 1;
+            font-size: 60px;
             @include md{
-                font-size: clamp(40px, 6vw, 80px); // Responsive font
+                font-size: 80px;
                 font-weight: 500; // Medium weight
 
+            }
+            @include lg{
+                font-size: 80px;
+                padding: 50px 0 ;
             }
             
         }
