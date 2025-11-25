@@ -1,6 +1,8 @@
 @import "../../../css-config/mixins.scss";
 
 .hero-banner {
+    display: flex;
+    flex-direction: column;
     padding: 0px 0px 50px;
      &::before {
             content: "";
