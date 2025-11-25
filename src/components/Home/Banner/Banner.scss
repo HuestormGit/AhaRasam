@@ -33,16 +33,16 @@
 
             }
             @include lg{
-                width: 350px;
-                height: 800px;
+                width: 460px;
+                height: 1153px;
             }
             @include xl{
-                width: 420px;
-                height: 1000px;
+                width: 460px;
+                height: 1153px
             }
             @include xxl{
-                width: 420px;
-                height: 1000px;
+                width: 460px;
+                height: 1153px
             }
             
         }
@@ -69,16 +69,16 @@
 
             }
             @include lg{
-                height: 1010px;
-                width: 315px;
+                height: 1153px;
+                width: 360px
             }
             @include xl{
-                height: 1010px;
-                width: 315px;
+                height: 1153px;
+                width: 360px
             }
             @include xxl{
-                height: 1010px;
-                width: 315px;
+                height: 1153px;
+                width: 360px
             }
         }
         

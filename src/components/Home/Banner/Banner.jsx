@@ -43,7 +43,7 @@ const Banner = () => {
 
                 <div className="sec-2 col-md-8 col-lg-8">
                 <img src={bannerImg} alt="Rasam Bowl" style={{ transform: `rotate(${rotation}deg)`,
-                    transition: "transform 0.1s linear"}}/>
+                    transition: "transform 0.1s linear"}} className="desk-bowlimg"/>
                 </div>
 
                 <div className="sec-3 col-md-2 col-lg-2">
