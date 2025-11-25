@@ -5,7 +5,7 @@ function AboutUs() {
     <section id="AboutUs">
         <div className="container-fluid">
             <div className="container AboutUs">
-                <h2 className='AboutUsHeading'>At AHA! I I Rasam, we believe life’s best comforts 
+                <h2 className='AboutUsHeading'>At AHA! Rasam, we believe life’s best comforts 
                     don’t need invention, only rediscovery.
                 </h2>
                 <div className="row pt-50">

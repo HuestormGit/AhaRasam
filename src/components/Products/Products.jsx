@@ -111,7 +111,7 @@ const Products = () => {
   return (
     <div className="container-fluid product-section">
       <div className="products-wrapper container">
-        <h2>Buy AHA!I Rasam</h2>
+        <h2>Buy AHA! Rasam</h2>
 
         <div className="sub-heading d-flex justify-content-center">
           <p>
