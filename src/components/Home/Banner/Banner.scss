@@ -151,17 +151,21 @@
         }
         .sec1{
             img.sec1img{
-                    position: absolute;
-                    top: 56%;
-                    left: 27%;
+                    // position: absolute;
+                    // top: 56%;
+                    // left: 27%;
             }
         }
-        .sec2{}
+        .sec2{
+            img.desk-bowlimg{
+                width: 982px;
+            }
+        }
         .sec-3{
             img.sec3img{
-                position: absolute;
-                top: 56%;
-                left: 62%;
+                // position: absolute;
+                // top: 56%;
+                // left: 62%;
             }
         }
     }
