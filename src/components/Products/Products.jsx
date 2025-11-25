@@ -150,7 +150,7 @@ const Products = () => {
 
                         <div className="product-details">
                           <h3 className="title">{product.Title}</h3>
-                          <h4 className="sub-title">{product.Title}</h4>
+                          <h4 className="sub-title">{product.SubTitle}</h4>
                           <h5 className="Ingredients">Ingredients:</h5>
                           <p className="desc">
                             {ingredientsText || "No ingredients available"}
@@ -234,7 +234,7 @@ const Products = () => {
                     </div>
                     <div className="product-details">
                       <h3 className="title">{product.Title}</h3>
-                      <h4 className="sub-title">{product.Title}</h4>
+                      <h4 className="sub-title">{product.SubTitle}</h4>
                       <h5 className="Ingredients">Ingredients:</h5>
                       <p className="desc">
                         {ingredientsText || "No ingredients available"}
