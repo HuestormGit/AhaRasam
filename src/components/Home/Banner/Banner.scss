@@ -139,41 +139,48 @@
 
        
     }
-    .banner-box2{
-        display: none;
-        @include md{
-            display: flex;
-            margin-top: -350px;
-            flex-direction: row;
-            align-content: center;
-            justify-content: center;
-            align-items: center;
-           
-        }
-        .sec-1{
-            position: relative;
-            width: 330px;
-            img.sec1img{
-                position: absolute;
-                top: 56%;
-                left: 27%;
-            }
-        }
-        .sec-2{
-            img.desk-bowlimg{
-                width: 982px;
-            }
-        }
-        .sec-3{
-            width: 330px;
-            position: relative;
-            img.sec3img{
-                position: absolute;
-                top: 56%;
-                left: 62%;
-            }
-        }
+    .banner-box2 {
+    display: none;
+
+    @include md {
+        display: flex;
+        margin-top: -350px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        position: relative;
     }
+
+    .sec-1, .sec-3 {
+        width: 330px;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .sec-1 img.sec1img,
+    .sec-3 img.sec3img {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .sec-1 img.sec1img {
+        left: 0;
+    }
+
+    .sec-3 img.sec3img {
+        right: 0;
+    }
+
+    .sec-2 img.desk-bowlimg {
+        width: 900px;
+        max-width: 100%;
+        display: block;
+    }
+}
+
     
     .banner-box3 {
         background-color: #E1AD3F;
