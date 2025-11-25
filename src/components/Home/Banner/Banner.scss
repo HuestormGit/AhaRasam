@@ -140,39 +140,39 @@
        
     }
     .banner-box2 {
-    display: none;
+        display: none;
 
-    @include md {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 40px;              // space between columns
-        margin-top: -250px;     // adjust based on design
-        position: relative;
-        z-index: 5;
-    }
+        @include md {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;              // space between columns
+            margin-top: -250px;     // adjust based on design
+            position: relative;
+            z-index: 5;
+        }
 
-    .sec-1, .sec-3 {
-        width: 260px;           // FIXED width so icons don’t move
-        height: 500px;          // Give area for absolute icons
-        position: relative;
+        .sec-1, .sec-3 {
+            width: 260px;           // FIXED width so icons don’t move
+            height: 500px;          // Give area for absolute icons
+            position: relative;
 
-        img.sec1img, img.sec3img {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);   // center perfectly
+            img.sec1img, img.sec3img {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);   // center perfectly
+            }
+        }
+
+        .sec-2 img.desk-bowlimg {
+            width: 650px;     // FIXED optimized size (982px was too large)
+            max-width: 100%;
+            z-index: 10;
+            position: relative;
+            scale: 1.5;
         }
     }
-
-    .sec-2 img.desk-bowlimg {
-        width: 650px;     // FIXED optimized size (982px was too large)
-        max-width: 100%;
-        z-index: 10;
-        position: relative;
-        scale: 1.5;
-    }
-}
 
 
 
@@ -188,8 +188,8 @@
         .sec-1 {
             text-align: center;
             img{
-            width: 195px;
-            height: 195px;
+            width: 200px;
+            height: 200px;
             }
         }
         .sec-2, .sec-3{
