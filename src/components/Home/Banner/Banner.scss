@@ -142,44 +142,69 @@
     .banner-box2 {
     display: none;
 
-    @include md {
-        display: flex;
-        margin-top: -350px;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        position: relative;
+        @include md {
+            display: flex;
+            margin-top: -420px;          // pulls bowl upward like UI
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .sec-1, .sec-3 {
+            width: 300px;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Left icon */
+        .sec-1 img.sec1img {
+            position: absolute;
+            top: 50%;
+            right: -40px;                 // moves icon closer to bowl ✔
+            transform: translateY(-50%);
+            width: 180px;
+        }
+
+        /* Right icon */
+        .sec-3 img.sec3img {
+            position: absolute;
+            top: 50%;
+            left: -40px;                  // moves icon closer to bowl ✔
+            transform: translateY(-50%);
+            width: 180px;
+        }
+
+        /* Bowl */
+        .sec-2 img.desk-bowlimg {
+            width: 880px;                 // matching UI size
+            max-width: 100%;
+            position: relative;
+            z-index: 3;
+        }
+
+        @include lg {
+            .sec-1 img.sec1img,
+            .sec-3 img.sec3img {
+                width: 220px;
+                right: -60px;
+                left: -60px;
+            }
+
+            .sec-2 img.desk-bowlimg {
+                width: 1050px;
+            }
+        }
+
+        @include xl {
+            margin-top: -480px;
+
+            .sec-2 img.desk-bowlimg {
+                width: 1150px;
+            }
+        }
     }
 
-    .sec-1, .sec-3 {
-        width: 330px;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .sec-1 img.sec1img,
-    .sec-3 img.sec3img {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    .sec-1 img.sec1img {
-        left: 0;
-    }
-
-    .sec-3 img.sec3img {
-        right: 0;
-    }
-
-    .sec-2 img.desk-bowlimg {
-        width: 900px;
-        max-width: 100%;
-        display: block;
-    }
-}
 
     
     .banner-box3 {
