@@ -13,7 +13,7 @@
             height: 942px;
             background-size: cover;
             background-repeat: no-repeat;
-            z-index: 1; 
+            // z-index: 1; 
             background-image: url("../../../assets/mobile-left.png"); 
 
             
@@ -56,7 +56,7 @@
             background-image: url("../../../assets/mobile-right.png");
             background-size: cover;
             background-repeat: no-repeat;
-            z-index: 1;
+            // z-index: 1;
             
             @include md{
                 width: 250px;  
@@ -188,8 +188,8 @@
         .sec-1 {
             text-align: center;
             img{
-            width: 200px;
-            height: 200px;
+            width: 300px;
+            height: 300px;
             }
         }
         .sec-2, .sec-3{
