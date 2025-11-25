@@ -36,22 +36,21 @@ const Banner = () => {
 
         </div>
         <div className="banner-box2 container">
-            <div className="row align-items-center">
-                <div className="col-md-2 col-lg-2 sec-1">
+            
+                <div className="sec-1">
                     <img src={leftpoint} className="sec1img" alt="Heart" />
                 </div>
 
-                <div className="sec-2 col-md-8 col-lg-8">
+                <div className="sec-2">
                 <img src={bannerImg} alt="Rasam Bowl" style={{ transform: `rotate(${rotation}deg)`,
                     transition: "transform 0.1s linear"}} className="desk-bowlimg"/>
                 </div>
 
-                <div className="sec-3 col-md-2 col-lg-2">
+                <div className="sec-3">
                     <img src={Rightpoints} className="sec3img" alt="Boosts Immunity" />
                 </div>
 
 
-            </div>
             
         </div>
         <div className="banner-box3 container ">
