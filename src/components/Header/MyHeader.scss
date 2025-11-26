@@ -48,11 +48,11 @@
     animation: Stickey-nav 0.2s ease forwards;
     z-index: 5;
     img{
-    width: 85px;
-    height: 85px;
+    width: 100px;
+    height: 100px;
     @include md{
-      width: 90px;
-      width: 90px;
+      width: 100px;
+      width: 100px;
     }
     @include lg{
       height: 100px;
@@ -65,43 +65,49 @@
 }
 
 .navbar-brand {
-  img{
-    width: 85px;
-    height: 85px;
+    width: 100%;
+    text-align: center;
+    margin: auto;
+    img{
+      width: 100px;
+      height: 100px;
 
-       @include sm{
-        // min-width: 640px
-        width: 150px;
-        height: 150px;
-      }
-      @include md{
-        // min-width: 768px
-        width: 200px;
-        height: 200px;
-      }
-      @include lg{
-        // min-width: 1024px
-        width: 220px;
-        height: 220px;
-        // margin-top: 30px;
+        @include md{
+          // min-width: 768px
+          width: 200px;
+          height: 200px;
+        }
+        @include lg{
+          // min-width: 1024px
+          width: 220px;
+          height: 220px;
+          // margin-top: 30px;
 
-      }
-      @include xl{
-        // min-width: 1280px
-        width: 220px;
-        height: 220px;
-        // margin-top: 30px;
+        }
+        @include xl{
+          // min-width: 1280px
+          width: 220px;
+          height: 220px;
+          // margin-top: 30px;
 
-      }
-      @include xxl{
-        // min-width: 1536px
-        width: 220px;
-        height: 220px;
-        // margin-top: 30px;
-      }
-    
-  }
+        }
+        @include xxl{
+          // min-width: 1536px
+          width: 220px;
+          height: 220px;
+          // margin-top: 30px;
+        }
+      
+    }
   
+}
+
+button.navbar-toggler {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    border: none;
+    font-size: 25px;
 }
 
 @keyframes Stickey-nav {
