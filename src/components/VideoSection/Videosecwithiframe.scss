@@ -1,0 +1,64 @@
+.videoimg {
+  position: relative;
+
+  .video-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  iframe.VideoSectionimg {
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    @include md {
+      width: 100%;
+      height: 100%;
+      top: 30px;
+    }
+
+    @include lg {
+      position: absolute;
+      height: 817px;
+      width: 455px;
+      top: 60px;
+      left: 125px;
+    }
+  }
+
+  /* IMAGE OVERLAY */
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .overlay-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .play-btn {
+    position: absolute;
+    font-size: 60px;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0,0,0,0.6);
+    pointer-events: none;
+
+    @include md {
+      font-size: 70px;
+    }
+    @include lg {
+      font-size: 80px;
+    }
+  }
+}
