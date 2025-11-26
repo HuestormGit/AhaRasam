@@ -192,7 +192,7 @@ function Contact() {
             India, 410205
           </p> */}
           <p className="contact-email">
-            Contact us: <a href="mailto:sales@aharasam.com" style={{textDecoration:'none',color:'#000'}}>sales@aharasam.com</a>
+            Contact us: <a href="mailto:sales@aharasam.com">sales@aharasam.com</a>
 
           </p>
         </div>
