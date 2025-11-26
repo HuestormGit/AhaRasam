@@ -1,0 +1,39 @@
+/* Barlow Regular */
+@font-face {
+  font-family: "Barlow";
+  src: url("./Barlow.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Barlow Condensed Regular */
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("./BarlowCondensed.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Barlow Condensed Medium */
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("./BarlowCondensed-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* Barlow Condensed SemiBold */
+@font-face {
+  font-family: "Barlow Condensed";
+  src: url("./BarlowCondensed-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Barlow SemiCondensed Medium */
+@font-face {
+  font-family: "Barlow SemiCondensed";
+  src: url("./BarlowSemiCondensed-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
