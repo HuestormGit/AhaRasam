@@ -2,10 +2,10 @@
 #AboutUs{
     padding: 100px 0;
     @include md {
-      padding: 50px 0; 
+      padding: 100px 0; 
     }
     @include lg{
-      padding: 75px 0;
+      padding: 175px 0 100px;
     }
     .AboutUs{
         display: flex;
@@ -18,9 +18,13 @@
             font-weight: 500;
             font-size: 40px;
             line-height: 48px;
-            min-width: 400px;
+            min-width: 300px;
             max-width: 674px;
             text-align: center;
+            @include md{
+                min-width: 400px;
+                max-width: 674px;
+            }
         }
         .pt-50{
             padding: 50px 0;
@@ -33,7 +37,7 @@
             line-height: 28px;
         }
         h5{
-            min-width: 400px;
+            min-width: 300px;
             max-width: 900px;
             color:#707070;
             font-family: "Barlow";
@@ -42,6 +46,10 @@
             font-size: 30px;
             line-height: 40px;
             text-align: center;
+            @include md{
+                min-width: 400px;
+                max-width: 900px;
+            }
         }
     }
     
