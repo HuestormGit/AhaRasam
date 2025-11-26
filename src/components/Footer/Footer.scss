@@ -23,13 +23,13 @@ footer {
         // background: #1A1E25;
         min-height: 141px;
         // color: #868c96;
-        background-image: url(../../assets/footerbgmobile.png);
+        background-image: url(../../assets/Mobilebottomband.png);
         background-position: bottom ;
         background-repeat: no-repeat;
         background-size: cover;
         // background: transparent url('img/Mask Group 13.png') 0% 0% no-repeat padding-box;
         @include md{
-            background-image: url(../../assets/footer-bg.png);
+            background-image: url(../../assets/deskfooter.png);
             min-height: 191px;
 
         }

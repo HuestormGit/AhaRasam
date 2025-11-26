@@ -14,7 +14,7 @@
             background-size: cover;
             background-repeat: no-repeat;
             // z-index: 1; 
-            background-image: url("../../../assets/mobile-left.png"); 
+            background-image: url("../../../assets/Mobileleftside.png"); 
 
             
             @include sm{
@@ -29,7 +29,7 @@
                 height: 515px;
                 top: 0;
                 left: 0;
-                background-image: url("../../../assets/left.png"); 
+                background-image: url("../../../assets/deskleft.png"); 
 
             }
             @include lg{
@@ -53,7 +53,7 @@
             right: 0;
             width: 93px;  
             height: 942px;
-            background-image: url("../../../assets/mobile-right.png");
+            background-image: url("../../../assets/Mobilerightside.png");
             background-size: cover;
             background-repeat: no-repeat;
             // z-index: 1;
@@ -65,7 +65,7 @@
                 opacity: 1;
                 top: 0;
                 right: 0;
-                background-image: url("../../../assets/right.png");
+                background-image: url("../../../assets/deskright.png");
 
             }
             @include lg{

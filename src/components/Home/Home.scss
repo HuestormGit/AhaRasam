@@ -5,9 +5,11 @@
    .spacer{
       height: 102px;
       background-image: url(../../assets/video-top.png);
-      background-size: contain;
+      background-size: cover;
+      background-repeat: no-repeat;
       @include md{
          height: 80px;
+         background-size: contain;
       }
    }
 }

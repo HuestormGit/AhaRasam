@@ -1,5 +1,5 @@
 import "./Banner.scss";
-import bannerImg from  "../../../assets/banner-image.png";
+import bannerImg from  "../../../assets/rasambowl.png";
 import mob1 from  "../../../assets/1.png";
 import mob2 from  "../../../assets/2.png";
 import mob3 from  "../../../assets/3.png";

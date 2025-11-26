@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Modal from "../Modal/Modal";
 import "./Contact.scss";
-import logo from "../../assets/contactsection.png";
+import logo from "../../assets/Footericon.png";
 
 function Contact() {
   const [form, setForm] = useState({
