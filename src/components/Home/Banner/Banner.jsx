@@ -25,7 +25,7 @@ const Banner = () => {
 
     return <section className="hero-banner">
         <div className="banner-box container-fluid">
-            <div className=" text-center">
+            <div className="topbox text-center">
                 <h1 className="banner-heading">
                     A Sip of Tradition, <br></br>A Taste of Wellness
                 </h1>
@@ -54,7 +54,7 @@ const Banner = () => {
             
         </div>
         <div className="banner-box3 container ">
-            <div className="row">
+            <div className="row" style={{ zIndex: 1 }}>
                 <div className="sec-1 col-12">
                     <img src={bannerImg} alt="Rasam Bowl" style={{ transform: `rotate(${rotation}deg)`,transition: "transform 0.1s linear"}}/>
                 </div>
