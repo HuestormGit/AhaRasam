@@ -16,6 +16,8 @@
 .popup-content {
   background: #fff;
   width: 95%;
+  height: 80vh;
+  overflow-y: scroll;
   max-width: 380px;
   border-radius: 12px;
   padding: 1.5rem;
