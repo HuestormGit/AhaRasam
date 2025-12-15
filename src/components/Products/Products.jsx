@@ -162,7 +162,7 @@ const Products = () => {
 
                           {variants.length > 0 && (
                             <select
-                              className="variant-drop"
+                              className="variant-drop "
                               value={selectedIdx}
                               onChange={(e) =>
                                 handleVariantChange(
