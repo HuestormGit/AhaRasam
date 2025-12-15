@@ -179,7 +179,7 @@ const Products = () => {
                             </select>
                           )}
 
-                          <div className="qty-box">
+                          {/* <div className="qty-box">
                             <button
                               onClick={() => handleQtyChange(productId, -1)}
                               className="qty-btn"
@@ -193,7 +193,7 @@ const Products = () => {
                             >
                               <span>+</span>
                             </button>
-                          </div>
+                          </div> */}
                         </div>
 
                         {/* <button
@@ -263,7 +263,7 @@ const Products = () => {
                         </select>
                       )}
 
-                      <div className="qty-box">
+                      {/* <div className="qty-box">
                         <button
                           onClick={() => handleQtyChange(productId, -1)}
                           className="qty-btn"
@@ -277,7 +277,7 @@ const Products = () => {
                         >
                           <span>+</span>
                         </button>
-                      </div>
+                      </div> */}
                     </div>
 
                     {/* <button
