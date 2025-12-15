@@ -60,7 +60,7 @@ function App() {
         
 
         <Footer />
-        <StickyPayButton/>
+        {/* <StickyPayButton/> */}
       </BrowserRouter>
     </CartProvider>
   );
