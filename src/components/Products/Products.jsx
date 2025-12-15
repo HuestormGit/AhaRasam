@@ -240,11 +240,11 @@ const Products = () => {
                         {ingredientsText || "No ingredients available"}
                       </p>
 
-                      <p className="mrp">
+                      {/* <p className="mrp">
                         MRP: ₹{variants[selectedIdx]?.price || "—"}
-                      </p>
+                      </p> */}
 
-                      {variants.length > 0 && (
+                      {/* {variants.length > 0 && (
                         <select
                           className="variant-drop"
                           value={selectedIdx}
@@ -277,15 +277,15 @@ const Products = () => {
                         >
                           <span>+</span>
                         </button>
-                      </div>
+                      </div> */}
                     </div>
 
-                    <button
+                    {/* <button
                       className="add-btn"
                       onClick={() => handleAddToCart(productId, product)}
                     >
                       ADD TO CART
-                    </button>
+                    </button> */}
                   </div>
                 );
               })}
