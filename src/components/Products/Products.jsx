@@ -27,36 +27,36 @@ const Products = () => {
 
     loadProducts();
   }, []);
-// remove auto scroll 
-//   useEffect(() => {
-//   const slider = sliderRef.current;
-//   if (!slider) return;
 
-//   let index = 0;
+  useEffect(() => {
+  const slider = sliderRef.current;
+  if (!slider) return;
 
-//   const interval = setInterval(() => {
-//     if (!slider.children.length) return;
+  let index = 0;
 
-//     const cards = slider.children;
-//     const cardWidth = cards[0].offsetWidth + 15; // card width + gap
+  const interval = setInterval(() => {
+    if (!slider.children.length) return;
 
-//     index++;
+    const cards = slider.children;
+    const cardWidth = cards[0].offsetWidth + 15; // card width + gap
 
-//     // Infinite loop (restart from first)
-//     if (index >= cards.length) {
-//       index = 0;
-//       slider.scrollTo({ left: 0, behavior: "smooth" });
-//       return;
-//     }
+    index++;
 
-//     slider.scrollTo({
-//       left: index * cardWidth,
-//       behavior: "smooth",
-//     });
-//   }, 2500); // 2.5 seconds autoplay
+    // Infinite loop (restart from first)
+    if (index >= cards.length) {
+      index = 0;
+      slider.scrollTo({ left: 0, behavior: "smooth" });
+      return;
+    }
 
-//   return () => clearInterval(interval);
-// }, [products]);
+    slider.scrollTo({
+      left: index * cardWidth,
+      behavior: "smooth",
+    });
+  }, 2500); // 2.5 seconds autoplay
+
+  return () => clearInterval(interval);
+}, [products]);
 
 
 
