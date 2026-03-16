@@ -17,7 +17,7 @@ const Products = () => {
         //   "/api/products?populate=*&sort=id:asc"
         // );
         const res = await fetchDataFromApi(
-  "/api/products?populate=*&sort=id:asc&filters[publishedAt][$notNull]=true"
+  "/api/products?populate=*&sort=id:asc&publicationState=live"
 );
         
         console.log("API RESPONSE:", res); // debug
