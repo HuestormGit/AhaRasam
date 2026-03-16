@@ -16,9 +16,12 @@ const Products = () => {
         const res = await fetchDataFromApi(
           "/api/products?populate=*&sort=id:asc"
         );
+        console.log("API RESPONSE:", res); // debug
 
         if (res?.data?.length > 0) {
           setProducts(res.data);
+          console.log("PRODUCTS:", res.data); // print all products
+
         }
       } catch (err) {
         console.error("❌ Failed to fetch products:", err);
