@@ -13,9 +13,13 @@ const Products = () => {
   useEffect(() => {
     const loadProducts = async () => {
       try {
+        // const res = await fetchDataFromApi(
+        //   "/api/products?populate=*&sort=id:asc"
+        // );
         const res = await fetchDataFromApi(
-          "/api/products?populate=*&sort=id:asc"
-        );
+  "/api/products?populate=*&sort=id:asc&filters[publishedAt][$notNull]=true"
+);
+        
         console.log("API RESPONSE:", res); // debug
 
         if (res?.data?.length > 0) {
