@@ -18,7 +18,9 @@ const Products = () => {
         );
 
         if (res?.data?.length > 0) {
-          setProducts(res.data);
+          const filteredProducts = res.data.filter((p) => p.id !== 73);
+          setProducts(filteredProducts);
+          // setProducts(res.data);
         }
       } catch (err) {
         console.error("Failed to fetch products:", err);
