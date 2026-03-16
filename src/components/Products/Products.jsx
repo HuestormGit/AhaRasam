@@ -59,7 +59,7 @@ const Products = () => {
 }, [products]);
 
 
-// eslint-disable-next-line
+
   const handleQtyChange = (productId, delta) => {
     setQuantities((prev) => {
       const current = prev[productId] || 0;
@@ -85,28 +85,28 @@ const Products = () => {
       .join(" ");
   };
 
-  // const handleAddToCart = (productId, product) => {
-  //   const qty = quantities[productId] || 0;
-  //   if (qty === 0) {
-  //     alert("Please select quantity before adding to cart.");
-  //     return;
-  //   }
+  const handleAddToCart = (productId, product) => {
+    const qty = quantities[productId] || 0;
+    if (qty === 0) {
+      alert("Please select quantity before adding to cart.");
+      return;
+    }
 
-  //   const vIndex = selectedVariantIndex[productId] ?? 0;
-  //   const variant = product.Variant[vIndex];
+    const vIndex = selectedVariantIndex[productId] ?? 0;
+    const variant = product.Variant[vIndex];
 
-  //   addToCart({
-  //     productId,
-  //     productName: product.Title,
-  //     size: variant.size,
-  //     price: variant.price,
-  //     qty,
-  //   });
+    addToCart({
+      productId,
+      productName: product.Title,
+      size: variant.size,
+      price: variant.price,
+      qty,
+    });
 
-  //   alert(`${qty} item(s) added to cart`);
-  // };
+    alert(`${qty} item(s) added to cart`);
+  };
 
-  // const totalItems = Object.values(quantities).reduce((a, b) => a + b, 0);
+  const totalItems = Object.values(quantities).reduce((a, b) => a + b, 0);
 
   return (
     <div className="container-fluid product-section" id="product">
@@ -135,9 +135,12 @@ const Products = () => {
                     product.Image?.url ||
                     "https://placehold.co/300x300?text=No+Image";
 
-                  const variants = product.Variant || [];
-                  const selectedIdx = selectedVariantIndex[productId] ?? 0;
+                   const variants = product.Variant || [];
+                   const selectedIdx = selectedVariantIndex[productId] ?? 0;
                   // const qty = quantities[productId] || 0;
+
+                  
+                  const qty = quantities[productId] || 0;
 
                   const ingredientsText = extractText(product.Ingredients);
 
@@ -222,7 +225,7 @@ const Products = () => {
 
                 const variants = product.Variant || [];
                 const selectedIdx = selectedVariantIndex[productId] ?? 0;
-
+                const qty = quantities[productId] || 0;
                 // const qty = quantities[productId] || 0;
 
                 const ingredientsText = extractText(product.Ingredients);
@@ -301,4 +304,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Products; 
