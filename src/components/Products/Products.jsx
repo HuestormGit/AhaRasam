@@ -28,34 +28,34 @@ const Products = () => {
     loadProducts();
   }, []);
 
-  useEffect(() => {
-    const slider = sliderRef.current;
-    if (!slider) return;
+  // useEffect(() => {
+  //   const slider = sliderRef.current;
+  //   if (!slider) return;
 
-    let index = 0;
+  //   let index = 0;
 
-    const interval = setInterval(() => {
-      if (!slider.children.length) return;
+  //   const interval = setInterval(() => {
+  //     if (!slider.children.length) return;
 
-      const cards = slider.children;
-      const cardWidth = cards[0].offsetWidth + 15;
+  //     const cards = slider.children;
+  //     const cardWidth = cards[0].offsetWidth + 15;
 
-      index++;
+  //     index++;
 
-      if (index >= cards.length) {
-        index = 0;
-        slider.scrollTo({ left: 0, behavior: "smooth" });
-        return;
-      }
+  //     if (index >= cards.length) {
+  //       index = 0;
+  //       slider.scrollTo({ left: 0, behavior: "smooth" });
+  //       return;
+  //     }
 
-      slider.scrollTo({
-        left: index * cardWidth,
-        behavior: "smooth",
-      });
-    }, 5000);
+  //     slider.scrollTo({
+  //       left: index * cardWidth,
+  //       behavior: "smooth",
+  //     });
+  //   }, 5000);
 
-    return () => clearInterval(interval);
-  }, [products]);
+  //   return () => clearInterval(interval);
+  // }, [products]);
 
   const handleQtyChange = (productId, delta) => {
     setQuantities((prev) => {
