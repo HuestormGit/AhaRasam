@@ -9,7 +9,8 @@ import { useState } from "react";
 import AboutUs from '../AboutUs/AboutUs';
 
 function Home() {
-  const [cart, setCart] = useState([]);
+  // const [cart, setCart] = useState([]);
+  const [, setCart] = useState([]);
 
   const handleAddToCart = (item) => {
     setCart((prev) => [...prev, item]);
