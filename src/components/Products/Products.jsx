@@ -53,7 +53,7 @@ const Products = () => {
       left: index * cardWidth,
       behavior: "smooth",
     });
-  }, 2500); // 2.5 seconds autoplay
+  }, 5000); // 2.5 seconds autoplay
 
   return () => clearInterval(interval);
 }, [products]);
