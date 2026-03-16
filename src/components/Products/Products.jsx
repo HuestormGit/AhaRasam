@@ -110,7 +110,8 @@ const Products = () => {
   };
 
   const totalItems = Object.values(quantities).reduce((a, b) => a + b, 0);
-
+console.log(handleAddToCart);
+console.log(totalItems);
   return (
     <div className="container-fluid product-section" id="product">
       <div className="products-wrapper container">
