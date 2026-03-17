@@ -59,12 +59,12 @@ const Products = () => {
   //   return () => clearInterval(interval);
   // }, [products]);
 
-  // const handleQtyChange = (productId, delta) => {
-  //   setQuantities((prev) => {
-  //     const current = prev[productId] || 0;
-  //     return { ...prev, [productId]: Math.max(current + delta, 0) };
-  //   });
-  // };       
+  const handleQtyChange = (productId, delta) => {
+    setQuantities((prev) => {
+      const current = prev[productId] || 0;
+      return { ...prev, [productId]: Math.max(current + delta, 0) };
+    });
+  };
 
   const handleVariantChange = (productId, index) => {
     setSelectedVariantIndex((prev) => ({
@@ -84,30 +84,30 @@ const Products = () => {
       .join(" ");
   };
 
-  // const handleAddToCart = (productId, product) => {
-  //   const qty = quantities[productId] || 0;
+  const handleAddToCart = (productId, product) => {
+    const qty = quantities[productId] || 0;
 
-  //   if (qty === 0) {
-  //     alert("Please select quantity before adding to cart.");
-  //     return;
-  //   }
+    if (qty === 0) {
+      alert("Please select quantity before adding to cart.");
+      return;
+    }
 
-  //   const variants = product.Variant || [];
-  //   const vIndex = selectedVariantIndex[productId] ?? 0;
-  //   const variant = variants[vIndex];
+    const variants = product.Variant || [];
+    const vIndex = selectedVariantIndex[productId] ?? 0;
+    const variant = variants[vIndex];
 
-  //   if (!variant) return;
+    if (!variant) return;
 
-  //   addToCart({
-  //     productId,
-  //     productName: product.Title,
-  //     size: variant.size,
-  //     price: variant.price,
-  //     qty,
-  //   });
+    addToCart({
+      productId,
+      productName: product.Title,
+      size: variant.size,
+      price: variant.price,
+      qty,
+    });
 
-  //   alert(`${qty} item(s) added to cart`);
-  // };
+    alert(`${qty} item(s) added to cart`);
+  };
 
   return (
     <div className="container-fluid product-section" id="product">
@@ -180,7 +180,7 @@ const Products = () => {
                             ))}
                           </select>
 
-                          {/* <div className="qty-box">
+                          <div className="qty-box">
                             <button
                               onClick={() =>
                                 handleQtyChange(productId, -1)
@@ -201,7 +201,6 @@ const Products = () => {
                               +
                             </button>
                           </div>
-                          
 
                           <button
                             className="add-btn"
@@ -210,7 +209,7 @@ const Products = () => {
                             }
                           >
                             ADD TO CART
-                          </button> */}
+                          </button>
                         </>
                       )}
                     </div>
@@ -273,7 +272,7 @@ const Products = () => {
                           ))}
                         </select>
 
-                        {/* <div className="qty-box">
+                        <div className="qty-box">
                           <button
                             onClick={() =>
                               handleQtyChange(productId, -1)
@@ -302,7 +301,7 @@ const Products = () => {
                           }
                         >
                           ADD TO CART
-                        </button> */}
+                        </button>
                       </>
                     )}
                   </div>
