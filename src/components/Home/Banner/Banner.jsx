@@ -26,6 +26,7 @@ const Banner = () => {
     return <section className="hero-banner">
         <div className="banner-box container-fluid">
             <div className="topbox text-center">
+                <h2 className="comingsoon">Coming Soon...</h2>
                 <h1 className="banner-heading">
                     A Sip of Tradition, <br></br>A Taste of Wellness
                 </h1>
