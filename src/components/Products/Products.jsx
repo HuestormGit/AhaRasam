@@ -1,7 +1,8 @@
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
+// import { useEffect, useState, useContext, useRef } from "react";
 import { fetchDataFromApi } from "../../utils/Api";
 import "./Products.scss";
-import { CartContext } from "../../context/CartContext";
+// import { CartContext } from "../../context/CartContext";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
