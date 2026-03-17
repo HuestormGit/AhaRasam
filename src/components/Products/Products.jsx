@@ -5,9 +5,9 @@ import { CartContext } from "../../context/CartContext";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
-  const [quantities, setQuantities] = useState({});
+  // const [quantities, setQuantities] = useState({});
   const [selectedVariantIndex, setSelectedVariantIndex] = useState({});
-  const { addToCart } = useContext(CartContext);
+  // const { addToCart } = useContext(CartContext);
   const sliderRef = useRef(null);
 
   useEffect(() => {
@@ -138,7 +138,7 @@ const Products = () => {
 
                 const variants = product.Variant || [];
                 const selectedIdx = selectedVariantIndex[productId] ?? 0;
-                const qty = quantities[productId] || 0;
+                // const qty = quantities[productId] || 0;
 
                 const ingredientsText = extractText(product.Ingredients);
 
@@ -231,7 +231,7 @@ const Products = () => {
 
               const variants = product.Variant || [];
               const selectedIdx = selectedVariantIndex[productId] ?? 0;
-              const qty = quantities[productId] || 0;
+              // const qty = quantities[productId] || 0;
 
               const ingredientsText = extractText(product.Ingredients);
 
