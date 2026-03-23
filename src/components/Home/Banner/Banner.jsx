@@ -6,8 +6,9 @@ import mob3 from  "../../../assets/3.png";
 import leftpoint from "../../../assets/left-point.png"
 import Rightpoints from "../../../assets/right-points.png"
 import mob4 from  "../../../assets/4.png";
-import mob5 from  "../../../assets/5.png";
+// import mob5 from  "../../../assets/5.png";
 import mob6 from  "../../../assets/6.png";
+import mob7 from  "../../../assets/7.png";
 import { useEffect, useState } from "react";
 
 
@@ -62,12 +63,13 @@ const Banner = () => {
                 <div className="sec-2 col-6">
                     <img src={mob1} alt="Heart" />
                     <img src={mob3} alt="Digestive" />
-                    <img src={mob5} alt="Improves" />
+                    {/* <img src={mob5} alt="Improves" /> */}
+                    <img src={mob4} alt="Rich in Antioxidants" />
                 </div>
 
                 <div className="sec-3 col-6">
                 <img src={mob2} alt="Boosts Immunity" />
-                <img src={mob4} alt="Rich in Antioxidants" />
+                <img src={mob7} alt="No Onion" />
                 <img src={mob6} alt="Other" />
             </div>
 
