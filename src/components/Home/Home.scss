@@ -6,7 +6,7 @@
       height: 102px;
       background-image: url(../../assets/video-top.png);
       background-size: cover;
-      // background-repeat: no-repeat;
+      background-repeat: repeat-x;
       @include md{
          height: 80px;
          background-size: contain;
