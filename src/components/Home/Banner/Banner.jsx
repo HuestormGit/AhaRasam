@@ -29,10 +29,13 @@ const Banner = () => {
             <div className="topbox text-center">
                 <h2 className="comingsoon">Coming Soon...</h2>
                 <h1 className="banner-heading">
-                    A Sip of Tradition, <br></br>A Taste of Wellness
+                    {/* A Sip of Tradition, <br></br>A Taste of Wellness */}
+                    Sip it as a healthy, comforting Rasam, <br></br>or sprinkle it to elevate your daily cooking!
+
                 </h1>
                 <h6 className="sub-heading">
-                    Sip it as a healthy, comforting Rasam, <br/>or sprinkle it to elevate your daily cooking!
+                  A healthy replacement for Tea or Coffee
+                    {/* Sip it as a healthy, comforting Rasam, <br/>or sprinkle it to elevate your daily cooking! */}
                 </h6>
             </div>
 
