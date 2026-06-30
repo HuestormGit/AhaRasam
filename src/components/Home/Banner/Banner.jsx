@@ -31,7 +31,6 @@ const Banner = () => {
                 <h1 className="banner-heading">
                     {/* A Sip of Tradition, <br></br>A Taste of Wellness */}
                     {/* Sip it as a healthy, comforting Rasam, <br></br>or sprinkle it to elevate your daily cooking! */}
-<<<<<<< Updated upstream
                     A Sip of Tradition.<br></br> A Taste of Wellness.
 
                 </h1>
@@ -39,13 +38,6 @@ const Banner = () => {
                     Sip it as a healthy, comforting Rasam, or cook it <br></br> into your daily meals to elevate the flavour!
                   {/* A healthy replacement for Tea or Coffee */}
                     {/* Sip it as a healthy, comforting Rasam, <br/>or sprinkle it to elevate your daily cooking! */}
-=======
-
-                </h1>
-                <h6 className="sub-heading">
-                    {/* Sip it as a healthy, comforting Rasam, <br/>or sprinkle it to elevate your daily cooking! */}
-                    A healthy replacement for Tea or C
->>>>>>> Stashed changes
                 </h6>
             </div>
 
