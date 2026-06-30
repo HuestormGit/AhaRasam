@@ -30,11 +30,13 @@ const Banner = () => {
                 <h2 className="comingsoon">Coming Soon...</h2>
                 <h1 className="banner-heading">
                     {/* A Sip of Tradition, <br></br>A Taste of Wellness */}
-                    Sip it as a healthy, comforting Rasam, <br></br>or sprinkle it to elevate your daily cooking!
+                    {/* Sip it as a healthy, comforting Rasam, <br></br>or sprinkle it to elevate your daily cooking! */}
+                    A Sip of Tradition. A Taste of Wellness.
 
                 </h1>
                 <h6 className="sub-heading">
-                  A healthy replacement for Tea or Coffee
+                    Sip it as a healthy, comforting Rasam, or cook it into your daily meals to elevate the flavour!
+                  {/* A healthy replacement for Tea or Coffee */}
                     {/* Sip it as a healthy, comforting Rasam, <br/>or sprinkle it to elevate your daily cooking! */}
                 </h6>
             </div>
