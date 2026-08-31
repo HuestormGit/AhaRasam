@@ -8,6 +8,10 @@ function StickyPayButton() {
     const navigate = useNavigate();  
     const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
 
+    // Fixed bar sits over the footer on every page — only show it once there is
+    // something to pay for.
+    if (totalItems === 0) return null;
+
   return (
     <div className="sticky-proceed-global">
         <span className="producttxt">

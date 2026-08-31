@@ -1,8 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import "./Checkout.scss";
+import Modal from "../Modal/Modal";
+import { CartContext } from "../../context/CartContext";
+import { RAZORPAY_KEY, razorpayConfigError } from "../../utils/razorpay";
+
+const API_BASE = (
+  process.env.REACT_APP_STRAPI_URL ||
+  process.env.REACT_APP_DEV_URL ||
+  "http://localhost:1337"
+).replace(/\/$/, "");
 
 const Checkout = ({ cartData, onClose }) => {
+  const { clearCart } = useContext(CartContext);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -15,6 +25,7 @@ const Checkout = ({ cartData, onClose }) => {
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [processing, setProcessing] = useState(false);
+  const [result, setResult] = useState(null); // { success, title, message, done }
 
   const totalAmount = cartData.reduce((sum, item) => sum + item.price * item.qty, 0);
 
@@ -46,11 +57,28 @@ const Checkout = ({ cartData, onClose }) => {
     // eslint-disable-next-line
   }, [form]);
 
+  const showError = (title, message) =>
+    setResult({ success: false, title, message });
+
+  // Success modal closes into the thank-you page; everything else just closes.
+  const closeResult = () => {
+    const done = result?.done;
+    setResult(null);
+    if (done) window.location.href = "/?thankyou=true";
+  };
+
   const handlePayment = async () => {
     if (!validate()) return;
 
     if (!cartData.length) {
-      alert("Cart is empty!");
+      showError("Cart is empty", "Add a product to your cart before checking out.");
+      return;
+    }
+
+    // Fail clearly instead of opening a broken Razorpay dialog.
+    const configError = razorpayConfigError();
+    if (configError) {
+      showError("Payment unavailable", configError);
       return;
     }
 
@@ -60,11 +88,11 @@ const Checkout = ({ cartData, onClose }) => {
       // 1️⃣ Create Razorpay order on Strapi (backend endpoint)
       // note: your backend expects amount in the body (you were sending totalAmount)
       const createRes = await axios.post(
-        "https://fantastic-flame-08d6b9922b.strapiapp.com/api/orders/razorpay/create",
+        `${API_BASE}/api/orders/razorpay/create`,
         { amount: totalAmount }
       );
 
-      const { id: razorpayOrderId, amount } = createRes.data.data || {};
+      const { id: razorpayOrderId, amount, currency } = createRes.data?.data || {};
 
       if (!razorpayOrderId) {
         throw new Error("Failed to create razorpay order on server");
@@ -75,17 +103,17 @@ const Checkout = ({ cartData, onClose }) => {
       // Here we use `amount` returned from backend (assumed correct). If backend returned rupees,
       // you could send amount * 100 here.
       const options = {
-        key: process.env.REACT_APP_RAZORPAY_KEY,
+        key: RAZORPAY_KEY,
         amount: amount, // use backend returned amount (preferable)
-        currency: "INR",
+        currency: currency || "INR",
         name: "AHA! Rasam",
         description: "Order Payment",
         order_id: razorpayOrderId,
         handler: async function (response) {
           try {
             // 3️⃣ Verify payment and save order in Strapi
-            await axios.post(
-              "https://fantastic-flame-08d6b9922b.strapiapp.com/api/orders/razorpay/verify",
+            const verifyRes = await axios.post(
+              `${API_BASE}/api/orders/razorpay/verify`,
               {
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,
@@ -104,13 +132,31 @@ const Checkout = ({ cartData, onClose }) => {
               }
             );
 
-            alert("✅ Payment successful & order saved!");
-            localStorage.removeItem("cartList");
-            window.location.href = "/?thankyou=true";
+            if (verifyRes.data?.success === false) {
+              showError(
+                "Payment verification failed",
+                `Payment ${response.razorpay_payment_id} could not be verified. Please contact us before paying again.`
+              );
+              return;
+            }
+
+            clearCart();
+            setResult({
+              success: true,
+              done: true,
+              title: "Payment successful",
+              message: `Your order is confirmed. Payment ID: ${response.razorpay_payment_id}`,
+            });
           } catch (verifyErr) {
             console.error("Verify/save failed:", verifyErr.response || verifyErr);
-            alert("Payment was successful but saving the order failed. Check console.");
+            showError(
+              "Order could not be saved",
+              `Your payment went through (ID: ${response.razorpay_payment_id}) but we could not save the order. Please contact us with this payment ID.`
+            );
           }
+        },
+        modal: {
+          ondismiss: () => setProcessing(false),
         },
         prefill: {
           name: form.name,
@@ -121,10 +167,25 @@ const Checkout = ({ cartData, onClose }) => {
       };
 
       const rzp = new window.Razorpay(options);
+
+      // 4️⃣ Payment failure (card declined, timeout, bank error…)
+      rzp.on("payment.failed", (response) => {
+        console.error("❌ Payment failed:", response.error);
+        setProcessing(false);
+        showError(
+          "Payment failed",
+          response.error?.description || "Your payment was not completed. No amount has been charged."
+        );
+      });
+
       rzp.open();
     } catch (err) {
       console.error("❌ Payment error:", err.response || err);
-      alert("Something went wrong during payment creation. Check console.");
+      showError(
+        "Could not start payment",
+        err.response?.data?.error?.message ||
+          "Something went wrong while creating your payment. Please try again."
+      );
     } finally {
       setProcessing(false);
     }
@@ -169,6 +230,14 @@ const Checkout = ({ cartData, onClose }) => {
           Cancel
         </button>
       </div>
+
+      <Modal
+        show={!!result}
+        success={result?.success}
+        title={result?.title}
+        message={result?.message}
+        onClose={closeResult}
+      />
     </div>
   );
 };

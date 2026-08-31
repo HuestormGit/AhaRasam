@@ -2,18 +2,25 @@ import { createContext, useState, useEffect } from "react";
 
 export const CartContext = createContext();
 
-export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
+const STORAGE_KEY = "cartList";
 
-  // Load cart from localStorage on page load
-  useEffect(() => {
-    const storedCart = JSON.parse(localStorage.getItem("cartList")) || [];
-    setCart(storedCart);
-  }, []);
+const readStoredCart = () => {
+  try {
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    return Array.isArray(stored) ? stored : [];
+  } catch {
+    return []; // corrupted/blocked storage — start empty rather than crash
+  }
+};
+
+export const CartProvider = ({ children }) => {
+  // Read synchronously on first render: loading in an effect races the save
+  // effect below and wipes the stored cart on mount (twice over, in StrictMode).
+  const [cart, setCart] = useState(readStoredCart);
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem("cartList", JSON.stringify(cart));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
   }, [cart]);
 
   // ✅ Smarter addToCart (merge qty if product+size exists)
@@ -24,9 +31,9 @@ export const CartProvider = ({ children }) => {
       );
 
       if (existingIndex >= 0) {
-        const updatedCart = [...prevCart];
-        updatedCart[existingIndex].qty += item.qty;
-        return updatedCart;
+        return prevCart.map((p, i) =>
+          i === existingIndex ? { ...p, qty: p.qty + item.qty } : p
+        );
       } else {
         return [...prevCart, item];
       }
@@ -37,8 +44,12 @@ export const CartProvider = ({ children }) => {
     setCart((prevCart) => prevCart.filter((_, i) => i !== index));
   };
 
+  const clearCart = () => setCart([]);
+
   return (
-    <CartContext.Provider value={{ cart, setCart, addToCart, removeFromCart }}>
+    <CartContext.Provider
+      value={{ cart, setCart, addToCart, removeFromCart, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );

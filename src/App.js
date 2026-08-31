@@ -8,8 +8,7 @@ import Footer from "./components/Footer/Footer";
 import Cart from "./components/Cart/Cart";
 import { CartProvider } from "./context/CartContext";
 import { useEffect, useState } from "react";
-// import StickyPayButton from "./components/StickyPayButton/StickyPayButton";
-// import Order from "./components/Order/Order";
+import StickyPayButton from "./components/StickyPayButton/StickyPayButton";
 
 function HomeWrapper() {
   const location = useLocation();
@@ -51,7 +50,6 @@ function App() {
     <CartProvider>
       <BrowserRouter>
         <MyHeader />
-        {/* <Order /> */}
 
         <Routes>
           <Route path="/" element={<HomeWrapper />} />
@@ -60,7 +58,7 @@ function App() {
         
 
         <Footer />
-        {/* <StickyPayButton/> */}
+        <StickyPayButton />
       </BrowserRouter>
     </CartProvider>
   );
