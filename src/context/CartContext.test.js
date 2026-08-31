@@ -1,7 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
 import { useContext } from "react";
 import { CartContext, CartProvider } from "./CartContext";
-import { razorpayConfigError } from "../utils/razorpay";
 
 const renderCart = () =>
   renderHook(() => useContext(CartContext), { wrapper: CartProvider });
@@ -64,9 +63,41 @@ test("survives corrupted cart storage", () => {
   expect(result.current.cart).toEqual([]);
 });
 
-test("razorpayConfigError explains a missing key instead of opening checkout", () => {
-  // REACT_APP_RAZORPAY_KEY is unset in the test env.
-  window.Razorpay = function () {};
-  expect(razorpayConfigError()).toMatch(/REACT_APP_RAZORPAY_KEY/);
-  delete window.Razorpay;
+// The key is read at module load, so re-import it under a controlled env
+// rather than depending on whatever .env happens to define.
+const configErrorWithKey = (key) => {
+  const previous = process.env.REACT_APP_RAZORPAY_KEY;
+  if (key === undefined) delete process.env.REACT_APP_RAZORPAY_KEY;
+  else process.env.REACT_APP_RAZORPAY_KEY = key;
+
+  let error;
+  jest.isolateModules(() => {
+    error = require("../utils/razorpay").razorpayConfigError();
+  });
+
+  if (previous === undefined) delete process.env.REACT_APP_RAZORPAY_KEY;
+  else process.env.REACT_APP_RAZORPAY_KEY = previous;
+  return error;
+};
+
+describe("razorpayConfigError", () => {
+  beforeEach(() => {
+    window.Razorpay = function () {};
+  });
+  afterEach(() => {
+    delete window.Razorpay;
+  });
+
+  test("explains a missing key instead of opening checkout", () => {
+    expect(configErrorWithKey(undefined)).toMatch(/REACT_APP_RAZORPAY_KEY/);
+  });
+
+  test("passes once a key is configured", () => {
+    expect(configErrorWithKey("rzp_test_example")).toBeNull();
+  });
+
+  test("reports an unavailable Razorpay SDK", () => {
+    delete window.Razorpay;
+    expect(configErrorWithKey("rzp_test_example")).toMatch(/could not be loaded/i);
+  });
 });
