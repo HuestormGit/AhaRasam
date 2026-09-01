@@ -1,15 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import "./Checkout.scss";
 import Modal from "../Modal/Modal";
 import { CartContext } from "../../context/CartContext";
 import { RAZORPAY_KEY, razorpayConfigError } from "../../utils/razorpay";
-
-const API_BASE = (
-  process.env.REACT_APP_STRAPI_URL ||
-  process.env.REACT_APP_DEV_URL ||
-  "http://localhost:1337"
-).replace(/\/$/, "");
+import { apiClient } from "../../utils/Api";
 
 const Checkout = ({ cartData, onClose }) => {
   const { clearCart } = useContext(CartContext);
@@ -87,10 +81,9 @@ const Checkout = ({ cartData, onClose }) => {
 
       // 1️⃣ Create Razorpay order on Strapi (backend endpoint)
       // note: your backend expects amount in the body (you were sending totalAmount)
-      const createRes = await axios.post(
-        `${API_BASE}/api/orders/razorpay/create`,
-        { amount: totalAmount }
-      );
+      const createRes = await apiClient.post("/api/orders/razorpay/create", {
+        amount: totalAmount,
+      });
 
       const { id: razorpayOrderId, amount, currency } = createRes.data?.data || {};
 
@@ -112,8 +105,8 @@ const Checkout = ({ cartData, onClose }) => {
         handler: async function (response) {
           try {
             // 3️⃣ Verify payment and save order in Strapi
-            const verifyRes = await axios.post(
-              `${API_BASE}/api/orders/razorpay/verify`,
+            const verifyRes = await apiClient.post(
+              "/api/orders/razorpay/verify",
               {
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_payment_id: response.razorpay_payment_id,

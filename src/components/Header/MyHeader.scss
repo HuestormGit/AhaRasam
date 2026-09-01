@@ -1,130 +1,159 @@
 @import "../../css-config/mixins.scss";
 
-.navbar {
+.my-navbar {
+  // Single source of truth for the logo column width / image size.
+  // Breakpoints (and sticky-nav) only override this number.
+  --nav-logo-size: 100px;
+
   background-color: #E1AD3F;
   padding: 0;
-  #navbarNav{
-    // max-height: 170px;
-    .navbar-nav{
-    flex: 1;
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
+
+  .container-fluid {
+    position: relative;
+  }
+
+  #navbarNav {
     width: 100%;
-      .nav-item {
-        display: flex;
-        align-items: center;
-        .nav-link{
-          display: flex;         // ✅ flex on link itself
-          align-items: center;  
-          color: #fff;
-          font-size: 20px;
-          line-height: 22px;
-          padding: 0.5em 1em;
-          font-family: "Barlow Condensed";
-          font-weight: 500;
-          transition: color 0.3s ease;
-          &:hover {
-            color: #b30000; // red hover like XD
-          }
-          @include md{
-            font-size: 22px;
-            line-height: 25px;
-            height: 170px;
-          }
-          @include lg{
-            font-size: 24px;
-            line-height: 29px;
-            height: 170px;
-          }
-        }
-      }
+  }
+
+  .navbar-layout,
+  .navbar-side {
+    width: 100%;
+  }
+
+  .navbar-side {
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5em 1em;
+    // normalise <button> vs <a>: a global `button { margin-top: 1rem }` in
+    // Modal.scss leaks here and would drop the button links 8px below the
+    // anchor links. All five links must share one vertical centre.
+    margin: 0;
+    border: 0;
+    appearance: none;
+    background: none;
+    color: #fff;
+    font-family: "Barlow Condensed";
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 22px;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #b30000;
     }
-  &.sticky-nav{
+  }
+
+  .navbar-brand {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+
+    img {
+      display: block;
+      width: var(--nav-logo-size);
+      height: var(--nav-logo-size);
+    }
+  }
+
+  .desktop-brand {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-brand {
+    width: 100%;
+
+    img {
+      margin: 0 auto;
+    }
+  }
+
+  &.sticky-nav {
     position: sticky;
-    background-color: #E1AD3F;
     top: 0;
+    z-index: 5;
     transform: translateY(-100px);
     animation: Stickey-nav 0.2s ease forwards;
-    z-index: 5;
-    img{
-    width: 100px;
-    height: 100px;
-    @include md{
-      width: 100px;
-      width: 100px;
-    }
-    @include lg{
-      height: 100px;
-      width: 100px;
+
+    @include md {
+      --nav-logo-size: 100px;
     }
   }
-  }
-  }
-  
-}
 
-.navbar-brand {
-    width: 100%;
-    text-align: center;
-    margin: auto;
-    img{
-      width: 100px;
-      height: 100px;
+  // ---- Desktop navbar ----
+  // Three grid tracks: [1fr] [logo] [1fr]. Because both outer tracks are an
+  // identical 1fr, the centre track is mathematically centred in the header
+  // regardless of how wide the left/right link text is. The logo lives IN that
+  // centre track (not absolutely positioned), so it can never overlap a group.
+  // `align-items: center` on the grid is the ONE rule that vertically centres
+  // both groups and the logo — no per-side offsets anywhere.
+  @include md {
+    --nav-logo-size: 180px;
 
-        @include md{
-          // min-width: 768px
-          width: 200px;
-          height: 200px;
-        }
-        @include lg{
-          // min-width: 1024px
-          width: 220px;
-          height: 220px;
-          // margin-top: 30px;
-
-        }
-        @include xl{
-          // min-width: 1280px
-          width: 220px;
-          height: 220px;
-          // margin-top: 30px;
-
-        }
-        @include xxl{
-          // min-width: 1536px
-          width: 220px;
-          height: 220px;
-          // margin-top: 30px;
-        }
-      
+    .navbar-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) var(--nav-logo-size) minmax(0, 1fr);
+      align-items: center;
+      min-height: var(--nav-logo-size);
     }
-  
+
+    .navbar-side {
+      flex-direction: row;
+    }
+
+    .navbar-left {
+      justify-content: flex-end;
+    }
+
+    .navbar-right {
+      justify-content: flex-start;
+    }
+
+    .nav-link {
+      padding: 0.5em;
+      font-size: 22px;
+      line-height: 25px;
+    }
+  }
+
+  @include lg {
+    --nav-logo-size: 200px;
+
+    .nav-link {
+      padding: 0.5em 1em;
+      font-size: 24px;
+      line-height: 29px;
+    }
+  }
 }
 
 button.navbar-toggler {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    border: none;
-    font-size: 25px;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  border: none;
+  font-size: 25px;
 }
 
 @keyframes Stickey-nav {
-  0%{
+  from {
     transform: translateY(-100px);
   }
-  100%{
+
+  to {
     transform: translateY(0);
   }
 }
-
-// @media screen and (min-width: 768px) {
-//   // .navbar-brand img {
-//   //   width: 100px;
-//   // }
-//   .navbar-brand {
-//     margin-right: 0;
-//     padding: 0 1em;
-//   }
-// }

@@ -1,12 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
 import "./Cart.scss";
-import Checkout from "../Checkout/Checkout";
 import trash from "../../assets/trash.png";
 
 const Cart = () => {
   const { cart, setCart } = useContext(CartContext);
-  const [showCheckout, setShowCheckout] = useState(false);
+  const navigate = useNavigate();
 
   // ✅ Calculate totals dynamically
   const totalAmount = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
@@ -120,17 +120,13 @@ const Cart = () => {
 
               <button
                 className="checkout-btn"
-                onClick={() => setShowCheckout(true)}
+                onClick={() => navigate("/checkout")}
               >
                 Proceed To Checkout
               </button>
             </>
           )}
         </section>
-
-        {showCheckout && (
-          <Checkout cartData={cart} onClose={() => setShowCheckout(false)} />
-        )}
       </div>
     </div>
   );
