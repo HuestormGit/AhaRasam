@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext, useRef } from "react";
-import { fetchDataFromApi } from "../../utils/Api";
+import { fetchDataFromApi, mediaUrl } from "../../utils/Api";
 import "./Products.scss";
 import { CartContext } from "../../context/CartContext";
 
@@ -133,7 +133,7 @@ const Products = () => {
               {products.map((product) => {
                 const productId = product.id;
                 const image =
-                  product.Image?.url ||
+                  mediaUrl(product.Image?.url) ||
                   "https://placehold.co/300x300?text=No+Image";
 
                 const variants = product.Variant || [];
@@ -225,7 +225,7 @@ const Products = () => {
               const productId = product.id;
 
               const image =
-                product.Image?.url ||
+                mediaUrl(product.Image?.url) ||
                 "https://placehold.co/300x300?text=No+Image";
 
               const variants = product.Variant || [];
