@@ -65,6 +65,11 @@
         border:1px solid #E4E4E4;
         width: 270px;
 
+        /* Column layout so ADD TO CART lines up along the bottom of every card,
+           however long the ingredients list runs. */
+        display: flex;
+        flex-direction: column;
+
         &:hover {
           border:1px solid #E1AD3F;
           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
@@ -80,6 +85,9 @@
 
         .product-details {
           text-align: left;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
 
           .title {
             font-family: "Barlow Condensed";
@@ -118,6 +126,15 @@
             margin: 8px 0;
             color: #000;
             font-weight: 400;
+          }
+
+          /* Shown in place of the variant/qty/add controls when a product has no
+             active Product Variant to sell yet. */
+          .variant-unavailable {
+            font-family: "Barlow Condensed";
+            font-size: 18px;
+            color: #707070;
+            margin: 8px 0;
           }
 
           .variant-drop {
@@ -174,6 +191,7 @@
 
         .add-btn {
           width: 100%;
+          margin-top: auto;
           background:#AA2423;
           color: #fff;
           padding: 10px;
@@ -181,7 +199,6 @@
           font-weight: bold;
           font-family: "Barlow Condensed";
           font-size: 24px;
-          margin-top: 10px;
           cursor: pointer;
           border: none;
           transition: 0.3s;
@@ -218,6 +235,11 @@
         border:1px solid #E4E4E4;
         width: 270px;
 
+        /* Column layout so ADD TO CART lines up along the bottom of every card,
+           however long the ingredients list runs. */
+        display: flex;
+        flex-direction: column;
+
         &:hover {
           border:1px solid #E1AD3F;
           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
@@ -233,6 +255,9 @@
 
         .product-details {
           text-align: left;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
 
           .title {
             font-family: "Barlow Condensed";
@@ -271,6 +296,15 @@
             margin: 8px 0;
             color: #000;
             font-weight: 400;
+          }
+
+          /* Shown in place of the variant/qty/add controls when a product has no
+             active Product Variant to sell yet. */
+          .variant-unavailable {
+            font-family: "Barlow Condensed";
+            font-size: 18px;
+            color: #707070;
+            margin: 8px 0;
           }
 
           .variant-drop {
@@ -326,6 +360,7 @@
 
         .add-btn {
           width: 100%;
+          margin-top: auto;
           background:#AA2423;
           color: #fff;
           padding: 8px 50px;
@@ -333,7 +368,6 @@
           font-weight: 400;
           font-family: "Barlow Condensed";
           font-size: 24px;
-          margin-top: 10px;
           cursor: pointer;
           border: none;
           transition: 0.3s;

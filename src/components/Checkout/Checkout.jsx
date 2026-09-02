@@ -4,6 +4,7 @@ import Modal from "../Modal/Modal";
 import { CartContext } from "../../context/CartContext";
 import { RAZORPAY_KEY, razorpayConfigError } from "../../utils/razorpay";
 import { apiClient } from "../../utils/Api";
+import { cartTotalMinor, formatAmount, minorToRupees } from "../../utils/money";
 
 const Checkout = ({ cartData, onClose }) => {
   const { clearCart } = useContext(CartContext);
@@ -21,7 +22,9 @@ const Checkout = ({ cartData, onClose }) => {
   const [processing, setProcessing] = useState(false);
   const [result, setResult] = useState(null); // { success, title, message, done }
 
-  const totalAmount = cartData.reduce((sum, item) => sum + item.price * item.qty, 0);
+  // Orders are integer paise on the backend; total in paise first, then rupees,
+  // which is what /orders/razorpay/create still expects in its `amount`.
+  const totalAmount = minorToRupees(cartTotalMinor(cartData));
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -192,11 +195,11 @@ const Checkout = ({ cartData, onClose }) => {
         <ul>
           {cartData.map((item, idx) => (
             <li key={idx}>
-              {item.productName} ({item.size}) - ₹{item.price} × {item.qty} = ₹{item.price * item.qty}
+              {item.productName} ({item.size}) - ₹{formatAmount(item.price)} × {item.qty} = ₹{formatAmount(item.price * item.qty)}
             </li>
           ))}
         </ul>
-        <h3>Total: ₹{totalAmount}</h3>
+        <h3>Total: ₹{formatAmount(totalAmount)}</h3>
 
         <input type="text" name="name" placeholder="Enter Name" value={form.name} onChange={handleChange} />
         {errors.name && <p className="error">{errors.name}</p>}
@@ -217,7 +220,7 @@ const Checkout = ({ cartData, onClose }) => {
         <input type="text" name="pincode" placeholder="Pincode" value={form.pincode} onChange={handleChange} />
 
         <button onClick={handlePayment} disabled={!isFormValid || processing}>
-          {processing ? "Creating Payment..." : `Pay ₹${totalAmount}`}
+          {processing ? "Creating Payment..." : `Pay ₹${formatAmount(totalAmount)}`}
         </button>
         <button onClick={onClose} disabled={processing}>
           Cancel

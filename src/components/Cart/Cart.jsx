@@ -2,14 +2,15 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
 import "./Cart.scss";
+import { cartTotalMinor, formatAmount, minorToRupees } from "../../utils/money";
 import trash from "../../assets/trash.png";
 
 const Cart = () => {
   const { cart, setCart } = useContext(CartContext);
   const navigate = useNavigate();
 
-  // ✅ Calculate totals dynamically
-  const totalAmount = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+  // ✅ Calculate totals dynamically (summed in paise, shown in rupees)
+  const totalAmount = minorToRupees(cartTotalMinor(cart));
   const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
 
   // ✅ Increase qty
@@ -67,7 +68,7 @@ const Cart = () => {
                           <p>{item.size}</p>
                         </td>
                         <td>
-                          <p>₹{item.price * item.qty}</p>
+                          <p>₹{formatAmount(item.price * item.qty)}</p>
                         </td>
                         <td>
                           <div className="d-flex align-items-center">
@@ -108,7 +109,7 @@ const Cart = () => {
                         <h3>Total</h3>
                       </td>
                       <td>
-                        <h3>₹{totalAmount}</h3>
+                        <h3>₹{formatAmount(totalAmount)}</h3>
                       </td>
                       <td>
                         <h3>{totalQty}</h3>
