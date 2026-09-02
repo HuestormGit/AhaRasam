@@ -2,11 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import "./Checkout.scss";
 import Modal from "../Modal/Modal";
 import { CartContext } from "../../context/CartContext";
+import { useCheckoutQuote } from "../../hooks/useCheckoutQuote";
 import { RAZORPAY_KEY, razorpayConfigError } from "../../utils/razorpay";
 import { apiClient } from "../../utils/Api";
-import { cartTotalMinor, formatAmount, minorToRupees } from "../../utils/money";
+import { formatMinor, gstSummaryLabel, minorToRupees } from "../../utils/money";
 
-const Checkout = ({ cartData, onClose }) => {
+const Checkout = ({ cartData = [], onClose }) => {
   const { clearCart } = useContext(CartContext);
   const [form, setForm] = useState({
     name: "",
@@ -21,10 +22,9 @@ const Checkout = ({ cartData, onClose }) => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [result, setResult] = useState(null); // { success, title, message, done }
+  const { quote, quoteLoading, quoteError } = useCheckoutQuote(cartData);
 
-  // Orders are integer paise on the backend; total in paise first, then rupees,
-  // which is what /orders/razorpay/create still expects in its `amount`.
-  const totalAmount = minorToRupees(cartTotalMinor(cartData));
+  const totalAmount = quote ? minorToRupees(quote.totalPaise) : 0;
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -72,6 +72,11 @@ const Checkout = ({ cartData, onClose }) => {
       return;
     }
 
+    if (!quote) {
+      showError("Quote unavailable", "Please review your cart and try again.");
+      return;
+    }
+
     // Fail clearly instead of opening a broken Razorpay dialog.
     const configError = razorpayConfigError();
     if (configError) {
@@ -82,8 +87,8 @@ const Checkout = ({ cartData, onClose }) => {
     try {
       setProcessing(true);
 
-      // 1️⃣ Create Razorpay order on Strapi (backend endpoint)
-      // note: your backend expects amount in the body (you were sending totalAmount)
+      // TODO: the Razorpay endpoint must rebuild this quote server-side before
+      // payment; passing the displayed quote total only preserves compatibility.
       const createRes = await apiClient.post("/api/orders/razorpay/create", {
         amount: totalAmount,
       });
@@ -192,14 +197,34 @@ const Checkout = ({ cartData, onClose }) => {
       <div className="popup-content">
         <h2>Checkout</h2>
 
-        <ul>
-          {cartData.map((item, idx) => (
-            <li key={idx}>
-              {item.productName} ({item.size}) - ₹{formatAmount(item.price)} × {item.qty} = ₹{formatAmount(item.price * item.qty)}
-            </li>
-          ))}
-        </ul>
-        <h3>Total: ₹{formatAmount(totalAmount)}</h3>
+        {!cartData.length && <p>Your cart is empty.</p>}
+        {quoteLoading && <p role="status">Calculating your total…</p>}
+        {quoteError && (
+          <div role="alert">
+            <p>{quoteError}</p>
+            <button type="button" onClick={onClose}>Review cart</button>
+          </div>
+        )}
+        {quote && (
+          <>
+            <ul>
+              {quote.items.map((item) => (
+                <li key={`${item.productDocumentId}:${item.variantDocumentId}`}>
+                  {item.productName} ({item.size}) - ₹{formatMinor(item.unitSellingPricePaise)} × {item.quantity} = ₹{formatMinor(item.lineTotalPaise)}
+                </li>
+              ))}
+            </ul>
+            <section className="checkout-summary" aria-label="Price summary">
+              <p><span>MRP Total</span><span>₹{formatMinor(quote.mrpTotalPaise)}</span></p>
+              <p className="discount"><span>Introductory Discount</span><span>-₹{formatMinor(quote.discountTotalPaise)}</span></p>
+              <p><span>Taxable Subtotal</span><span>₹{formatMinor(quote.taxableSubtotalPaise)}</span></p>
+              <p><span>{gstSummaryLabel(quote.items)}</span><span>₹{formatMinor(quote.gstTotalPaise)}</span></p>
+              <p className="checkout-subtotal"><strong>Cart Subtotal</strong><strong>₹{formatMinor(quote.subtotalPaise)}</strong></p>
+              <p><span>Shipping</span><span>Calculated at checkout</span></p>
+              <p className="checkout-total"><strong>Total</strong><strong>₹{formatMinor(quote.totalPaise)}</strong></p>
+            </section>
+          </>
+        )}
 
         <input type="text" name="name" placeholder="Enter Name" value={form.name} onChange={handleChange} />
         {errors.name && <p className="error">{errors.name}</p>}
@@ -219,8 +244,15 @@ const Checkout = ({ cartData, onClose }) => {
         <input type="text" name="state" placeholder="State" value={form.state} onChange={handleChange} />
         <input type="text" name="pincode" placeholder="Pincode" value={form.pincode} onChange={handleChange} />
 
-        <button onClick={handlePayment} disabled={!isFormValid || processing}>
-          {processing ? "Creating Payment..." : `Pay ₹${formatAmount(totalAmount)}`}
+        <button
+          onClick={handlePayment}
+          disabled={!isFormValid || processing || quoteLoading || !quote}
+        >
+          {processing
+            ? "Creating Payment..."
+            : quote
+              ? `Pay ₹${formatMinor(quote.totalPaise)}`
+              : "Quote unavailable"}
         </button>
         <button onClick={onClose} disabled={processing}>
           Cancel

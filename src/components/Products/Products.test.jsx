@@ -111,6 +111,8 @@ test("adds the selected variant to the cart and persists it", async () => {
   await waitFor(() => expect(storedCart()).toHaveLength(1));
   // The cart carries the selling price, not the MRP shown on the card.
   expect(storedCart()[0]).toEqual({
+    productDocumentId: "ckm66wbv3hzkhyxhgvzuyqbi",
+    variantDocumentId: "qnm9g6bzzmqd4jx7shdl5bla",
     productId: 8,
     productName: "Classic",
     variantId: 8,

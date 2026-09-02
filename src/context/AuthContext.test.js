@@ -50,6 +50,8 @@ test("uses the local Strapi auth contract and keeps the cart through login", asy
 
   act(() =>
     result.current.cart.addToCart({
+      productDocumentId: "product-1",
+      variantDocumentId: "variant-1",
       productId: 1,
       size: "200g",
       qty: 2,

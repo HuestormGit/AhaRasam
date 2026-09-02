@@ -6,7 +6,10 @@ const renderCart = () =>
   renderHook(() => useContext(CartContext), { wrapper: CartProvider });
 
 const item = (over = {}) => ({
+  productDocumentId: "product-1",
+  variantDocumentId: "variant-1",
   productId: 1,
+  variantId: 11,
   productName: "AHA! Rasam Classic",
   size: "200g",
   price: 150,
@@ -16,21 +19,25 @@ const item = (over = {}) => ({
 
 beforeEach(() => localStorage.clear());
 
-test("adds to cart and merges quantity for the same product + size", () => {
+test("merges the same product and variant document IDs", () => {
   const { result } = renderCart();
 
   act(() => result.current.addToCart(item()));
-  act(() => result.current.addToCart(item({ qty: 2 })));
+  act(() => result.current.addToCart(item({ qty: 2, size: "renamed display label" })));
 
   expect(result.current.cart).toHaveLength(1);
   expect(result.current.cart[0].qty).toBe(3);
 });
 
-test("keeps different sizes of the same product as separate lines", () => {
+test("keeps different variant document IDs separate even with the same size", () => {
   const { result } = renderCart();
 
   act(() => result.current.addToCart(item()));
-  act(() => result.current.addToCart(item({ size: "500g", price: 320 })));
+  act(() =>
+    result.current.addToCart(
+      item({ variantDocumentId: "variant-2", variantId: 12, price: 320 })
+    )
+  );
 
   expect(result.current.cart).toHaveLength(2);
 });
@@ -44,17 +51,61 @@ test("persists the cart across a remount", () => {
   expect(result.current.cart).toEqual([item({ qty: 4 })]);
 });
 
-test("removeFromCart and clearCart empty the cart and storage", () => {
+test("updates and removes a line by stable document IDs", () => {
   const { result } = renderCart();
 
   act(() => result.current.addToCart(item()));
-  act(() => result.current.addToCart(item({ size: "500g" })));
-  act(() => result.current.removeFromCart(0));
+  act(() => result.current.updateQuantity("product-1", "variant-1", 4));
+  expect(result.current.cart[0].qty).toBe(4);
+
+  act(() => result.current.removeFromCart("product-1", "variant-1"));
+  expect(result.current.cart).toEqual([]);
+});
+
+test("clearCart empties the cart and storage", () => {
+  const { result } = renderCart();
+
+  act(() => result.current.addToCart(item()));
+  act(() =>
+    result.current.addToCart(item({ variantDocumentId: "variant-2" }))
+  );
+  act(() => result.current.removeFromCart("product-1", "variant-1"));
   expect(result.current.cart).toHaveLength(1);
 
   act(() => result.current.clearCart());
   expect(result.current.cart).toEqual([]);
   expect(JSON.parse(localStorage.getItem("cartList"))).toEqual([]);
+});
+
+test("restores a valid modern cart", () => {
+  localStorage.setItem("cartList", JSON.stringify([item({ qty: 2 })]));
+  const { result } = renderCart();
+  expect(result.current.cart).toEqual([item({ qty: 2 })]);
+});
+
+test("discards legacy lines without a product document ID", () => {
+  const legacy = item();
+  delete legacy.productDocumentId;
+  localStorage.setItem("cartList", JSON.stringify([legacy]));
+  const { result } = renderCart();
+  expect(result.current.cart).toEqual([]);
+});
+
+test("discards legacy lines without a variant document ID", () => {
+  const legacy = item();
+  delete legacy.variantDocumentId;
+  localStorage.setItem("cartList", JSON.stringify([legacy]));
+  const { result } = renderCart();
+  expect(result.current.cart).toEqual([]);
+});
+
+test("discards malformed stored lines", () => {
+  localStorage.setItem(
+    "cartList",
+    JSON.stringify([null, {}, item({ qty: 0 }), item({ qty: "2" })])
+  );
+  const { result } = renderCart();
+  expect(result.current.cart).toEqual([]);
 });
 
 test("survives corrupted cart storage", () => {

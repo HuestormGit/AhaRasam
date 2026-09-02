@@ -122,10 +122,12 @@ const Products = () => {
     if (!variant) return;
 
     addToCart({
+      productDocumentId: product.documentId,
+      variantDocumentId: variant.documentId,
       productId,
       productName: product.Title,
-      // variantId/sku identify the sellable entity the order will be built from;
-      // size/price keep the existing cart + UI fields (rupees) unchanged.
+      // Numeric IDs and display snapshots are convenient for the current UI;
+      // checkout identity and authority come from the document IDs above.
       variantId: variant.id,
       sku: variant.sku,
       size: variantLabel(variant),

@@ -18,3 +18,11 @@ export const formatAmount = (rupees) => {
   const minor = rupeesToMinor(rupees);
   return minor % 100 === 0 ? String(minor / 100) : (minor / 100).toFixed(2);
 };
+
+export const formatMinor = (minor) =>
+  Number.isSafeInteger(minor) ? (minor / 100).toFixed(2) : "0.00";
+
+export const gstSummaryLabel = (items = []) => {
+  const rates = [...new Set(items.map((item) => item.gstRateBps))];
+  return rates.length === 1 ? `GST @ ${rates[0] / 100}%` : "GST";
+};
