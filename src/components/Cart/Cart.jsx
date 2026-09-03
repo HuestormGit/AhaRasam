@@ -3,6 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
 import "./Cart.scss";
 import { useCheckoutQuote } from "../../hooks/useCheckoutQuote";
+import {
+  deliveryErrorMessage,
+  formatDeliveryEstimate,
+  unserviceableMessage,
+  useDeliveryCheck,
+} from "../../hooks/useDeliveryCheck";
 import { formatMinor, gstSummaryLabel } from "../../utils/money";
 import trash from "../../assets/trash.png";
 
@@ -10,6 +16,8 @@ const Cart = () => {
   const { cart, updateQuantity, removeFromCart } = useContext(CartContext);
   const navigate = useNavigate();
   const { quote, quoteLoading, quoteError, retryQuote } = useCheckoutQuote(cart);
+  const delivery = useDeliveryCheck(cart);
+  const { selectedOption } = delivery;
   const quotedLines = new Map(
     (quote?.items || []).map((item) => [
       `${item.productDocumentId}:${item.variantDocumentId}`,
@@ -151,17 +159,120 @@ const Cart = () => {
                     <strong>Cart Subtotal</strong>
                     <strong>₹{formatMinor(quote.subtotalPaise)}</strong>
                   </div>
+                  <div className="delivery-check">
+                    <label htmlFor="delivery-pincode">Delivery Pincode</label>
+                    <div className="delivery-check-row">
+                      <input
+                        id="delivery-pincode"
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        maxLength={6}
+                        autoComplete="postal-code"
+                        placeholder="411057"
+                        value={delivery.pincode}
+                        onChange={(event) => delivery.setPincode(event.target.value)}
+                      />
+                      <button
+                        type="button"
+                        className="delivery-check-btn"
+                        onClick={delivery.check}
+                        disabled={delivery.status === "checking"}
+                      >
+                        {delivery.status === "checking" ? "Checking…" : "Check"}
+                      </button>
+                    </div>
+
+                    {delivery.pincodeError && (
+                      <p className="delivery-invalid" role="alert">
+                        {delivery.pincodeError}
+                      </p>
+                    )}
+                    {delivery.status === "checking" && (
+                      <p className="delivery-status" role="status">
+                        Checking delivery availability…
+                      </p>
+                    )}
+                    {delivery.status === "ready" && (
+                      <p className="delivery-available">✓ Delivery available</p>
+                    )}
+                    {/* Only options the backend actually returned are rendered:
+                        no Express placeholder, no "Express unavailable" row. */}
+                    {delivery.status === "ready" && delivery.options.length > 0 && (
+                      <fieldset className="delivery-options">
+                        <legend>Delivery options</legend>
+                        {delivery.options.map((option) => (
+                          <label
+                            key={option.id}
+                            className={
+                              option.id === selectedOption?.id
+                                ? "delivery-option is-selected"
+                                : "delivery-option"
+                            }
+                          >
+                            <input
+                              type="radio"
+                              name="delivery-option"
+                              value={option.id}
+                              checked={option.id === selectedOption?.id}
+                              onChange={() => delivery.selectOption(option.id)}
+                            />
+                            <span className="delivery-option-text">
+                              <span className="delivery-option-label">{option.label}</span>
+                              <span className="delivery-option-meta">
+                                ₹{formatMinor(option.shippingPaise)} · Estimated{" "}
+                                {formatDeliveryEstimate(option)}
+                              </span>
+                            </span>
+                          </label>
+                        ))}
+                      </fieldset>
+                    )}
+                    {delivery.status === "unserviceable" && (
+                      <p className="delivery-unserviceable" role="alert">
+                        {unserviceableMessage}
+                      </p>
+                    )}
+                    {delivery.status === "error" && (
+                      <div className="delivery-error" role="alert">
+                        <p>{deliveryErrorMessage}</p>
+                        <button type="button" onClick={delivery.retry}>
+                          Retry
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
                   <div className="summary-row shipping-row">
                     <span>Shipping</span>
-                    <span>Calculated at checkout</span>
+                    <span>
+                      {selectedOption
+                        ? `₹${formatMinor(selectedOption.shippingPaise)}`
+                        : "Enter pincode to check"}
+                    </span>
                   </div>
+                  {selectedOption && (
+                    <>
+                      <div className="summary-row">
+                        <span>Estimated Delivery</span>
+                        <span>{formatDeliveryEstimate(selectedOption)}</span>
+                      </div>
+                      <div className="summary-row cart-total">
+                        <strong>Total</strong>
+                        {/* Display only, in paise. The server re-quotes at payment. */}
+                        <strong>
+                          ₹{formatMinor(quote.subtotalPaise + selectedOption.shippingPaise)}
+                        </strong>
+                      </div>
+                    </>
+                  )}
                 </section>
               )}
 
               <button
                 type="button"
                 className="checkout-btn"
-                disabled={!quote}
+                disabled={!quote || !selectedOption}
                 onClick={() => navigate("/checkout")}
               >
                 Proceed To Checkout

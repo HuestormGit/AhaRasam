@@ -192,6 +192,148 @@
     border-top: 1px solid #ddd0bc;
   }
 
+  .cart-total {
+    margin-top: 8px;
+    padding-top: 15px;
+    border-top: 1px solid #8e806c;
+    font-size: 21px;
+  }
+
+  .delivery-check {
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid #ddd0bc;
+    text-align: left;
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #4b4033;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .delivery-check-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    input {
+      flex: 1 1 160px;
+      min-width: 0;
+      padding: 10px 12px;
+      border: 1px solid #c9b89b;
+      border-radius: 8px;
+      background: #fff;
+      font-family: inherit;
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+
+    .delivery-check-btn {
+      flex: 0 0 auto;
+      padding: 10px 22px;
+      border: 0;
+      border-radius: 8px;
+      background: #aa2423;
+      color: #fff;
+      font-family: Barlow, Condensed SemiBold;
+      font-size: 17px;
+      cursor: pointer;
+
+      &:disabled { cursor: not-allowed; opacity: 0.55; }
+    }
+
+    p { margin: 10px 0 0; font-size: 16px; }
+
+    .delivery-available { color: #1f7a4d; font-weight: 600; }
+
+    .delivery-options {
+      margin: 14px 0 0;
+      padding: 0;
+      border: 0;
+
+      legend {
+        padding: 0;
+        margin-bottom: 8px;
+        color: #4b4033;
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
+
+    .delivery-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+      padding: 10px 12px;
+      border: 1px solid #ddd0bc;
+      border-radius: 8px;
+      background: #fff;
+      cursor: pointer;
+
+      &:last-child { margin-bottom: 0; }
+
+      // Selection is carried by the radio and the border weight, not by colour
+      // alone.
+      &.is-selected {
+        border-color: #aa2423;
+        border-width: 2px;
+        padding: 9px 11px;
+        background: #fdf4ec;
+      }
+
+      input {
+        flex: 0 0 auto;
+        width: auto;
+        min-width: 0;
+        margin: 2px 0 0;
+        padding: 0;
+        border: 0;
+        accent-color: #aa2423;
+        letter-spacing: normal;
+      }
+
+      // Focus has to survive on the row, since the radio itself is small.
+      &:focus-within { outline: 2px solid #aa2423; outline-offset: 2px; }
+    }
+
+    .delivery-option-text {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px 12px;
+      min-width: 0;
+    }
+
+    .delivery-option-label { font-size: 17px; font-weight: 600; }
+
+    .delivery-option-meta {
+      color: #4b4033;
+      font-size: 16px;
+    }
+    .delivery-invalid,
+    .delivery-unserviceable { color: #aa2423; }
+
+    .delivery-error {
+      margin-top: 10px;
+
+      p { margin: 0 0 8px; color: #aa2423; }
+
+      button {
+        padding: 7px 16px;
+        border: 1px solid #aa2423;
+        border-radius: 8px;
+        background: transparent;
+        color: #aa2423;
+        font-family: inherit;
+        font-size: 15px;
+        cursor: pointer;
+      }
+    }
+  }
+
   .checkout-btn {
     display: block;
     margin-left: auto;
@@ -254,5 +396,15 @@
     .order-summary { margin-top: 25px; padding: 20px 16px; }
     .summary-row { gap: 14px; font-size: 17px; }
     .checkout-btn { width: 100%; margin-left: 0; }
+
+    // Stacked on narrow screens so a 6-digit field never forces a sideways scroll.
+    .delivery-check {
+      .delivery-check-row { flex-direction: column; }
+      // flex-basis sizes the main axis, so the desktop 160px becomes the
+      // input's HEIGHT once the row stacks. Let content size it instead.
+      input { flex: 1 1 auto; }
+      input,
+      .delivery-check-btn { width: 100%; }
+    }
   }
 }
