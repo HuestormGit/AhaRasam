@@ -85,6 +85,33 @@
     }
   }
 
+  .checkout-summary {
+    margin-bottom: 1.25rem;
+    padding: 1rem;
+    border: 1px solid #eadfce;
+    border-radius: 8px;
+    background: #fffaf1;
+
+    p {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin: 0;
+      padding: 0.25rem 0;
+
+      span:last-child { text-align: right; }
+    }
+
+    .discount { color: #8a1f1e; }
+
+    .checkout-subtotal,
+    .checkout-total {
+      margin-top: 0.45rem;
+      padding-top: 0.65rem;
+      border-top: 1px solid #cdbfa9;
+    }
+  }
+
   input {
     display: block;
     width: 100%;

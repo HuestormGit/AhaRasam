@@ -1,194 +1,258 @@
 @import "../../css-config/mixins.scss";
-// .navbg{
-//     padding-top: 100px;
-//     margin-top: -100px;
-//     background-color: #e1ad3f;
-// }
-.cart-container{
-    margin: 150px 0;
-    text-align: center;
-    .cart-section{
-        @include xl{
-            width: 100%;
-            max-width: 1200px;
-            margin: auto;
-        }
-        h2{
-            font-family: Barlow, Condensed SemiBold;
-            color: #AA2423;
-            font-weight: 600;
-            font-size: 20px;
-            line-height: 28px;
-            margin-bottom: 30px;
-            @include md{
-                font-size: 30px;
-                line-height: 38px;
-            }
-            @include lg{
-                font-size: 40px;
-                line-height: 48px;
-            }
-        }
-        p.no-product{
-            text-align: center;
-            font-size: 20px;
-            font-family: Barlow, Condensed;
-            font-weight: 400; 
-            color: #000000;
-            padding: 50px 0;
-            @include md{
-                font-size: 24px;     
-                padding: 110px 0 40px;
-            }
-        }
-        table
-        {
-            width: 100%;
-            border-collapse: collapse;
-            thead.red-dark
-            {
-                tr{
-                    th{
-                        font-family: Barlow, Condensed;
-                        font-size: 18px;
-                        line-height: 20px;
-                        font-weight: 400;
-                        padding: 15px;
-                        text-align: left;
-                        background-color: #AA2423 !important;
-                        color: #fff;
-                        @include md{
-                            font-size: 20px;
-                            line-height: 24px;
-                        }
-                        @include lg{
-                            font-size: 24px;
-                            line-height: 28px;
-                        }
-                    }
-                }
-                
-            }
-            tbody
-            {
-                tr
-                {
-                    td
-                    {
-                        padding: 20px;
-                        text-align: left;
-                        vertical-align: middle;
-                        h4
-                        {
-                            color: #AA2423;
-                            font-family: Barlow, Condensed SemiBold;
-                            font-size: 20px;
-                            line-height: 18px;
-                            font-weight: 600;
-                            @include md
-                            {
-                                font-size: 25px;
-                                line-height: 23px;
-                            }
-                            @include lg
-                            {
-                                font-size: 30px;
-                                line-height: 28px;
-                            }
-                        }
-                        p
-                        {
-                            font-family: Barlow, Condensed;
-                            color: #000;
-                            font-size: 18px;
-                            line-height: 18px;
-                            font-weight: 400;
-                            @include md
-                            {
-                                font-size: 20px;
-                                line-height: 18px;
-                            }
-                            @include lg
-                            {
-                                font-size: 24px;
-                                line-height: 28px;
-                            }
-                        }
-                        img.trash
-                        {
-                            width: 18px;
-                            height: 20px;
-                            margin: auto 5px;
-                            @include md{
-                            width: 20px;
-                            height: 24px;
-                            }
-                            @include lg{
-                            width: 26px;
-                            height: 30px;
-                            }
-                        }
-                        .varqty-sec{
-                            display: flex;
-                            align-items: center;
-                        }
 
-                        .qty-btn-left{border-radius: 10px 1px 1px 10px;}
-                        .qty-btn-right{border-radius: 1px 10px 10px 1px;}
+.cart-container {
+  margin: 150px 0;
+  text-align: center;
 
-                        .qty-btn {
-                            background: #E1AD3F;
-                            border: 0px solid #ddd;
-                            // border-radius: 6px;
-                            width: 32px;
-                            height: 32px;
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            font-size: 1.1rem;
-                            font-weight: 600;
-                            cursor: pointer;
-                            transition: background 0.3s ease;
-                            margin: 0;
-
-                            &:hover {
-                            background: #e0e0e0;
-                            }
-                        }
-
-                        .qty-value {
-                            min-width: 24px;
-                            text-align: center;
-                            font-weight: 600;
-                            font-size: 1rem;
-                        }
-
-                    }
-                }
-            }
-            tfoot 
-            {
-                border-top: 2px solid #000;
-                padding: 20px;
-                text-align: left;
-                vertical-align: middle;
-                tr{
-                    border-bottom-style: hidden;
-                    td 
-                    {
-                        padding: 20px;
-                        font-family: "Barlow Condensed";
-                        font-size: 22px;
-                        text-align: left;
-                        font-weight: 500;
-                    }
-                }
-                
-            }
-        }
-        
-
+  .cart-section {
+    @include xl {
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
     }
-    
 
+    h2 {
+      margin-bottom: 30px;
+      color: #aa2423;
+      font-family: Barlow, Condensed SemiBold;
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 28px;
+
+      @include md { font-size: 30px; line-height: 38px; }
+      @include lg { font-size: 40px; line-height: 48px; }
+    }
+
+    .no-product {
+      padding: 50px 0;
+      color: #000;
+      font-family: Barlow, Condensed;
+      font-size: 20px;
+
+      @include md { padding: 110px 0 40px; font-size: 24px; }
+    }
+  }
+
+  .cart-status,
+  .quote-error {
+    margin: 0 0 20px;
+    font-family: Barlow, Condensed;
+    font-size: 18px;
+  }
+
+  .quote-error {
+    padding: 16px;
+    border: 1px solid #aa2423;
+    border-radius: 8px;
+    color: #731817;
+
+    p { margin: 0 0 10px; }
+
+    button {
+      padding: 8px 18px;
+      border: 0;
+      border-radius: 6px;
+      background: #aa2423;
+      color: #fff;
+      cursor: pointer;
+    }
+  }
+
+  .cart-table-wrap { width: 100%; }
+
+  .cart-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    thead th {
+      padding: 15px;
+      background-color: #aa2423 !important;
+      color: #fff;
+      font-family: Barlow, Condensed;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 20px;
+      text-align: left;
+
+      @include md { font-size: 20px; line-height: 24px; }
+      @include lg { font-size: 22px; line-height: 28px; }
+    }
+
+    tbody tr { border-bottom: 1px solid #e4e4e4; }
+
+    tbody td {
+      padding: 20px 15px;
+      color: #000;
+      font-family: Barlow, Condensed;
+      font-size: 18px;
+      text-align: left;
+      vertical-align: middle;
+
+      @include md { font-size: 20px; }
+
+      h4 {
+        margin: 0 0 7px;
+        color: #aa2423;
+        font-family: Barlow, Condensed SemiBold;
+        font-size: 20px;
+        font-weight: 600;
+
+        @include md { font-size: 25px; }
+        @include lg { font-size: 28px; }
+      }
+
+      p { margin: 0; }
+    }
+  }
+
+  .discount { color: #8a1f1e; }
+
+  .quantity-row,
+  .varqty-sec {
+    display: flex;
+    align-items: center;
+  }
+
+  .remove-btn {
+    margin: 0 8px 0 0;
+    padding: 5px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+
+    .trash { width: 20px; height: 24px; }
+  }
+
+  .qty-btn {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: #e1ad3f;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover { background: #d49b24; }
+  }
+
+  .qty-btn-left { border-radius: 10px 1px 1px 10px; }
+  .qty-btn-right { border-radius: 1px 10px 10px 1px; }
+
+  .qty-value {
+    min-width: 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .order-summary {
+    width: 100%;
+    max-width: 560px;
+    margin: 36px 0 20px auto;
+    padding: 24px;
+    border: 1px solid #e2d4bd;
+    border-radius: 10px;
+    background: #fffaf1;
+    font-family: Barlow, Condensed;
+
+    h3 {
+      margin: 0 0 20px;
+      color: #aa2423;
+      font-size: 24px;
+      text-align: left;
+      text-transform: uppercase;
+    }
+  }
+
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 7px 0;
+    font-size: 18px;
+    text-align: left;
+
+    span:last-child { text-align: right; }
+  }
+
+  .cart-subtotal {
+    margin-top: 8px;
+    padding-top: 15px;
+    border-top: 1px solid #8e806c;
+    font-size: 21px;
+  }
+
+  .shipping-row {
+    margin-top: 12px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd0bc;
+  }
+
+  .checkout-btn {
+    display: block;
+    margin-left: auto;
+    padding: 12px 24px;
+    border: 0;
+    border-radius: 8px;
+    background: #aa2423;
+    color: #fff;
+    font-family: Barlow, Condensed SemiBold;
+    font-size: 18px;
+    cursor: pointer;
+
+    &:disabled { cursor: not-allowed; opacity: 0.55; }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .cart-container {
+    margin: 110px 0 80px;
+
+    .cart-table {
+      thead { display: none; }
+      tbody,
+      tr,
+      td { display: block; width: 100%; }
+
+      tbody tr {
+        margin-bottom: 18px;
+        padding: 16px;
+        border: 1px solid #e2d4bd;
+        border-radius: 9px;
+      }
+
+      tbody td {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 8px 0;
+        text-align: right;
+
+        &::before {
+          content: attr(data-label);
+          color: #4b4033;
+          font-weight: 600;
+          text-align: left;
+        }
+      }
+
+      .product-cell {
+        display: block;
+        padding-bottom: 15px;
+        text-align: left;
+
+        &::before { display: none; }
+      }
+
+      .quantity-cell { align-items: center; }
+    }
+
+    .order-summary { margin-top: 25px; padding: 20px 16px; }
+    .summary-row { gap: 14px; font-size: 17px; }
+    .checkout-btn { width: 100%; margin-left: 0; }
+  }
 }
