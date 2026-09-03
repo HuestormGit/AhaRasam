@@ -67,8 +67,8 @@ const Products = () => {
 
   const handleQtyChange = (productId, delta) => {
     setQuantities((prev) => {
-      const current = prev[productId] || 0;
-      return { ...prev, [productId]: Math.max(current + delta, 0) };
+      const current = prev[productId] || 1;
+      return { ...prev, [productId]: Math.max(current + delta, 1) };
     });
   };
 
@@ -108,7 +108,7 @@ const Products = () => {
   };
 
   const handleAddToCart = (productId, product) => {
-    const qty = quantities[productId] || 0;
+    const qty = quantities[productId] || 1;
 
     if (qty === 0) {
       alert("Please select quantity before adding to cart.");
@@ -167,7 +167,7 @@ const Products = () => {
 
                 const variants = getVariants(product);
                 const selectedIdx = selectedVariantIndex[productId] ?? 0;
-                const qty = quantities[productId] || 0;
+                const qty = quantities[productId] || 1;
 
                 const ingredientsText = extractText(product.Ingredients);
 
@@ -266,7 +266,7 @@ const Products = () => {
 
               const variants = getVariants(product);
               const selectedIdx = selectedVariantIndex[productId] ?? 0;
-              const qty = quantities[productId] || 0;
+              const qty = quantities[productId] || 1;
 
               const ingredientsText = extractText(product.Ingredients);
 

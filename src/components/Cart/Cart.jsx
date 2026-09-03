@@ -59,9 +59,10 @@ const Cart = () => {
                   <thead className="red-dark">
                     <tr className="tableheadingrow">
                       <th>Product</th>
-                      <th>MRP (line)</th>
-                      <th>Discount (line)</th>
-                      <th>Price (line total)</th>
+                      <th>Weight</th>
+                      <th>MRP</th>
+                      <th>Discount</th>
+                      <th>Price</th>
                       <th>Quantity</th>
                     </tr>
                   </thead>
@@ -73,17 +74,20 @@ const Cart = () => {
                         <tr key={key} className="tabledatarow">
                           <td className="product-cell" data-label="Product">
                             <h4>{quotedItem?.productName || item.productName}</h4>
-                            <p>{quotedItem?.size || item.size}</p>
                           </td>
-                          <td data-label="MRP (line)">
+                          <td data-label="Weight">
+                            {/* Strapi packSize wins once quoted; cached size is fallback only. */}
+                            {quotedItem ? quotedItem.size : item.size}
+                          </td>
+                          <td data-label="MRP">
                             {quotedItem ? `₹${formatMinor(quotedItem.lineMrpPaise)}` : "—"}
                           </td>
-                          <td className="discount" data-label="Discount (line)">
+                          <td className="discount" data-label="Discount">
                             {quotedItem
                               ? `-₹${formatMinor(quotedItem.lineDiscountPaise)}`
                               : "—"}
                           </td>
-                          <td data-label="Price (line total)">
+                          <td data-label="Price">
                             {quotedItem ? `₹${formatMinor(quotedItem.lineTotalPaise)}` : "—"}
                           </td>
                           <td className="quantity-cell" data-label="Quantity">

@@ -26,3 +26,6 @@ yarn-error.log*
 .env
 .env.*
 !.env.example
+
+# local test scripts (kept out of version control)
+/src/tests/
