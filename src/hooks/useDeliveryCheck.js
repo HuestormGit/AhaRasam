@@ -71,10 +71,25 @@ export const readStoredDelivery = () => {
   }
 };
 
-const writeStoredDelivery = (value) => {
+// Drops the remembered delivery pick. Used by checkout when the server re-rates
+// the shipment and the stored choice is no longer good: after a successful
+// payment, after a 409 from payment creation, and on "Change pincode".
+export const clearStoredDelivery = () => {
   try {
-    if (value) sessionStorage.setItem(DELIVERY_STORAGE_KEY, JSON.stringify(value));
-    else sessionStorage.removeItem(DELIVERY_STORAGE_KEY);
+    if (typeof sessionStorage === "undefined") return;
+    sessionStorage.removeItem(DELIVERY_STORAGE_KEY);
+  } catch {
+    /* storage blocked or unavailable: display-only state, nothing to recover */
+  }
+};
+
+const writeStoredDelivery = (value) => {
+  if (!value) {
+    clearStoredDelivery();
+    return;
+  }
+  try {
+    sessionStorage.setItem(DELIVERY_STORAGE_KEY, JSON.stringify(value));
   } catch {
     /* storage blocked: display-only state, nothing to recover */
   }
