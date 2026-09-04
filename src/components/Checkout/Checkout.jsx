@@ -1,14 +1,21 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import "./Checkout.scss";
 import Modal from "../Modal/Modal";
 import { CartContext } from "../../context/CartContext";
 import { useCheckoutQuote } from "../../hooks/useCheckoutQuote";
+import {
+  formatDeliveryEstimate,
+  readStoredDelivery,
+} from "../../hooks/useDeliveryCheck";
 import { RAZORPAY_KEY, razorpayConfigError } from "../../utils/razorpay";
 import { apiClient } from "../../utils/Api";
 import { formatMinor, gstSummaryLabel, minorToRupees } from "../../utils/money";
 
 const Checkout = ({ cartData = [], onClose }) => {
   const { clearCart } = useContext(CartContext);
+  // Checked on the cart page and carried across the navigation. Display only —
+  // payment creation will re-quote delivery server-side.
+  const delivery = useMemo(readStoredDelivery, []);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -16,7 +23,7 @@ const Checkout = ({ cartData = [], onClose }) => {
     address: "",
     city: "",
     state: "",
-    pincode: "",
+    pincode: delivery?.destinationPincode || "",
   });
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
@@ -24,7 +31,9 @@ const Checkout = ({ cartData = [], onClose }) => {
   const [result, setResult] = useState(null); // { success, title, message, done }
   const { quote, quoteLoading, quoteError } = useCheckoutQuote(cartData);
 
-  const totalAmount = quote ? minorToRupees(quote.totalPaise) : 0;
+  const shippingPaise = delivery?.option.shippingPaise || 0;
+  const orderTotalPaise = quote ? quote.subtotalPaise + shippingPaise : 0;
+  const totalAmount = minorToRupees(orderTotalPaise);
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -74,6 +83,14 @@ const Checkout = ({ cartData = [], onClose }) => {
 
     if (!quote) {
       showError("Quote unavailable", "Please review your cart and try again.");
+      return;
+    }
+
+    if (!delivery) {
+      showError(
+        "Delivery not checked",
+        "Please check delivery for your pincode in the cart before paying."
+      );
       return;
     }
 
@@ -220,8 +237,27 @@ const Checkout = ({ cartData = [], onClose }) => {
               <p><span>Taxable Subtotal</span><span>₹{formatMinor(quote.taxableSubtotalPaise)}</span></p>
               <p><span>{gstSummaryLabel(quote.items)}</span><span>₹{formatMinor(quote.gstTotalPaise)}</span></p>
               <p className="checkout-subtotal"><strong>Cart Subtotal</strong><strong>₹{formatMinor(quote.subtotalPaise)}</strong></p>
-              <p><span>Shipping</span><span>Calculated at checkout</span></p>
-              <p className="checkout-total"><strong>Total</strong><strong>₹{formatMinor(quote.totalPaise)}</strong></p>
+              <p><span>Shipping</span><span>{delivery ? `₹${formatMinor(shippingPaise)}` : "Check delivery in your cart"}</span></p>
+              <p className="checkout-total"><strong>Total</strong><strong>₹{formatMinor(orderTotalPaise)}</strong></p>
+            </section>
+            <section className="checkout-delivery" aria-label="Delivery">
+              {delivery ? (
+                <>
+                  <p className="delivery-to">Delivery to {delivery.destinationPincode}</p>
+                  <p>
+                    <span>{delivery.option.label}</span>
+                    <span>₹{formatMinor(delivery.option.shippingPaise)}</span>
+                  </p>
+                  <p>Estimated {formatDeliveryEstimate(delivery.option)}</p>
+                </>
+              ) : (
+                <>
+                  <p>We don't have a delivery pincode for this order yet.</p>
+                  <button type="button" onClick={onClose}>
+                    Check delivery in cart
+                  </button>
+                </>
+              )}
             </section>
           </>
         )}
@@ -246,12 +282,12 @@ const Checkout = ({ cartData = [], onClose }) => {
 
         <button
           onClick={handlePayment}
-          disabled={!isFormValid || processing || quoteLoading || !quote}
+          disabled={!isFormValid || processing || quoteLoading || !quote || !delivery}
         >
           {processing
             ? "Creating Payment..."
             : quote
-              ? `Pay ₹${formatMinor(quote.totalPaise)}`
+              ? `Pay ₹${formatMinor(orderTotalPaise)}`
               : "Quote unavailable"}
         </button>
         <button onClick={onClose} disabled={processing}>
