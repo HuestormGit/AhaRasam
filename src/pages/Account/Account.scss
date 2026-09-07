@@ -1,0 +1,377 @@
+@import "../../css-config/mixins.scss";
+
+.account-container {
+  margin: 150px 0 100px;
+
+  .account-section {
+    @include xl {
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      color: #aa2423;
+      font-family: "Barlow Condensed";
+      font-size: 32px;
+      font-weight: 600;
+      line-height: 38px;
+
+      @include md { font-size: 36px; line-height: 44px; }
+      @include lg { font-size: 40px; line-height: 48px; }
+    }
+  }
+
+  .account-signed-in {
+    margin: 0 0 28px;
+    color: #4b4033;
+    font-size: 18px;
+  }
+
+  .account-layout {
+    display: grid;
+    gap: 24px;
+    align-items: start;
+
+    @include lg {
+      grid-template-columns: 240px 1fr;
+      gap: 32px;
+    }
+  }
+}
+
+// Sidebar: a scrollable pill row on phones, a stacked card from large up.
+.account-sidebar {
+  display: grid;
+  gap: 14px;
+
+  .account-tabs {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+
+    @include lg {
+      flex-direction: column;
+      gap: 6px;
+      overflow-x: visible;
+      padding: 10px;
+      border: 1px solid #e2d4bd;
+      border-radius: 10px;
+      background: #fffaf1;
+    }
+  }
+
+  .account-tab {
+    flex: 0 0 auto;
+    min-height: 44px;
+    padding: 10px 20px;
+    border: 1px solid #e2d4bd;
+    border-radius: 24px;
+    background: #fffaf1;
+    color: #4b4033;
+    font-family: "Barlow Condensed";
+    font-size: 19px;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    @include lg {
+      width: 100%;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      text-align: left;
+    }
+
+    &:hover:not(.is-active) {
+      background: #f6e9d5;
+      color: #aa2423;
+    }
+
+    // Active state carries colour and weight, not colour alone.
+    &.is-active {
+      border-color: #aa2423;
+      background: #aa2423;
+      color: #fff;
+    }
+
+    &:focus-visible {
+      outline: 3px solid #1a1e25;
+      outline-offset: 2px;
+    }
+  }
+
+  .account-logout-btn {
+    min-height: 44px;
+    padding: 10px 20px;
+    border: 2px solid #aa2423;
+    border-radius: 24px;
+    background: transparent;
+    color: #aa2423;
+    font-family: "Barlow Condensed";
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background: #aa2423;
+      color: #fff;
+    }
+
+    &:focus-visible {
+      outline: 3px solid #1a1e25;
+      outline-offset: 3px;
+    }
+  }
+}
+
+.account-panel {
+  padding: 24px;
+  border: 1px solid #e2d4bd;
+  border-radius: 10px;
+  background: #fffaf1;
+  min-width: 0;
+
+  .account-panel-head {
+    margin-bottom: 20px;
+
+    h2 {
+      margin: 0 0 4px;
+      color: #aa2423;
+      font-family: "Barlow Condensed";
+      font-size: 24px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    p {
+      margin: 0;
+      color: #4b4033;
+      font-size: 17px;
+    }
+  }
+
+  .account-panel-note {
+    margin: 20px 0 0;
+    padding-top: 16px;
+    border-top: 1px solid #ddd0bc;
+    color: #4b4033;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .account-status {
+    margin: 0;
+    font-size: 18px;
+  }
+
+  .account-error {
+    margin: 0;
+    padding: 16px;
+    border: 1px solid #aa2423;
+    border-radius: 8px;
+    color: #731817;
+    font-size: 17px;
+  }
+}
+
+.account-card {
+  border: 1px solid #ddd0bc;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.account-detail {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 24px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #eee4d3;
+  font-size: 18px;
+
+  &:last-child { border-bottom: 0; }
+
+  .account-detail-label {
+    color: #4b4033;
+    font-family: "Barlow Condensed";
+    font-weight: 600;
+  }
+
+  .account-detail-value {
+    color: #000;
+    text-align: right;
+    word-break: break-word;
+
+    // Absent data reads as absent, rather than as an empty row.
+    &.is-missing {
+      color: #8e806c;
+      font-style: italic;
+    }
+  }
+}
+
+.account-empty {
+  padding: 32px 20px;
+  border: 1px dashed #ddd0bc;
+  border-radius: 8px;
+  background: #fff;
+  color: #4b4033;
+  text-align: center;
+
+  p { margin: 0; font-size: 17px; line-height: 1.5; }
+
+  .account-empty-title {
+    margin-bottom: 6px;
+    color: #aa2423;
+    font-family: "Barlow Condensed";
+    font-size: 21px;
+    font-weight: 600;
+  }
+}
+
+.account-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border: 1px solid #e2d4bd;
+  border-radius: 20px;
+  background: #fdf4ec;
+  color: #4b4033;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.account-address-list,
+.account-order-list {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.account-address {
+  padding: 18px 16px;
+  border: 1px solid #ddd0bc;
+  border-radius: 8px;
+  background: #fff;
+
+  .account-address-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+
+    h3 {
+      margin: 0;
+      color: #aa2423;
+      font-family: "Barlow Condensed";
+      font-size: 21px;
+      font-weight: 600;
+    }
+  }
+
+  .account-address-lines,
+  .account-address-phone {
+    margin: 0 0 4px;
+    color: #000;
+    font-size: 17px;
+    line-height: 1.45;
+
+    &:last-child { margin-bottom: 0; }
+  }
+
+  .account-address-phone { color: #4b4033; }
+}
+
+.account-order {
+  padding: 18px 16px;
+  border: 1px solid #ddd0bc;
+  border-radius: 8px;
+  background: #fff;
+
+  .account-order-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 20px;
+
+    h3 {
+      margin: 0;
+      color: #aa2423;
+      font-family: "Barlow Condensed";
+      font-size: 21px;
+      font-weight: 600;
+      word-break: break-word;
+    }
+  }
+
+  .account-order-date {
+    margin: 2px 0 0;
+    color: #4b4033;
+    font-size: 16px;
+  }
+
+  .account-order-total {
+    margin: 0;
+    color: #000;
+    font-size: 21px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .account-order-status {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .account-order-items {
+    margin: 14px 0 0;
+    padding: 12px 0 0;
+    border-top: 1px solid #eee4d3;
+    list-style: none;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 4px 0;
+      color: #4b4033;
+      font-size: 16px;
+
+      span:last-child { white-space: nowrap; }
+    }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .account-container {
+    margin: 90px 0 70px;
+
+    .account-signed-in { font-size: 17px; }
+  }
+
+  .account-panel {
+    padding: 18px 16px;
+  }
+
+  .account-detail {
+    // Label above value reads better than a squeezed two-column row.
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 17px;
+
+    .account-detail-value { text-align: left; }
+  }
+
+  .account-sidebar .account-logout-btn { width: 100%; }
+}
