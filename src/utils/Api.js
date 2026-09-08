@@ -12,27 +12,24 @@ export const apiClient = axios.create({
   },
 });
 
-// Storefront/CMS content always speaks with the CMS API token, logged in or not.
-// The customer JWT is never a substitute for it — it has no content permissions.
-apiClient.interceptors.request.use((config) => {
-  if (config.skipAuth) return config;
-
-  const cmsToken = process.env.REACT_APP_STRAPI_TOKEN;
-  if (cmsToken) config.headers.Authorization = `Bearer ${cmsToken}`;
-  return config;
-});
+// apiClient sends no Authorization header, ever. Public storefront reads (the
+// catalogue, the cart quote, the delivery check) are granted to Strapi's public
+// role, so they need no credential — and a React bundle is public, so it can
+// never be trusted to hold one. There is deliberately no interceptor and no
+// fallback: anything that needs authority asks for it explicitly below.
 
 // Anonymous auth endpoints (login/register/forgot/reset): no Authorization at all.
 export const authRequest = (method, url, data) =>
-  apiClient.request({ method, url, data, skipAuth: true });
+  apiClient.request({ method, url, data });
 
-// Customer-scoped endpoints (/api/users/me, ...): the customer JWT, explicitly.
+// Customer-scoped endpoints (/api/users/me, Razorpay create/verify): the
+// customer's own JWT, passed in by the caller. No token, no header — never a
+// silent fall back to some ambient credential.
 export const customerRequest = (method, url, token, data) =>
   apiClient.request({
     method,
     url,
     data,
-    skipAuth: true,
     headers: { Authorization: `Bearer ${token}` },
   });
 
