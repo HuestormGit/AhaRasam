@@ -11,13 +11,11 @@ const TABS = [
   { id: "orders", label: "Orders" },
 ];
 
-// Strapi has no customer-readable orders route yet: src/api/order/routes/order.js
-// replaces the core router with the two Razorpay POST handlers, so GET /api/orders
-// does not exist. Nothing is requested while this is null — the page must not fire
-// a call it already knows will 404. Set it to "/api/orders" once the backend
-// exposes the collection; the fetch and the cards below already speak the Strapi
-// order shape.
-const ORDERS_ENDPOINT = null;
+// src/api/order/routes/order.js now lists GET /orders alongside the Razorpay
+// payment routes, so the collection is readable. The backend scopes the read to
+// the signed-in customer from the JWT and ignores the query below entirely —
+// the filter is kept only so the request reads like any other Strapi list call.
+const ORDERS_ENDPOINT = "/api/orders";
 
 const ordersQuery = (userId) =>
   `${ORDERS_ENDPOINT}?filters[customer][id][$eq]=${userId}` +
