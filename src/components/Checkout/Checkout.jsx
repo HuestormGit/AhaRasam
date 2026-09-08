@@ -1,21 +1,78 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Checkout.scss";
 import Modal from "../Modal/Modal";
 import { CartContext } from "../../context/CartContext";
 import { useCheckoutQuote } from "../../hooks/useCheckoutQuote";
 import {
+  PINCODE_PATTERN,
+  clearStoredDelivery,
   formatDeliveryEstimate,
   readStoredDelivery,
 } from "../../hooks/useDeliveryCheck";
 import { RAZORPAY_KEY, razorpayConfigError } from "../../utils/razorpay";
-import { apiClient } from "../../utils/Api";
-import { formatMinor, gstSummaryLabel, minorToRupees } from "../../utils/money";
+import { AUTH_TOKEN_KEY, customerRequest } from "../../utils/Api";
+import { formatMinor, gstSummaryLabel } from "../../utils/money";
+
+const LOGIN_REDIRECT = "/login?redirect=%2Fcheckout";
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const PRICE_CHANGED_MESSAGE =
+  "Your order total changed while you were checking out. Please review the latest price and delivery rate before paying.";
+
+// After a payment has left the browser we can never promise nothing was
+// charged, so every post-payment failure says the same thing: do not pay again.
+const doNotRepay = (paymentId) =>
+  paymentId
+    ? `If money was deducted, please do not pay again. Contact us with payment ID ${paymentId}.`
+    : "If money was deducted, please do not pay again. Contact us before trying again.";
+
+// The backend's controlled error envelope: { error: { status, name, message, details } }.
+const backendError = (error) => {
+  const payload = error?.response?.data?.error || {};
+  return {
+    status: error?.response?.status,
+    name: payload.name,
+    code: payload.details?.code,
+    message: typeof payload.message === "string" ? payload.message : "",
+  };
+};
+
+// The server response is the only authority on what will be charged, so it is
+// shape-checked before a single field of it reaches Razorpay.
+const isValidCreateResponse = (data) =>
+  !!data &&
+  typeof data.razorpayOrderId === "string" &&
+  data.razorpayOrderId.trim() !== "" &&
+  Number.isSafeInteger(data.amountPaise) &&
+  data.amountPaise >= 100 &&
+  data.currency === "INR" &&
+  typeof data.orderNumber === "string" &&
+  data.orderNumber.trim() !== "";
+
+// Defensive only: the backend has already verified the payment against the
+// provider. This just refuses to celebrate a response that does not say "paid".
+const isConfirmedPayment = (data, expectedAmountPaise) =>
+  !!data &&
+  data.paymentStatus === "paid" &&
+  data.currency === "INR" &&
+  Number.isSafeInteger(data.grandTotalMinor) &&
+  data.grandTotalMinor === expectedAmountPaise &&
+  typeof data.orderNumber === "string" &&
+  data.orderNumber.trim() !== "";
+
+const readAuthToken = () => {
+  try {
+    return localStorage.getItem(AUTH_TOKEN_KEY) || "";
+  } catch {
+    return "";
+  }
+};
 
 const Checkout = ({ cartData = [], onClose }) => {
   const { clearCart } = useContext(CartContext);
-  // Checked on the cart page and carried across the navigation. Display only —
-  // payment creation will re-quote delivery server-side.
-  const delivery = useMemo(readStoredDelivery, []);
+  // Chosen on the cart page and carried across the navigation. Display and
+  // selection state only — the server re-rates the shipment at payment.
+  const [delivery, setDelivery] = useState(readStoredDelivery);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -23,7 +80,6 @@ const Checkout = ({ cartData = [], onClose }) => {
     address: "",
     city: "",
     state: "",
-    pincode: delivery?.destinationPincode || "",
   });
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
@@ -32,36 +88,45 @@ const Checkout = ({ cartData = [], onClose }) => {
   const { quote, quoteLoading, quoteError } = useCheckoutQuote(cartData);
 
   const shippingPaise = delivery?.option.shippingPaise || 0;
+  // Displayed total. Compared against the server's fresh amount before paying,
+  // never sent to the server and never used to charge.
   const orderTotalPaise = quote ? quote.subtotalPaise + shippingPaise : 0;
-  const totalAmount = minorToRupees(orderTotalPaise);
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
   };
 
-  // ✅ Validation Function
+  // Mirrors what the backend requires: fullName, phone, email, addressLine1,
+  // city, state and a 6-digit postalCode.
   const validate = () => {
-    let newErrors = {};
+    const newErrors = {};
 
     if (!form.name.trim()) newErrors.name = "Name is required";
     if (!form.email.trim()) newErrors.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(form.email)) newErrors.email = "Enter a valid email";
+    else if (!EMAIL_PATTERN.test(form.email.trim()))
+      newErrors.email = "Enter a valid email";
     if (!form.contact.trim()) newErrors.contact = "Contact number is required";
-    else if (!/^[0-9]{10}$/.test(form.contact)) newErrors.contact = "Enter a valid 10-digit number";
-
+    else if (!/^[0-9]{10}$/.test(form.contact.trim()))
+      newErrors.contact = "Enter a valid 10-digit number";
     if (!form.address.trim()) newErrors.address = "Address is required";
     if (!form.city.trim()) newErrors.city = "City is required";
-    // state & pincode optional; add validation if you need
+    if (!form.state.trim()) newErrors.state = "State is required";
+
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    // The pincode is read-only and comes from the delivery check, so it cannot
+    // be typed around. Its absence is already explained by the delivery panel,
+    // which is why it gates validity without adding a second error message.
+    return (
+      Object.keys(newErrors).length === 0 &&
+      PINCODE_PATTERN.test(delivery?.destinationPincode || "")
+    );
   };
 
-  // 🔄 Check validity whenever form changes
   useEffect(() => {
     setIsFormValid(validate());
     // eslint-disable-next-line
-  }, [form]);
+  }, [form, delivery]);
 
   const showError = (title, message) =>
     setResult({ success: false, title, message });
@@ -71,6 +136,207 @@ const Checkout = ({ cartData = [], onClose }) => {
     const done = result?.done;
     setResult(null);
     if (done) window.location.href = "/?thankyou=true";
+  };
+
+  // A stored rate that the server has rejected must not survive on screen.
+  const dropDelivery = () => {
+    clearStoredDelivery();
+    setDelivery(null);
+  };
+
+  // Same navigation mechanism this component already uses for the thank-you
+  // redirect. react-router-dom 7 is ESM-only with a broken CJS "main", so it
+  // does not resolve under CRA's Jest — and there is no client state worth
+  // preserving across a bounce to login anyway.
+  const goToLogin = () => {
+    window.location.href = LOGIN_REDIRECT;
+  };
+
+  // Sends the customer back to the cart to run the delivery check again. The
+  // cart page owns serviceability; checkout never re-rates on its own.
+  const changePincode = () => {
+    dropDelivery();
+    if (onClose) onClose();
+  };
+
+  const handleCreateError = (error) => {
+    const { status, name, code, message } = backendError(error);
+
+    if (status === 401 || name === "UnauthorizedError") {
+      goToLogin();
+      return;
+    }
+    // Signed in but the role lacks the payment permission — a server
+    // misconfiguration, never the customer's fault and never a payment.
+    // Bouncing to login would be a pointless loop, so say so plainly.
+    if (status === 403 || name === "ForbiddenError") {
+      showError(
+        "Checkout temporarily unavailable",
+        "Checkout is temporarily unavailable. Your cart has been kept — please try again later."
+      );
+      return;
+    }
+    if (code === "SHIPPING_OPTION_UNAVAILABLE" || name === "ShippingOptionUnavailable") {
+      dropDelivery();
+      showError(
+        "Delivery rates changed",
+        "Delivery rates have changed. Please re-check delivery for your pincode."
+      );
+      return;
+    }
+    if (code === "DELIVERY_UNSERVICEABLE" || name === "DeliveryUnserviceable") {
+      dropDelivery();
+      showError(
+        "Delivery unavailable",
+        "Delivery is no longer available to this pincode. Please review your delivery details."
+      );
+      return;
+    }
+    // A provider outage is temporary and says nothing about the stored choice,
+    // so the delivery selection is deliberately kept.
+    if (status === 503 || name === "ShippingProviderError") {
+      showError(
+        "Delivery check unavailable",
+        "We couldn't confirm delivery for your order right now. Your cart has been kept — please try again in a few minutes."
+      );
+      return;
+    }
+    if (status === 502 || name === "PaymentProviderError") {
+      showError(
+        "Payment service unavailable",
+        "Payments are temporarily unavailable. Your cart has been kept — please try again shortly."
+      );
+      return;
+    }
+    if (status === 400) {
+      showError(
+        "Please check your details",
+        message ||
+          "Some of your checkout details could not be accepted. Please review them and try again."
+      );
+      return;
+    }
+    showError(
+      "Could not start payment",
+      "Something went wrong while starting your payment. Please try again."
+    );
+  };
+
+  const handleVerifyError = (error, paymentId) => {
+    const { status, name, code } = backendError(error);
+
+    // Another request already owns this payment's confirmation. Transient, and
+    // checked before the general 409 because both share the status.
+    if (
+      code === "PAYMENT_VERIFICATION_IN_PROGRESS" ||
+      name === "PaymentVerificationInProgress"
+    ) {
+      showError(
+        "Payment confirmation in progress",
+        `Payment confirmation is still processing. Please do not pay again. ${doNotRepay(paymentId)}`
+      );
+      return;
+    }
+    if (status === 400 || name === "PaymentVerificationFailed") {
+      showError(
+        "Payment verification failed",
+        `We could not verify this payment. ${doNotRepay(paymentId)}`
+      );
+      return;
+    }
+    if (status === 404 || name === "OrderNotFound") {
+      showError(
+        "Order could not be matched",
+        `We could not match this payment to your order. ${doNotRepay(paymentId)}`
+      );
+      return;
+    }
+    if (status === 409 || name === "PaymentAlreadyRecorded") {
+      showError(
+        "Payment needs review",
+        `This order already has a recorded payment. ${doNotRepay(paymentId)}`
+      );
+      return;
+    }
+    // 502 and everything else, including an expired session: never redirect
+    // here — that would lose the payment id the customer needs for support.
+    showError(
+      "Payment confirmation unavailable",
+      `We couldn't confirm your payment just now. ${doNotRepay(paymentId)}`
+    );
+  };
+
+  const openCheckout = (created, token) => {
+    const options = {
+      key: RAZORPAY_KEY,
+      // Straight from the server. No conversion, no recomputation.
+      amount: created.amountPaise,
+      currency: created.currency,
+      name: "AHA! Rasam",
+      description: `Order ${created.orderNumber}`,
+      order_id: created.razorpayOrderId,
+      handler: async (response) => {
+        const paymentId = response?.razorpay_payment_id;
+        try {
+          const verifyRes = await customerRequest(
+            "post",
+            "/api/orders/razorpay/verify",
+            token,
+            {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            }
+          );
+
+          const confirmed = verifyRes?.data?.data;
+          if (!isConfirmedPayment(confirmed, created.amountPaise)) {
+            setProcessing(false);
+            showError(
+              "Payment not confirmed",
+              `We couldn't confirm your payment. ${doNotRepay(paymentId)}`
+            );
+            return;
+          }
+
+          // Only now, with the backend reporting a paid order.
+          clearCart();
+          dropDelivery();
+          setProcessing(false);
+          setResult({
+            success: true,
+            done: true,
+            title: "Payment successful",
+            message: `Your order ${confirmed.orderNumber} has been confirmed. Payment ID: ${paymentId}`,
+          });
+        } catch (verifyErr) {
+          setProcessing(false);
+          handleVerifyError(verifyErr, paymentId);
+        }
+      },
+      modal: {
+        ondismiss: () => setProcessing(false),
+      },
+      prefill: {
+        name: form.name,
+        email: form.email,
+        contact: form.contact,
+      },
+      theme: { color: "#3399cc" },
+    };
+
+    const rzp = new window.Razorpay(options);
+
+    rzp.on("payment.failed", (response) => {
+      setProcessing(false);
+      showError(
+        "Payment failed",
+        response?.error?.description ||
+          "Your payment was not completed. Please review the payment message and try again."
+      );
+    });
+
+    rzp.open();
   };
 
   const handlePayment = async () => {
@@ -101,112 +367,74 @@ const Checkout = ({ cartData = [], onClose }) => {
       return;
     }
 
+    // The payment endpoints speak the customer JWT only. The CMS token is never
+    // an acceptable fallback here.
+    const token = readAuthToken();
+    if (!token) {
+      goToLogin();
+      return;
+    }
+
+    setProcessing(true);
+
+    let created;
     try {
-      setProcessing(true);
-
-      // TODO: the Razorpay endpoint must rebuild this quote server-side before
-      // payment; passing the displayed quote total only preserves compatibility.
-      const createRes = await apiClient.post("/api/orders/razorpay/create", {
-        amount: totalAmount,
-      });
-
-      const { id: razorpayOrderId, amount, currency } = createRes.data?.data || {};
-
-      if (!razorpayOrderId) {
-        throw new Error("Failed to create razorpay order on server");
-      }
-
-      // 2️⃣ Razorpay Checkout options
-      // Razorpay's client "amount" should be in paise. If your backend already returns paise, use it.
-      // Here we use `amount` returned from backend (assumed correct). If backend returned rupees,
-      // you could send amount * 100 here.
-      const options = {
-        key: RAZORPAY_KEY,
-        amount: amount, // use backend returned amount (preferable)
-        currency: currency || "INR",
-        name: "AHA! Rasam",
-        description: "Order Payment",
-        order_id: razorpayOrderId,
-        handler: async function (response) {
-          try {
-            // 3️⃣ Verify payment and save order in Strapi
-            const verifyRes = await apiClient.post(
-              "/api/orders/razorpay/verify",
-              {
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                orderData: {
-                  customerName: form.name,
-                  email: form.email,
-                  phoneNumber: form.contact,
-                  address: form.address,
-                  city: form.city,
-                  state: form.state,
-                  pincode: form.pincode,
-                  totalAmount,
-                  items: cartData,
-                },
-              }
-            );
-
-            if (verifyRes.data?.success === false) {
-              showError(
-                "Payment verification failed",
-                `Payment ${response.razorpay_payment_id} could not be verified. Please contact us before paying again.`
-              );
-              return;
-            }
-
-            clearCart();
-            setResult({
-              success: true,
-              done: true,
-              title: "Payment successful",
-              message: `Your order is confirmed. Payment ID: ${response.razorpay_payment_id}`,
-            });
-          } catch (verifyErr) {
-            console.error("Verify/save failed:", verifyErr.response || verifyErr);
-            showError(
-              "Order could not be saved",
-              `Your payment went through (ID: ${response.razorpay_payment_id}) but we could not save the order. Please contact us with this payment ID.`
-            );
-          }
-        },
-        modal: {
-          ondismiss: () => setProcessing(false),
-        },
-        prefill: {
-          name: form.name,
-          email: form.email,
-          contact: form.contact,
-        },
-        theme: { color: "#3399cc" },
-      };
-
-      const rzp = new window.Razorpay(options);
-
-      // 4️⃣ Payment failure (card declined, timeout, bank error…)
-      rzp.on("payment.failed", (response) => {
-        console.error("❌ Payment failed:", response.error);
-        setProcessing(false);
-        showError(
-          "Payment failed",
-          response.error?.description || "Your payment was not completed. No amount has been charged."
-        );
-      });
-
-      rzp.open();
+      // Stable identifiers, the delivery destination and the chosen option id.
+      // No price, no total, no shipping amount — the server rebuilds all of it.
+      const createRes = await customerRequest(
+        "post",
+        "/api/orders/razorpay/create",
+        token,
+        {
+          items: cartData.map((item) => ({
+            productDocumentId: item.productDocumentId,
+            variantDocumentId: item.variantDocumentId,
+            quantity: item.qty,
+          })),
+          destinationPincode: delivery.destinationPincode,
+          selectedShippingOptionId: delivery.option.id,
+          shippingAddress: {
+            fullName: form.name.trim(),
+            phone: form.contact.trim(),
+            email: form.email.trim(),
+            addressLine1: form.address.trim(),
+            addressLine2: "",
+            landmark: "",
+            city: form.city.trim(),
+            state: form.state.trim(),
+            // Bound to the pincode whose delivery option was selected, so the
+            // quoted address and the shipped address can never diverge.
+            postalCode: delivery.destinationPincode,
+          },
+        }
+      );
+      created = createRes?.data?.data;
     } catch (err) {
-      console.error("❌ Payment error:", err.response || err);
+      setProcessing(false);
+      handleCreateError(err);
+      return;
+    }
+
+    if (!isValidCreateResponse(created)) {
+      setProcessing(false);
       showError(
         "Could not start payment",
-        err.response?.data?.error?.message ||
-          "Something went wrong while creating your payment. Please try again."
+        "We couldn't start your payment. Please try again in a moment."
       );
-    } finally {
-      setProcessing(false);
+      return;
     }
+
+    // A catalogue price or delivery rate moved between the page and the fresh
+    // server quote. The customer reviews the new total instead of being shown
+    // a surprise amount in the Razorpay dialog.
+    if (created.amountPaise !== orderTotalPaise) {
+      setProcessing(false);
+      dropDelivery();
+      showError("Order total changed", PRICE_CHANGED_MESSAGE);
+      return;
+    }
+
+    openCheckout(created, token);
   };
 
   return (
@@ -278,7 +506,24 @@ const Checkout = ({ cartData = [], onClose }) => {
         {errors.city && <p className="error">{errors.city}</p>}
 
         <input type="text" name="state" placeholder="State" value={form.state} onChange={handleChange} />
-        <input type="text" name="pincode" placeholder="Pincode" value={form.pincode} onChange={handleChange} />
+        {errors.state && <p className="error">{errors.state}</p>}
+
+        {/* Read-only on purpose: the selected delivery option belongs to this
+            pincode, so editing it here would quote one address and ship another. */}
+        <label className="checkout-pincode" htmlFor="checkout-pincode">
+          Delivery Pincode
+        </label>
+        <input
+          id="checkout-pincode"
+          type="text"
+          name="pincode"
+          placeholder="Checked in your cart"
+          value={delivery?.destinationPincode || ""}
+          readOnly
+        />
+        <button type="button" className="change-pincode-btn" onClick={changePincode}>
+          Change delivery pincode
+        </button>
 
         <button
           onClick={handlePayment}
