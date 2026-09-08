@@ -34,13 +34,15 @@
   }
 
   .cart-status,
-  .quote-error {
+  .quote-error,
+  .cart-unavailable {
     margin: 0 0 20px;
     font-family: Barlow, Condensed;
     font-size: 18px;
   }
 
-  .quote-error {
+  .quote-error,
+  .cart-unavailable {
     padding: 16px;
     border: 1px solid #aa2423;
     border-radius: 8px;
@@ -408,3 +410,18 @@
     }
   }
 }
+
+// A cart line the catalogue can no longer sell: still listed and still
+// removable, but visibly not part of what will be paid for.
+.cart-container .cart-table .tabledatarow.is-unavailable {
+  opacity: 0.65;
+
+  .item-unavailable {
+    margin: 4px 0 0;
+    font-family: Barlow, Condensed;
+    font-size: 15px;
+    color: #aa2423;
+  }
+}
+
+.cart-container .cart-unavailable p:last-child { margin-bottom: 0; }
