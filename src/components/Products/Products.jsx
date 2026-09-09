@@ -1,21 +1,26 @@
-import { useEffect, useState, useRef } from "react";
-// import { useEffect, useState, useContext, useRef } from "react";
-import { fetchDataFromApi } from "../../utils/Api";
+import { useEffect, useState, useContext, useRef } from "react";
+import { fetchDataFromApi, mediaUrl } from "../../utils/Api";
+import { formatAmount, minorToRupees } from "../../utils/money";
 import "./Products.scss";
-// import { CartContext } from "../../context/CartContext";
+import { CartContext } from "../../context/CartContext";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
-  // const [quantities, setQuantities] = useState({});
+  const [quantities, setQuantities] = useState({});
   const [selectedVariantIndex, setSelectedVariantIndex] = useState({});
-  // const { addToCart } = useContext(CartContext);
+  const { addToCart } = useContext(CartContext);
   const sliderRef = useRef(null);
 
   useEffect(() => {
     const loadProducts = async () => {
       try {
+        // Variants are their own collection now, so the relation has to be
+        // populated explicitly: only the active ones, in their display order.
         const res = await fetchDataFromApi(
-          "/api/products?populate=*&sort=id:asc&publicationState=live"
+          "/api/products?populate[Image]=true" +
+            "&populate[variants][filters][isActive][$eq]=true" +
+            "&populate[variants][sort][0]=displayOrder:asc" +
+            "&sort=id:asc&status=published"
         );
 
         if (res?.data?.length > 0) {
@@ -60,12 +65,12 @@ const Products = () => {
   //   return () => clearInterval(interval);
   // }, [products]);
 
-  // const handleQtyChange = (productId, delta) => {
-  //   setQuantities((prev) => {
-  //     const current = prev[productId] || 0;
-  //     return { ...prev, [productId]: Math.max(current + delta, 0) };
-  //   });
-  // };       
+  const handleQtyChange = (productId, delta) => {
+    setQuantities((prev) => {
+      const current = prev[productId] || 1;
+      return { ...prev, [productId]: Math.max(current + delta, 1) };
+    });
+  };
 
   const handleVariantChange = (productId, index) => {
     setSelectedVariantIndex((prev) => ({
@@ -73,6 +78,23 @@ const Products = () => {
       [productId]: index,
     }));
   };
+
+  // Strapi 5 returns the relation flat (product.variants); the v4-style
+  // { data: [{ id, attributes }] } envelope is unwrapped too so a response from
+  // either version renders the same cards.
+  const getVariants = (product) => {
+    const raw = product?.variants;
+    const list = Array.isArray(raw) ? raw : Array.isArray(raw?.data) ? raw.data : [];
+    return list.map((v) => ({ id: v.id, ...(v.attributes || v) }));
+  };
+
+  // The old Variant JSON carried `size` and a rupee `price`; a Product Variant
+  // carries packSize/name and integer paise.
+  const variantLabel = (v) => v?.packSize || v?.name || "";
+  // The card's line is labelled MRP, so it shows mrpMinor; the cart is charged
+  // sellingPriceMinor. They are the same whenever discountMinor is 0.
+  const variantMrp = (v) => minorToRupees(v?.mrpMinor ?? v?.sellingPriceMinor);
+  const variantPrice = (v) => minorToRupees(v?.sellingPriceMinor);
 
   const extractText = (blocks) => {
     if (!Array.isArray(blocks)) return "";
@@ -85,30 +107,36 @@ const Products = () => {
       .join(" ");
   };
 
-  // const handleAddToCart = (productId, product) => {
-  //   const qty = quantities[productId] || 0;
+  const handleAddToCart = (productId, product) => {
+    const qty = quantities[productId] || 1;
 
-  //   if (qty === 0) {
-  //     alert("Please select quantity before adding to cart.");
-  //     return;
-  //   }
+    if (qty === 0) {
+      alert("Please select quantity before adding to cart.");
+      return;
+    }
 
-  //   const variants = product.Variant || [];
-  //   const vIndex = selectedVariantIndex[productId] ?? 0;
-  //   const variant = variants[vIndex];
+    const variants = getVariants(product);
+    const vIndex = selectedVariantIndex[productId] ?? 0;
+    const variant = variants[vIndex];
 
-  //   if (!variant) return;
+    if (!variant) return;
 
-  //   addToCart({
-  //     productId,
-  //     productName: product.Title,
-  //     size: variant.size,
-  //     price: variant.price,
-  //     qty,
-  //   });
+    addToCart({
+      productDocumentId: product.documentId,
+      variantDocumentId: variant.documentId,
+      productId,
+      productName: product.Title,
+      // Numeric IDs and display snapshots are convenient for the current UI;
+      // checkout identity and authority come from the document IDs above.
+      variantId: variant.id,
+      sku: variant.sku,
+      size: variantLabel(variant),
+      price: variantPrice(variant),
+      qty,
+    });
 
-  //   alert(`${qty} item(s) added to cart`);
-  // };
+    alert(`${qty} item(s) added to cart`);
+  };
 
   return (
     <div className="container-fluid product-section" id="product">
@@ -134,12 +162,12 @@ const Products = () => {
               {products.map((product) => {
                 const productId = product.id;
                 const image =
-                  product.Image?.url ||
+                  mediaUrl(product.Image?.url) ||
                   "https://placehold.co/300x300?text=No+Image";
 
-                const variants = product.Variant || [];
+                const variants = getVariants(product);
                 const selectedIdx = selectedVariantIndex[productId] ?? 0;
-                // const qty = quantities[productId] || 0;
+                const qty = quantities[productId] || 1;
 
                 const ingredientsText = extractText(product.Ingredients);
 
@@ -159,8 +187,15 @@ const Products = () => {
                       </p>
 
                       <p className="mrp">
-                        MRP: ₹{variants[selectedIdx]?.price || "—"}
+                        MRP: ₹
+                        {variants[selectedIdx]
+                          ? formatAmount(variantMrp(variants[selectedIdx]))
+                          : "—"}
                       </p>
+
+                      {variants.length === 0 && (
+                        <p className="variant-unavailable">Currently unavailable</p>
+                      )}
 
                       {variants.length > 0 && (
                         <>
@@ -176,12 +211,12 @@ const Products = () => {
                           >
                             {variants.map((v, idx) => (
                               <option value={idx} key={idx}>
-                                {v.size}
+                                {variantLabel(v)}
                               </option>
                             ))}
                           </select>
 
-                          {/* <div className="qty-box">
+                          <div className="qty-box">
                             <button
                               onClick={() =>
                                 handleQtyChange(productId, -1)
@@ -202,7 +237,6 @@ const Products = () => {
                               +
                             </button>
                           </div>
-                          
 
                           <button
                             className="add-btn"
@@ -211,7 +245,7 @@ const Products = () => {
                             }
                           >
                             ADD TO CART
-                          </button> */}
+                          </button>
                         </>
                       )}
                     </div>
@@ -227,12 +261,12 @@ const Products = () => {
               const productId = product.id;
 
               const image =
-                product.Image?.url ||
+                mediaUrl(product.Image?.url) ||
                 "https://placehold.co/300x300?text=No+Image";
 
-              const variants = product.Variant || [];
+              const variants = getVariants(product);
               const selectedIdx = selectedVariantIndex[productId] ?? 0;
-              // const qty = quantities[productId] || 0;
+              const qty = quantities[productId] || 1;
 
               const ingredientsText = extractText(product.Ingredients);
 
@@ -252,8 +286,15 @@ const Products = () => {
                     </p>
 
                     <p className="mrp">
-                      MRP: ₹{variants[selectedIdx]?.price || "—"}
+                      MRP: ₹
+                      {variants[selectedIdx]
+                        ? formatAmount(variantMrp(variants[selectedIdx]))
+                        : "—"}
                     </p>
+
+                    {variants.length === 0 && (
+                      <p className="variant-unavailable">Currently unavailable</p>
+                    )}
 
                     {variants.length > 0 && (
                       <>
@@ -269,12 +310,12 @@ const Products = () => {
                         >
                           {variants.map((v, idx) => (
                             <option value={idx} key={idx}>
-                              {v.size}
+                              {variantLabel(v)}
                             </option>
                           ))}
                         </select>
 
-                        {/* <div className="qty-box">
+                        <div className="qty-box">
                           <button
                             onClick={() =>
                               handleQtyChange(productId, -1)
@@ -303,7 +344,7 @@ const Products = () => {
                           }
                         >
                           ADD TO CART
-                        </button> */}
+                        </button>
                       </>
                     )}
                   </div>

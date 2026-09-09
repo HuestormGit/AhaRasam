@@ -17,7 +17,7 @@ const CheckoutPopup = ({ cartData, onClose }) => {
       const { razorpayOrder } = res.data;
 
       const options = {
-        key: "rzp_test_R5AxLBFpboBciJ", // Replace with your Razorpay key
+        key: process.env.REACT_APP_RAZORPAY_KEY, // set in .env (test key only)
         amount: razorpayOrder.amount,
         currency: razorpayOrder.currency,
         name: "My Shop",

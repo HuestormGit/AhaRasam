@@ -1,0 +1,195 @@
+.auth-page {
+  min-height: 70vh;
+  padding: 48px 16px;
+  background: #E0AD3F;
+  display: grid;
+  place-items: center;
+}
+
+.auth-card {
+  width: min(100%, 440px);
+  padding: 32px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  color: #1a1e25;
+
+  h1 {
+    margin: 4px 0 8px;
+    color: #AA2423;
+    font-family: "Barlow Condensed";
+    font-size: 36px;
+    font-weight: 600;
+    text-align: center;
+  }
+}
+
+.auth-logo {
+  display: block;
+  width: 112px;
+  margin: 0 auto;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  &:focus-visible {
+    outline: 3px solid #AA2423;
+    outline-offset: 4px;
+  }
+}
+
+.auth-intro,
+.account-note {
+  margin: 0 0 24px;
+  color: #555;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.auth-form {
+  display: grid;
+  gap: 18px;
+}
+
+.auth-field {
+  display: grid;
+  gap: 6px;
+
+  label {
+    font-family: "Barlow Condensed";
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  input {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 12px;
+    border: 1px solid #707070;
+    border-radius: 8px;
+    background: #fff;
+    color: #1a1e25;
+    font: inherit;
+
+    &:focus-visible {
+      border-color: #AA2423;
+      outline: 3px solid rgba(170, 36, 35, 0.24);
+    }
+
+    &[aria-invalid="true"] {
+      border-color: #AA2423;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      background: #eee;
+      color: #707070;
+    }
+  }
+}
+
+.auth-field-error,
+.auth-message {
+  color: #8a1717;
+  font-size: 14px;
+}
+
+.auth-message {
+  margin: 0;
+  line-height: 1.4;
+
+  &.success {
+    color: #286336;
+  }
+}
+
+.auth-submit {
+  min-height: 48px;
+  padding: 11px 20px;
+  border: 2px solid #AA2423;
+  border-radius: 24px;
+  background: #AA2423;
+  color: #fff;
+  font-family: "Barlow Condensed";
+  font-size: 19px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: #fff;
+    color: #AA2423;
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  &:focus-visible {
+    outline: 3px solid #1a1e25;
+    outline-offset: 3px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+// Logout is a direct child of .auth-card (not inside a stretching grid like the
+// other .auth-submit buttons), so it needs its own horizontal centring.
+.account-logout {
+  display: block;
+  margin-inline: auto;
+}
+
+.auth-links {
+  display: grid;
+  gap: 10px;
+  margin-top: 22px;
+  text-align: center;
+
+  a {
+    color: #7d1818;
+    font-weight: 600;
+
+    &:focus-visible {
+      outline: 3px solid #AA2423;
+      outline-offset: 3px;
+    }
+  }
+}
+
+.auth-success {
+  display: grid;
+  gap: 20px;
+}
+
+.auth-route-loading {
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+  background: #E0AD3F;
+  color: #1a1e25;
+  font-size: 20px;
+}
+
+@media (max-width: 390px) {
+  .auth-page {
+    padding: 24px 12px;
+  }
+
+  .auth-card {
+    padding: 24px 18px;
+
+    h1 {
+      font-size: 31px;
+    }
+  }
+}

@@ -27,7 +27,7 @@ const Banner = () => {
     return <section className="hero-banner">
         <div className="banner-box container-fluid">
             <div className="topbox text-center">
-                <h2 className="comingsoon">Coming Soon...</h2>
+                <h2 className="comingsoon">Coming Soon... Testing for vercel preview deployment</h2>
                 <h1 className="banner-heading">
                     {/* A Sip of Tradition, <br></br>A Taste of Wellness */}
                     {/* Sip it as a healthy, comforting Rasam, <br></br>or sprinkle it to elevate your daily cooking! */}
