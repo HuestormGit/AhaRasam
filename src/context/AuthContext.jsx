@@ -74,9 +74,27 @@ export const AuthProvider = ({ children }) => {
     }
 
     customerRequest("get", "/api/users/me", token)
-      .then(({ data }) => active && setUser(data))
+      // `active` only covers unmount. Logging out (or signing in as someone
+      // else) while this restore is still in flight leaves the provider
+      // mounted, so without the token check a late response would call
+      // setUser and put the app back into a signed-in state that no longer
+      // has a token behind it. Re-reading the token is the check: it is gone
+      // after logout, and different after a new login.
+      .then(
+        ({ data }) =>
+          active &&
+          localStorage.getItem(AUTH_TOKEN_KEY) === token &&
+          setUser(data)
+      )
       .catch((error) => {
-        if (active && [401, 403].includes(error.response?.status)) clearSession();
+        // Same reasoning: only clear the session this response belongs to.
+        if (
+          active &&
+          localStorage.getItem(AUTH_TOKEN_KEY) === token &&
+          [401, 403].includes(error.response?.status)
+        ) {
+          clearSession();
+        }
       })
       .finally(() => active && setLoading(false));
 
