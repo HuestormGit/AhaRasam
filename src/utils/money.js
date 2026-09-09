@@ -6,13 +6,6 @@ export const minorToRupees = (minor) => (Number(minor) || 0) / 100;
 
 export const rupeesToMinor = (rupees) => Math.round((Number(rupees) || 0) * 100);
 
-// Totals are summed in paise so ₹99.50 × 3 cannot render as 298.50000000000006.
-export const cartTotalMinor = (cart = []) =>
-  cart.reduce(
-    (sum, item) => sum + rupeesToMinor(item.price) * (Number(item.qty) || 0),
-    0
-  );
-
 // Whole rupees stay "171" exactly as before; only paise get the .50 tail.
 export const formatAmount = (rupees) => {
   const minor = rupeesToMinor(rupees);
