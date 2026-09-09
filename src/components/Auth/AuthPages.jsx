@@ -91,8 +91,8 @@ export const LoginPage = () => {
   return (
     <AuthShell title="Welcome Back" intro="Sign in to continue to Aha Rasam.">
       <form className="auth-form" onSubmit={submit} noValidate>
-        <Field id="login-email" label="Email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} error={emailError ? error : ""} required />
-        <Field id="login-password" label="Password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} error={passwordError ? error : ""} required />
+        <Field id="login-email" name="email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} error={emailError ? error : ""} required />
+        <Field id="login-password" name="password" label="Password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} error={passwordError ? error : ""} required />
         <Message>{emailError || passwordError ? "" : error}</Message>
         <button className="auth-submit" type="submit" disabled={submitting}>
           {submitting ? "Logging in…" : "Login"}
@@ -141,9 +141,9 @@ export const RegisterPage = () => {
   return (
     <AuthShell title="Create Account" intro="Create your Aha Rasam account with email and password.">
       <form className="auth-form" onSubmit={submit} noValidate>
-        <Field id="register-email" label="Email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} error={emailError ? error : ""} required />
-        <Field id="register-password" label="Password" type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} error={passwordError ? error : ""} required />
-        <Field id="register-confirmation" label="Confirm Password" type="password" autoComplete="new-password" value={confirmation} onChange={(e) => setConfirmation(e.target.value)} error={confirmationError ? error : ""} required />
+        <Field id="register-email" name="email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} error={emailError ? error : ""} required />
+        <Field id="register-password" name="new-password" label="Password" type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} error={passwordError ? error : ""} required />
+        <Field id="register-confirmation" name="confirm-new-password" label="Confirm Password" type="password" autoComplete="new-password" value={confirmation} onChange={(e) => setConfirmation(e.target.value)} error={confirmationError ? error : ""} required />
         <Message>{emailError || passwordError || confirmationError ? "" : error}</Message>
         <button className="auth-submit" type="submit" disabled={submitting}>
           {submitting ? "Creating account…" : "Create Account"}
@@ -184,7 +184,7 @@ export const ForgotPasswordPage = () => {
   return (
     <AuthShell title="Forgot Password" intro="Enter your email and we'll send you a password reset link.">
       <form className="auth-form" onSubmit={submit} noValidate>
-        <Field id="forgot-email" label="Email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} error={emailError ? error : ""} required />
+        <Field id="forgot-email" name="email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} error={emailError ? error : ""} required />
         <Message>{emailError ? "" : error}</Message>
         <Message success>{message}</Message>
         <button className="auth-submit" type="submit" disabled={submitting}>
@@ -236,8 +236,8 @@ export const ResetPasswordPage = () => {
       ) : (
         <form className="auth-form" onSubmit={submit} noValidate>
           {!code && <Message>This password reset link is missing its reset code.</Message>}
-          <Field id="reset-password" label="New Password" type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} error={passwordError ? error : ""} required disabled={!code || submitting} />
-          <Field id="reset-confirmation" label="Confirm Password" type="password" autoComplete="new-password" value={confirmation} onChange={(e) => setConfirmation(e.target.value)} error={confirmationError ? error : ""} required disabled={!code || submitting} />
+          <Field id="reset-password" name="new-password" label="New Password" type="password" autoComplete="new-password" value={password} onChange={(e) => setPassword(e.target.value)} error={passwordError ? error : ""} required disabled={!code || submitting} />
+          <Field id="reset-confirmation" name="confirm-new-password" label="Confirm Password" type="password" autoComplete="new-password" value={confirmation} onChange={(e) => setConfirmation(e.target.value)} error={confirmationError ? error : ""} required disabled={!code || submitting} />
           <Message>{passwordError || confirmationError ? "" : error}</Message>
           <button className="auth-submit" type="submit" disabled={!code || submitting}>
             {submitting ? "Resetting…" : "Reset Password"}
