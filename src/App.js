@@ -61,9 +61,9 @@ function HomeWrapper() {
 }
 
 function CheckoutRoute() {
-  const { cart } = useContext(CartContext);
+  const { availableCart } = useContext(CartContext);
   const navigate = useNavigate();
-  return <Checkout cartData={cart} onClose={() => navigate("/cart")} />;
+  return <Checkout cartData={availableCart} onClose={() => navigate("/cart")} />;
 }
 
 function App() {

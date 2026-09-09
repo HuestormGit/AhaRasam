@@ -7,7 +7,7 @@ import { useAuth } from "../../context/AuthContext";
 
 const MyHeader = () => {
   const [scrollnav, setScrollnav] = useState(false);
-  const { cart } = useContext(CartContext);
+  const { itemCount } = useContext(CartContext);
   const { user } = useAuth();
 
   const location = useLocation();
@@ -86,7 +86,7 @@ const MyHeader = () => {
               </li>
               <li className="nav-item">
                 <Link to="/cart" className="nav-link btn-link">
-                  Cart ({cart.length})
+                  Cart ({itemCount})
                 </Link>
               </li>
               <li className="nav-item">

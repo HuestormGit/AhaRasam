@@ -4,9 +4,11 @@ import { useNavigate } from "react-router-dom";
 import "./StickyPayButton.scss";
 
 function StickyPayButton() {
-    const {cart} =useContext(CartContext);
+    // Units, not rows, and never counting a line the catalogue cannot sell —
+    // the same number the header badge shows.
+    const {itemCount} =useContext(CartContext);
     const navigate = useNavigate();  
-    const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+    const totalItems = itemCount;
 
     // Fixed bar sits over the footer on every page — only show it once there is
     // something to pay for.

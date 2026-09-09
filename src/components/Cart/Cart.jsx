@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
 import "./Cart.scss";
@@ -12,12 +12,28 @@ import {
 import { formatMinor, gstSummaryLabel } from "../../utils/money";
 import trash from "../../assets/trash.png";
 
+const unavailableMessage =
+  "One or more items in your cart are no longer available. Please remove them and add them again.";
+
 const Cart = () => {
-  const { cart, updateQuantity, removeFromCart } = useContext(CartContext);
+  const {
+    cart,
+    availableCart,
+    unavailableCart,
+    cartReady,
+    reconcileCart,
+    updateQuantity,
+    removeFromCart,
+  } = useContext(CartContext);
   const navigate = useNavigate();
-  const { quote, quoteLoading, quoteError, retryQuote } = useCheckoutQuote(cart);
-  const delivery = useDeliveryCheck(cart);
+  // Nothing is priced or shipped until the stored ids have been checked against
+  // the catalogue, and a line the catalogue cannot sell is never sent at all.
+  const pricedCart = cartReady ? availableCart : [];
+  const { quote, quoteLoading, quoteError, quoteErrorCode, retryQuote } =
+    useCheckoutQuote(pricedCart);
+  const delivery = useDeliveryCheck(pricedCart);
   const { selectedOption } = delivery;
+  const pricing = !cartReady || quoteLoading;
   const quotedLines = new Map(
     (quote?.items || []).map((item) => [
       `${item.productDocumentId}:${item.variantDocumentId}`,
@@ -39,6 +55,13 @@ const Cart = () => {
   const handleRemove = (item) =>
     removeFromCart(item.productDocumentId, item.variantDocumentId);
 
+  // A variant deactivated while this tab was open fails the quote even though
+  // the ids were good at load. Re-resolving against the catalogue marks just
+  // that line, so the rest of the cart prices instead of the page dead-ending.
+  useEffect(() => {
+    if (quoteErrorCode === "CART_ITEM_UNAVAILABLE") reconcileCart();
+  }, [quoteErrorCode, reconcileCart]);
+
   return (
     <div className="cart-container container-fluid p-0">
       <div className="navbg"></div>
@@ -50,12 +73,19 @@ const Cart = () => {
             <p className="no-product">Your cart is empty!</p>
           ) : (
             <>
-              {quoteLoading && (
+              {pricing && (
                 <p className="cart-status" role="status">
                   Calculating price details…
                 </p>
               )}
-              {quoteError && (
+              {/* The line-level notice is the accurate one, so the quote error
+                  never doubles up on it. */}
+              {unavailableCart.length > 0 && (
+                <div className="cart-unavailable" role="alert">
+                  <p>{unavailableMessage}</p>
+                </div>
+              )}
+              {!pricing && quoteError && unavailableCart.length === 0 && (
                 <div className="quote-error" role="alert">
                   <p>{quoteError}</p>
                   <button type="button" onClick={retryQuote}>Retry</button>
@@ -79,9 +109,19 @@ const Cart = () => {
                       const key = `${item.productDocumentId}:${item.variantDocumentId}`;
                       const quotedItem = quotedLines.get(key);
                       return (
-                        <tr key={key} className="tabledatarow">
+                        <tr
+                          key={key}
+                          className={
+                            item.unavailable
+                              ? "tabledatarow is-unavailable"
+                              : "tabledatarow"
+                          }
+                        >
                           <td className="product-cell" data-label="Product">
                             <h4>{quotedItem?.productName || item.productName}</h4>
+                            {item.unavailable && (
+                              <p className="item-unavailable">No longer available</p>
+                            )}
                           </td>
                           <td data-label="Weight">
                             {/* Strapi packSize wins once quoted; cached size is fallback only. */}
@@ -108,6 +148,9 @@ const Cart = () => {
                               >
                                 <img src={trash} alt="" className="trash" />
                               </button>
+                            {/* Changing the quantity of something that cannot be
+                                sold has no meaning — only removing it does. */}
+                            {!item.unavailable && (
                             <div className="varqty-sec">
                               <button
                                 type="button"
@@ -127,6 +170,7 @@ const Cart = () => {
                                 +
                               </button>
                             </div>
+                            )}
                           </div>
                           </td>
                         </tr>
@@ -272,7 +316,7 @@ const Cart = () => {
               <button
                 type="button"
                 className="checkout-btn"
-                disabled={!quote || !selectedOption}
+                disabled={!quote || !selectedOption || unavailableCart.length > 0}
                 onClick={() => navigate("/checkout")}
               >
                 Proceed To Checkout
