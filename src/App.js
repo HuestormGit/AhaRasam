@@ -18,12 +18,12 @@ import StickyPayButton from "./components/StickyPayButton/StickyPayButton";
 import Checkout from "./components/Checkout/Checkout";
 import { AuthProvider, RequireAuth } from "./context/AuthContext";
 import {
-  AccountPage,
   ForgotPasswordPage,
   LoginPage,
   RegisterPage,
   ResetPasswordPage,
 } from "./components/Auth/AuthPages";
+import Account from "./pages/Account/Account";
 
 function HomeWrapper() {
   const location = useLocation();
@@ -89,10 +89,10 @@ function App() {
               }
             />
             <Route
-              path="/account/*"
+              path="/account"
               element={
                 <RequireAuth>
-                  <AccountPage />
+                  <Account />
                 </RequireAuth>
               }
             />
