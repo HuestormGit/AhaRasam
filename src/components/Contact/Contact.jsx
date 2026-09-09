@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import axios from "axios";
 import Modal from "../Modal/Modal";
 import "./Contact.scss";
 import logo from "../../assets/Footericon.png";
-import { postDataToApi } from "../../utils/Api";
 
 function Contact() {
   const [form, setForm] = useState({
@@ -59,9 +59,20 @@ function Contact() {
     setLoading(true);
 
     try {
-      const res = await postDataToApi("/api/contacts", payload);
+      const res = await axios.post(
+       `${process.env.REACT_APP_STRAPI_URL}api/contacts`,
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+             Authorization: `Bearer ${process.env.REACT_APP_STRAPI_TOKEN}`,
+            // 🔑 If using API Token, uncomment below:
+            // "Authorization": `Bearer YOUR_API_TOKEN`
+          },
+        }
+      );
 
-      console.log("✅ Strapi response:", res);
+      console.log("✅ Strapi response:", res.data);
 
       setModal({
         show: true,

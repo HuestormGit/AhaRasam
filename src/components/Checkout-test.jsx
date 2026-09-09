@@ -13,7 +13,7 @@ const Checkout = () => {
       const { razorpayOrder } = res.data;
 
       const options = {
-        key: process.env.REACT_APP_RAZORPAY_KEY, // set in .env (test key only)
+        key: "rzp_test_R5AxLBFpboBciJ", // <-- replace with your Razorpay key
         amount: razorpayOrder.amount,
         currency: razorpayOrder.currency,
         name: "My Shop",
