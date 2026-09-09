@@ -26,6 +26,12 @@ export const AuthProvider = ({ children }) => {
     return data.user;
   }, []);
 
+  // Replaces the cached user after the backend has confirmed a change (the
+  // Account page's profile save). Callers pass the sanitised user the API
+  // returned, so context never shows a value the server has not accepted. The
+  // session token is untouched — this is not a re-authentication.
+  const applyUser = useCallback((updated) => setUser(updated), []);
+
   const login = useCallback(
     async (email, password) => {
       const { data } = await authRequest("post", "/api/auth/local", {
@@ -112,6 +118,7 @@ export const AuthProvider = ({ children }) => {
       logout: clearSession,
       forgotPassword,
       resetPassword,
+      applyUser,
     }),
     [
       user,
@@ -121,6 +128,7 @@ export const AuthProvider = ({ children }) => {
       clearSession,
       forgotPassword,
       resetPassword,
+      applyUser,
     ]
   );
 
