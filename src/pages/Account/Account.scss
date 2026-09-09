@@ -186,6 +186,118 @@
   background: #fff;
 }
 
+.account-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.account-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    color: #4b4033;
+    font-family: "Barlow Condensed";
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  input {
+    min-height: 44px;
+    padding: 10px 14px;
+    border: 1px solid #ddd0bc;
+    border-radius: 8px;
+    background: #fff;
+    color: #000;
+    font-family: inherit;
+    font-size: 17px;
+
+    &:focus-visible {
+      outline: 3px solid #1a1e25;
+      outline-offset: 2px;
+    }
+
+    &[aria-invalid="true"] {
+      border-color: #aa2423;
+    }
+
+    &:disabled {
+      background: #f5efe4;
+      color: #8e806c;
+    }
+  }
+
+  .account-field-error {
+    color: #731817;
+    font-size: 15px;
+  }
+}
+
+// Sits under the email input: there is no verification step yet, so the
+// consequence of a typo is spelled out before the confirmation dialog.
+.account-field-warning {
+  margin: -4px 0 0;
+  padding: 12px 14px;
+  border: 1px solid #e0c9a0;
+  border-radius: 8px;
+  background: #fdf5e6;
+  color: #6b5636;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.account-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.account-primary-btn,
+.account-secondary-btn {
+  min-height: 44px;
+  padding: 10px 20px;
+  border-radius: 24px;
+  font-family: "Barlow Condensed";
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+
+  &:focus-visible {
+    outline: 3px solid #1a1e25;
+    outline-offset: 3px;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.account-primary-btn {
+  border: 2px solid #aa2423;
+  background: #aa2423;
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background: #8d1d1c;
+    border-color: #8d1d1c;
+  }
+}
+
+.account-secondary-btn {
+  border: 2px solid #ddd0bc;
+  background: transparent;
+  color: #4b4033;
+
+  &:hover:not(:disabled) {
+    background: #f0e7d8;
+  }
+}
+
 .account-detail {
   display: flex;
   flex-wrap: wrap;

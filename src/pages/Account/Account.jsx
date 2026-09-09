@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import Modal from "../../components/Modal/Modal";
 import { AUTH_TOKEN_KEY, customerRequest } from "../../utils/Api";
 import { formatMinor } from "../../utils/money";
 import "./Account.scss";
@@ -23,6 +24,29 @@ const ordersQuery = (userId) =>
 
 const ordersErrorMessage =
   "We couldn't load your orders right now. Please try again.";
+
+// PUT /api/users/me, added in the backend's users-permissions extension. It
+// writes only fullName, phone and email — and only ever to the row belonging to
+// the JWT it was called with, since there is no id in the path for a caller to
+// change. username is not sent: the backend derives it from the email.
+const PROFILE_ENDPOINT = "/api/users/me";
+
+const profileErrorMessage =
+  "We couldn't save your profile right now. Please try again.";
+
+// Mirrors validatePhone on the backend: 10 digits, tolerating the +91 / 91 / 0
+// prefixes people type. Checked here only to save a round trip — the backend
+// validates independently and remains the authority.
+const phoneIsValid = (value) =>
+  /^[0-9]{10}$/.test(
+    value.trim().replace(/[\s()-]/g, "").replace(/^(?:\+?91|0)/, "")
+  );
+
+// The same pattern the auth forms and the backend both use.
+const emailIsValid = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+
+// What the backend will store, shown back to the user before they commit to it.
+const normalizeEmail = (value) => value.trim().toLowerCase();
 
 const formatDate = (value) => {
   const date = new Date(value);
@@ -95,30 +119,249 @@ const EmptyState = ({ title, children }) => (
   </div>
 );
 
-const ProfilePanel = ({ user }) => (
-  <>
-    <PanelHead
-      title="Profile"
-      intro="The details saved against your Aha Rasam account."
+// Same label/input/error shape the auth forms use, restyled for the account
+// panel rather than the auth card.
+const ProfileField = ({ id, label, error, ...props }) => (
+  <div className="account-field">
+    <label htmlFor={id}>{label}</label>
+    <input
+      id={id}
+      aria-invalid={!!error}
+      aria-describedby={error ? `${id}-error` : undefined}
+      {...props}
     />
-    <div className="account-card">
-      <DetailRow label="Name" value="" />
-      <DetailRow label="Email" value={user.email} />
-      <DetailRow label="Phone Number" value="" />
-      <DetailRow label="Member Since" value={formatDate(user.createdAt)} />
-      <DetailRow
-        label="Email Status"
-        value={user.confirmed ? "Verified" : "Not verified"}
-      />
-    </div>
-    <p className="account-panel-note">
-      An Aha Rasam account is created with an email address alone, so name and
-      phone number are not stored on the customer record yet — they are captured
-      per order at checkout instead. Editing your profile will be available once
-      those fields exist on the backend.
-    </p>
-  </>
+    {error && (
+      <span id={`${id}-error`} className="account-field-error">
+        {error}
+      </span>
+    )}
+  </div>
 );
+
+const ProfilePanel = ({ user, applyUser }) => {
+  const [editing, setEditing] = useState(false);
+  const [form, setForm] = useState({ fullName: "", phone: "", email: "" });
+  const [fieldErrors, setFieldErrors] = useState({ phone: "", email: "" });
+  const [feedback, setFeedback] = useState({ type: "", message: "" });
+  const [confirming, setConfirming] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const startEditing = () => {
+    setForm({
+      fullName: user.fullName || "",
+      phone: user.phone || "",
+      email: user.email || "",
+    });
+    setFieldErrors({ phone: "", email: "" });
+    setFeedback({ type: "", message: "" });
+    setEditing(true);
+  };
+
+  const stopEditing = () => {
+    setEditing(false);
+    setFieldErrors({ phone: "", email: "" });
+  };
+
+  const setField = (field) => (event) => {
+    const { value } = event.target;
+    setForm((current) => ({ ...current, [field]: value }));
+  };
+
+  // Save only *asks*. Nothing is sent here — the request lives in confirmSave
+  // below, so no API call can happen before the dialog is confirmed.
+  const requestSave = (event) => {
+    event.preventDefault();
+
+    // Email is required — the backend rejects an empty one, since it is the
+    // login identifier. Phone stays optional and is only checked when filled.
+    const errors = {
+      email: emailIsValid(form.email) ? "" : "Enter a valid email address.",
+      phone:
+        !form.phone.trim() || phoneIsValid(form.phone)
+          ? ""
+          : "Enter a 10-digit mobile number.",
+    };
+
+    setFieldErrors(errors);
+    if (errors.email || errors.phone) return;
+
+    setFeedback({ type: "", message: "" });
+    setConfirming(true);
+  };
+
+  // Cancelling closes the dialog and leaves `form` exactly as it was, so the
+  // user drops back into their edit with every unsaved change still there.
+  const cancelSave = () => setConfirming(false);
+
+  const confirmSave = async () => {
+    setSaving(true);
+    try {
+      const token = localStorage.getItem(AUTH_TOKEN_KEY);
+      // username is never sent: the backend derives it from the email itself.
+      const { data } = await customerRequest("put", PROFILE_ENDPOINT, token, {
+        fullName: form.fullName,
+        phone: form.phone,
+        email: form.email,
+      });
+      // Updated values come from the backend's own sanitised response, never
+      // from the form, so the page can only show what the server accepted.
+      // Spread over the existing user because this response is built by
+      // user.edit() rather than user.me(), and the two need not carry an
+      // identical field set — merging keeps rows like Member Since populated.
+      applyUser({ ...user, ...data });
+      setConfirming(false);
+      setEditing(false);
+      setFeedback({ type: "success", message: "Your profile has been updated." });
+    } catch (error) {
+      // Only our own validation messages are surfaced; anything else falls back
+      // to the generic copy rather than putting a server error on the page.
+      const message =
+        error.response?.status === 400
+          ? error.response?.data?.error?.message || profileErrorMessage
+          : profileErrorMessage;
+      setConfirming(false);
+      setFeedback({ type: "error", message });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Shown in the confirmation dialog. With no verification step, the address
+  // being committed to has to be spelled out before the request goes out —
+  // getting it wrong locks the account out of login.
+  const nextEmail = normalizeEmail(form.email);
+  const emailChanging = nextEmail !== normalizeEmail(user.email || "");
+  const confirmMessage = emailChanging
+    ? `You will sign in with ${nextEmail} from now on, and ${normalizeEmail(
+        user.email || ""
+      )} will stop working immediately. Check the new address carefully — we cannot verify it for you yet.`
+    : "Your name and phone number will be updated on your Aha Rasam account.";
+
+  return (
+    <>
+      <PanelHead
+        title="Profile"
+        intro="The details saved against your Aha Rasam account."
+      />
+
+      {editing ? (
+        <form className="account-form" onSubmit={requestSave} noValidate>
+          <ProfileField
+            id="profile-full-name"
+            label="Name"
+            type="text"
+            autoComplete="name"
+            maxLength={200}
+            value={form.fullName}
+            onChange={setField("fullName")}
+            disabled={saving}
+          />
+          <ProfileField
+            id="profile-phone"
+            label="Phone Number"
+            type="tel"
+            inputMode="numeric"
+            autoComplete="tel"
+            maxLength={20}
+            value={form.phone}
+            onChange={setField("phone")}
+            error={fieldErrors.phone}
+            disabled={saving}
+          />
+          <ProfileField
+            id="profile-email"
+            label="Email"
+            type="email"
+            autoComplete="email"
+            maxLength={254}
+            value={form.email}
+            onChange={setField("email")}
+            error={fieldErrors.email}
+            disabled={saving}
+          />
+          {/* There is no verification step yet, so a typo here would lock the
+              account out. Warn before the dialog, not only inside it. */}
+          <p className="account-field-warning">
+            Your email address is how you sign in. If you change it, use the new
+            address next time — the old one will stop working immediately.
+          </p>
+          <div className="account-card">
+            <DetailRow label="Member Since" value={formatDate(user.createdAt)} />
+            <DetailRow
+              label="Email Status"
+              value={user.confirmed ? "Verified" : "Not verified"}
+            />
+          </div>
+          <div className="account-form-actions">
+            <button type="submit" className="account-primary-btn" disabled={saving}>
+              Save Changes
+            </button>
+            <button
+              type="button"
+              className="account-secondary-btn"
+              onClick={stopEditing}
+              disabled={saving}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      ) : (
+        <>
+          <div className="account-card">
+            <DetailRow label="Name" value={user.fullName} />
+            <DetailRow label="Email" value={user.email} />
+            <DetailRow label="Phone Number" value={user.phone} />
+            <DetailRow label="Member Since" value={formatDate(user.createdAt)} />
+            <DetailRow
+              label="Email Status"
+              value={user.confirmed ? "Verified" : "Not verified"}
+            />
+          </div>
+          <div className="account-form-actions">
+            <button
+              type="button"
+              className="account-primary-btn"
+              onClick={startEditing}
+            >
+              Edit Profile
+            </button>
+          </div>
+        </>
+      )}
+
+      {feedback.type === "success" && (
+        <p className="account-status" role="status">
+          {feedback.message}
+        </p>
+      )}
+      {feedback.type === "error" && (
+        <p className="account-error" role="alert">
+          {feedback.message}
+        </p>
+      )}
+
+      <p className="account-panel-note">
+        Your email address is also your sign-in name, so changing it here
+        changes how you log in. Name and phone number are saved to your account
+        for convenience — each order still keeps its own copy of the delivery
+        details you enter at checkout, so updating them here never rewrites past
+        orders.
+      </p>
+
+      <Modal
+        show={confirming}
+        title={emailChanging ? "Change your sign-in email?" : "Save profile changes?"}
+        message={confirmMessage}
+        onClose={cancelSave}
+        onConfirm={confirmSave}
+        confirmLabel={saving ? "Saving…" : "Yes, Save Changes"}
+        cancelLabel="Cancel"
+        busy={saving}
+      />
+    </>
+  );
+};
 
 // Shaped after the backend's order.shipping-snapshot component, so a saved
 // address and an order's delivery address read identically.
@@ -241,7 +484,7 @@ const OrdersPanel = ({ status, orders }) => (
 
 const Account = () => {
   // RequireAuth resolves the session before this renders, so `user` is present.
-  const { user, logout } = useAuth();
+  const { user, logout, applyUser } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("profile");
   const { status: ordersStatus, orders } = useCustomerOrders(user.id);
@@ -301,7 +544,9 @@ const Account = () => {
               id={`account-panel-${activeTab}`}
               aria-labelledby={`account-tab-${activeTab}`}
             >
-              {activeTab === "profile" && <ProfilePanel user={user} />}
+              {activeTab === "profile" && (
+                <ProfilePanel user={user} applyUser={applyUser} />
+              )}
               {activeTab === "addresses" && <AddressesPanel addresses={addresses} />}
               {activeTab === "orders" && (
                 <OrdersPanel status={ordersStatus} orders={orders} />
