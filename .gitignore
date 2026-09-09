@@ -21,11 +21,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# local environment files (never commit real credentials)
-.env
-.env.*
-!.env.example
-
-# local test scripts (kept out of version control)
-/src/tests/

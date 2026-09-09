@@ -3,12 +3,10 @@ import logo from "../../assets/Aha-Rasam-logo.png";
 import { useEffect, useState, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
-import { useAuth } from "../../context/AuthContext";
 
 const MyHeader = () => {
   const [scrollnav, setScrollnav] = useState(false);
-  const { itemCount } = useContext(CartContext);
-  const { user } = useAuth();
+  const { cart } = useContext(CartContext);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -43,9 +41,9 @@ const MyHeader = () => {
       }`}
     >
       <div className="container-fluid p-0">
-        <Link className="navbar-brand mobile-brand d-md-none" to="/">
+        <a className="navbar-brand d-md-none" href="/">
           <img src={logo} alt="Logo" />
-        </Link>
+        </a>
 
         <button
           className="navbar-toggler"
@@ -60,48 +58,35 @@ const MyHeader = () => {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarNav">
-          <div className="navbar-layout">
-            <ul className="navbar-nav navbar-side navbar-left">
-              <li className="nav-item">
-                <button className="nav-link btn-link" onClick={() => goToSection("AboutUs")}>
-                  About us
-                </button>
-              </li>
-              <li className="nav-item">
-                <button className="nav-link btn-link" onClick={() => goToSection("product")}>
-                  Buy
-                </button>
-              </li>
-            </ul>
+          <ul className="navbar-nav mx-auto">
+            <li className="nav-item">
+              <button className="nav-link btn-link" onClick={() => goToSection("AboutUs")}>
+                About us
+              </button>
+            </li>
+            <li className="nav-item">
+              <button className="nav-link btn-link" onClick={() => goToSection("product")}>
+                Buy
+              </button>
+            </li>
 
-            <Link className="navbar-brand desktop-brand d-none d-md-flex" to="/">
-              <img src={logo} alt="Logo" />
-            </Link>
-
-            <ul className="navbar-nav navbar-side navbar-right">
-              <li className="nav-item">
-                <button className="nav-link btn-link" onClick={() => goToSection("Contact")}>
-                  Contact
-                </button>
-              </li>
-              <li className="nav-item">
-                <Link to="/cart" className="nav-link btn-link">
-                  Cart ({itemCount})
-                </Link>
-              </li>
-              <li className="nav-item">
-                {user ? (
-                  <Link to="/account" className="nav-link btn-link">
-                    Account
-                  </Link>
-                ) : (
-                  <Link to="/login" className="nav-link btn-link">
-                    Login
-                  </Link>
-                )}
-              </li>
-            </ul>
-          </div>
+            <li className="nav-item">
+              <a className="navbar-brand d-none d-md-block" href="/">
+                <img src={logo} alt="Logo" />
+              </a>
+            </li>
+            
+            <li className="nav-item ">
+              <Link to="/cart" className="nav-link btn-link">
+                Cart ({cart.length})
+              </Link>
+            </li>
+            <li className="nav-item">
+              <button className="nav-link btn-link" onClick={() => goToSection("Contact")}>
+                Contact
+              </button>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
