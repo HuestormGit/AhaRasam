@@ -24,6 +24,7 @@ import {
   ResetPasswordPage,
 } from "./components/Auth/AuthPages";
 import Account from "./pages/Account/Account";
+import PolicyPage, { POLICY_LINKS } from "./pages/Policy/PolicyPage";
 
 function HomeWrapper() {
   const location = useLocation();
@@ -96,6 +97,14 @@ function App() {
                 </RequireAuth>
               }
             />
+
+            {/* The four legal pages, driven off the same list the footer links
+                from, so a route and its Strapi slug cannot drift apart. Public
+                and unauthenticated: policy text is readable by anyone. These are
+                deliberately NOT in the header — they belong in the footer. */}
+            {POLICY_LINKS.map(({ slug, path }) => (
+              <Route key={slug} path={path} element={<PolicyPage slug={slug} />} />
+            ))}
           </Routes>
 
           <Footer />

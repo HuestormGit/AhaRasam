@@ -3,6 +3,84 @@
 
 footer {
     // margin-bottom: 60px;
+
+    // Policy links. Same type and palette as the rest of the site; a quiet row
+    // above the copyright line rather than a second navigation bar.
+    .footer-policies {
+        padding: 60px 20px 0;
+        text-align: center;
+
+        @include md {
+            padding: 100px 20px 0;
+        }
+
+        h2 {
+            margin: 0 0 12px;
+            color: #aa2423;
+            font-family: "Barlow Condensed";
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            line-height: 24px;
+            text-transform: uppercase;
+        }
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+
+            @include md {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px 28px;
+            }
+        }
+
+        a {
+            display: inline-block;
+            padding: 2px 0;
+            color: #4b4033;
+            font-family: "Barlow Condensed";
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 22px;
+            text-decoration: none;
+
+            @include md {
+                font-size: 19px;
+            }
+
+            &:hover,
+            &:focus-visible {
+                color: #aa2423;
+                text-decoration: underline;
+                text-underline-offset: 3px;
+            }
+
+            &:focus-visible {
+                outline: 3px solid #1a1e25;
+                outline-offset: 3px;
+                border-radius: 2px;
+            }
+        }
+    }
+
+    // The copyright line sat under a large gap of its own. With the policy row
+    // above it, that spacing now belongs to the row.
+    .footer-policies + p {
+        padding: 24px 0 40px;
+
+        @include md {
+            padding: 34px 0 40px;
+        }
+    }
+
     p{
         // font: normal normal normal 24px/29px Barlow;
         margin-bottom: 0;
