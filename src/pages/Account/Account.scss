@@ -374,20 +374,22 @@
   border-radius: 8px;
   background: #fff;
 
+  // Badges only. The recipient name moved out from under this row so the type
+  // and Default badges read as a header strip above the address itself.
   .account-address-head {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 10px;
     margin-bottom: 8px;
+  }
 
-    h3 {
-      margin: 0;
-      color: #aa2423;
-      font-family: "Barlow Condensed";
-      font-size: 21px;
-      font-weight: 600;
-    }
+  h3 {
+    margin: 0 0 6px;
+    color: #aa2423;
+    font-family: "Barlow Condensed";
+    font-size: 21px;
+    font-weight: 600;
   }
 
   .account-address-lines,
@@ -401,6 +403,98 @@
   }
 
   .account-address-phone { color: #4b4033; }
+
+  // Sits below the address, separated rather than boxed, so a card of actions
+  // does not compete with the address it belongs to.
+  .account-address-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid #eee4d3;
+
+    .account-secondary-btn {
+      min-height: 38px;
+      padding: 6px 16px;
+      font-size: 16px;
+    }
+  }
+}
+
+// The address type. Filled rather than outlined, so it reads as the card's
+// identity at a glance while Default stays the quieter, secondary badge.
+.account-badge-label {
+  border-color: #aa2423;
+  background: #aa2423;
+  color: #fff;
+}
+
+.account-danger-btn {
+  border-color: #e0b3b2;
+  color: #8d1d1c;
+
+  &:hover:not(:disabled) {
+    background: #fbeceb;
+  }
+}
+
+// Native radios, styled to sit with .account-field rather than to look custom.
+.account-label-field {
+  margin: 0;
+  padding: 0;
+  border: 0;
+
+  legend {
+    padding: 0;
+    margin-bottom: 6px;
+    color: #4b4033;
+    font-family: "Barlow Condensed";
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .account-label-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 8px 16px;
+      border: 1px solid #ddd0bc;
+      border-radius: 24px;
+      background: #fff;
+      color: #4b4033;
+      font-size: 17px;
+      cursor: pointer;
+
+      &:has(input:checked) {
+        border-color: #aa2423;
+        background: #fdf4ec;
+      }
+
+      &:has(input:focus-visible) {
+        outline: 3px solid #1a1e25;
+        outline-offset: 2px;
+      }
+
+      &:has(input:disabled) {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    input {
+      // Native control, native focus/checked semantics; only the accent is ours.
+      margin: 0;
+      accent-color: #aa2423;
+      cursor: inherit;
+    }
+  }
 }
 
 .account-order {
