@@ -24,6 +24,7 @@ import {
   ResetPasswordPage,
 } from "./components/Auth/AuthPages";
 import Account from "./pages/Account/Account";
+import OrderDetails from "./pages/OrderDetails/OrderDetails";
 import PolicyPage, { POLICY_LINKS } from "./pages/Policy/PolicyPage";
 
 function HomeWrapper() {
@@ -94,6 +95,14 @@ function App() {
               element={
                 <RequireAuth>
                   <Account />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/account/orders/:orderId"
+              element={
+                <RequireAuth>
+                  <OrderDetails />
                 </RequireAuth>
               }
             />

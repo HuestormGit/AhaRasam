@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import Modal from "../../components/Modal/Modal";
 import { AUTH_TOKEN_KEY, customerRequest } from "../../utils/Api";
@@ -946,35 +946,41 @@ const AddressesPanel = ({ status, addresses, setAddresses }) => {
 
 const OrderCard = ({ order }) => (
   <li className="account-order">
-    <div className="account-order-head">
-      <div>
-        <h3>{order.orderNumber || `Order #${order.id}`}</h3>
-        <p className="account-order-date">Placed {formatDate(order.createdAt)}</p>
+    <Link
+      className="account-order-link"
+      to={`/account/orders/${encodeURIComponent(order.documentId)}`}
+    >
+      <div className="account-order-head">
+        <div>
+          <h3>{order.orderNumber || `Order #${order.id}`}</h3>
+          <p className="account-order-date">Placed {formatDate(order.createdAt)}</p>
+        </div>
+        <p className="account-order-total">₹{formatMinor(order.grandTotalMinor)}</p>
       </div>
-      <p className="account-order-total">₹{formatMinor(order.grandTotalMinor)}</p>
-    </div>
-    <div className="account-order-status">
-      <span className="account-badge">
-        Payment: {statusLabel(order.paymentStatus)}
-      </span>
-      <span className="account-badge">
-        Delivery: {statusLabel(order.shipmentStatus)}
-      </span>
-    </div>
-    {order.orderItems?.length > 0 && (
-      <ul className="account-order-items">
-        {order.orderItems.map((item) => (
-          <li key={item.id}>
-            <span>
-              {item.productTitleSnapshot}
-              {item.packSizeSnapshot ? ` (${item.packSizeSnapshot})` : ""} ×{" "}
-              {item.quantity}
-            </span>
-            <span>₹{formatMinor(item.lineTotalMinor)}</span>
-          </li>
-        ))}
-      </ul>
-    )}
+      <div className="account-order-status">
+        <span className="account-badge">
+          Payment: {statusLabel(order.paymentStatus)}
+        </span>
+        <span className="account-badge">
+          Delivery: {statusLabel(order.shipmentStatus)}
+        </span>
+      </div>
+      {order.orderItems?.length > 0 && (
+        <ul className="account-order-items">
+          {order.orderItems.map((item) => (
+            <li key={item.id}>
+              <span>
+                {item.productTitleSnapshot}
+                {item.packSizeSnapshot ? ` (${item.packSizeSnapshot})` : ""} ×{" "}
+                {item.quantity}
+              </span>
+              <span>₹{formatMinor(item.lineTotalMinor)}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      <span className="account-order-affordance">View details →</span>
+    </Link>
   </li>
 );
 
@@ -1005,7 +1011,7 @@ const OrdersPanel = ({ status, orders }) => (
       (orders.length > 0 ? (
         <ul className="account-order-list">
           {orders.map((order) => (
-            <OrderCard key={order.id} order={order} />
+            <OrderCard key={order.documentId} order={order} />
           ))}
         </ul>
       ) : (
@@ -1020,7 +1026,11 @@ const Account = () => {
   // RequireAuth resolves the session before this renders, so `user` is present.
   const { user, logout, applyUser } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState("profile");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedTab = searchParams.get("tab");
+  const activeTab = TABS.some(({ id }) => id === requestedTab)
+    ? requestedTab
+    : "profile";
   const { status: ordersStatus, orders } = useCustomerOrders(user.id);
   const {
     status: addressesStatus,
@@ -1058,7 +1068,9 @@ const Account = () => {
                     className={
                       activeTab === tab.id ? "account-tab is-active" : "account-tab"
                     }
-                    onClick={() => setActiveTab(tab.id)}
+                    onClick={() =>
+                      setSearchParams(tab.id === "profile" ? {} : { tab: tab.id })
+                    }
                   >
                     {tab.label}
                   </button>
