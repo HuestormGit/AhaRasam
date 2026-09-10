@@ -498,10 +498,30 @@
 }
 
 .account-order {
-  padding: 18px 16px;
   border: 1px solid #ddd0bc;
   border-radius: 8px;
   background: #fff;
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover {
+    border-color: #c98a45;
+    box-shadow: 0 4px 14px rgba(75, 64, 51, 0.1);
+  }
+
+  .account-order-link {
+    display: block;
+    padding: 18px 16px;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 3px solid #1a1e25;
+      outline-offset: -3px;
+      border-radius: 7px;
+    }
+  }
 
   .account-order-head {
     display: flex;
@@ -554,8 +574,18 @@
       color: #4b4033;
       font-size: 16px;
 
+      span:first-child { min-width: 0; overflow-wrap: anywhere; }
       span:last-child { white-space: nowrap; }
     }
+  }
+
+  .account-order-affordance {
+    display: inline-block;
+    margin-top: 14px;
+    color: #aa2423;
+    font-family: "Barlow Condensed";
+    font-size: 17px;
+    font-weight: 600;
   }
 }
 
