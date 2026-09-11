@@ -5,6 +5,8 @@
   // Breakpoints (and sticky-nav) only override this number.
   --nav-logo-size: 100px;
 
+  position: relative;
+  z-index: 5;
   background-color: #E1AD3F;
   padding: 0;
 
@@ -101,7 +103,7 @@
   // `align-items: center` on the grid is the ONE rule that vertically centres
   // both groups and the logo — no per-side offsets anywhere.
   @include md {
-    --nav-logo-size: 180px;
+    --nav-logo-size: 200px;
 
     .navbar-layout {
       display: grid;
@@ -130,7 +132,7 @@
   }
 
   @include lg {
-    --nav-logo-size: 200px;
+    --nav-logo-size: 220px;
 
     .nav-link {
       padding: 0.5em 1em;

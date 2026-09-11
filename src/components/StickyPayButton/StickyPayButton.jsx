@@ -19,7 +19,7 @@ function StickyPayButton() {
     const totalItems = itemCount;
 
     // Fixed bar sits over the footer on every page — only show it once there is
-    // something to pay for, and only where it is wanted.
+    // something in the cart, and only where it is wanted.
     if (totalItems === 0 || !SHOW_ON_PATHS.includes(pathname)) return null;
 
   return (
@@ -30,7 +30,7 @@ function StickyPayButton() {
               : `0 Products added `}
         </span>
         
-        <button className="proceed-btn" onClick={() => navigate("/cart")}> Proceed to Pay</button>
+        <button className="proceed-btn" onClick={() => navigate("/cart")}>Go to Cart</button>
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { AUTH_TOKEN_KEY, customerRequest } from "../../utils/Api";
 import { formatMinor, gstSummaryLabel } from "../../utils/money";
+import { useDocumentMeta } from "../../hooks/usePolicy";
 import "./OrderDetails.scss";
 
 const BACK_TO_ORDERS = "/account?tab=orders";
@@ -91,6 +92,11 @@ const OrderDetails = () => {
   const { logout } = useAuth();
   const [attempt, setAttempt] = useState(0);
   const [state, setState] = useState({ status: "loading", order: null });
+  useDocumentMeta(
+    state.status === "ready" && state.order?.orderNumber
+      ? `Order ${state.order.orderNumber} | AHA! Rasam`
+      : "Order Details | AHA! Rasam"
+  );
 
   useEffect(() => {
     let active = true;
@@ -196,7 +202,14 @@ const OrderDetails = () => {
           {order.orderItems?.length > 0 ? (
             <ul className="order-details-items">
               {order.orderItems.map((item) => (
-                <OrderItem key={item.documentId} item={item} />
+                <OrderItem
+                  key={
+                    item.documentId ||
+                    item.id ||
+                    `${item.skuSnapshot}:${item.productTitleSnapshot}:${item.variantNameSnapshot}:${item.packSizeSnapshot}`
+                  }
+                  item={item}
+                />
               ))}
             </ul>
           ) : (

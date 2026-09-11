@@ -27,17 +27,18 @@ const Banner = () => {
     return <section className="hero-banner">
         <div className="banner-box container-fluid">
             <div className="topbox text-center">
+                <h2 className="comingsoon">Coming Soon...</h2>
                 <h1 className="banner-heading">
                     {/* A Sip of Tradition, <br></br>A Taste of Wellness */}
                     {/* Sip it as a healthy, comforting Rasam, <br></br>or sprinkle it to elevate your daily cooking! */}
                     A Sip of Tradition.<br></br> A Taste of Wellness.
 
                 </h1>
-                <h6 className="sub-heading">
+                <p className="sub-heading">
                     Sip it as a healthy, comforting Rasam, or cook it <br></br> into your daily meals to elevate the flavour!
                   {/* A healthy replacement for Tea or Coffee */}
                     {/* Sip it as a healthy, comforting Rasam, <br/>or sprinkle it to elevate your daily cooking! */}
-                </h6>
+                </p>
             </div>
 
         </div>
