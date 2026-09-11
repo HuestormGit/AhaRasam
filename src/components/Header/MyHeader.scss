@@ -5,6 +5,10 @@
   // Breakpoints (and sticky-nav) only override this number.
   --nav-logo-size: 100px;
 
+  // Lifts the bar above the hero's background box, which is pulled up over
+  // the header by a negative margin and would otherwise swallow every link
+  // click. The hero's decorative layers deliberately sit above this again
+  // (see Banner.scss) so the artwork still carries across the header band.
   position: relative;
   z-index: 5;
   background-color: #E1AD3F;
