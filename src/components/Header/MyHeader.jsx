@@ -107,14 +107,14 @@ const MyHeader = () => {
 
             <ul className="navbar-nav navbar-side navbar-right">
               <li className="nav-item">
-                <Link to="/cart" className="nav-link btn-link" onClick={() => closeMenu()}>
-                  Cart ({itemCount})
-                </Link>
-              </li>
-              <li className="nav-item">
                 <button className="nav-link btn-link" onClick={() => goToSection("Contact")}>
                   Contact
                 </button>
+              </li>
+              <li className="nav-item">
+                <Link to="/cart" className="nav-link btn-link" onClick={() => closeMenu()}>
+                  Cart ({itemCount})
+                </Link>
               </li>
               <li className="nav-item">
                 {user ? (
