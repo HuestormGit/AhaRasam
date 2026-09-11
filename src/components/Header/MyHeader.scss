@@ -96,7 +96,11 @@
   &.sticky-nav {
     position: sticky;
     top: 0;
-    z-index: 5;
+    // Above every layer the hero scrolls under this bar: the decorative
+    // ingredients (6) and the lower artwork's own 5 and 10. Only the pinned
+    // state claims this, so at rest the bar stays at 5 and the ingredients
+    // still carry across the header band.
+    z-index: 20;
     transform: translateY(-100px);
     animation: Stickey-nav 0.2s ease forwards;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
