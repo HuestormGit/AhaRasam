@@ -17,6 +17,7 @@ import { useContext, useEffect, useState } from "react";
 import StickyPayButton from "./components/StickyPayButton/StickyPayButton";
 import Checkout from "./components/Checkout/Checkout";
 import { AuthProvider, RequireAuth } from "./context/AuthContext";
+import { AccountNotificationsProvider } from "./context/AccountNotificationsContext";
 import {
   ForgotPasswordPage,
   LoginPage,
@@ -72,53 +73,57 @@ function App() {
   return (
     <CartProvider>
       <AuthProvider>
-        <BrowserRouter>
-          <MyHeader />
+        {/* Above BrowserRouter so the navbar dot and the Account page's
+            Orders badge read one fetch and one count. */}
+        <AccountNotificationsProvider>
+          <BrowserRouter>
+            <MyHeader />
 
-          <Routes>
-            <Route path="/" element={<HomeWrapper />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route
-              path="/checkout"
-              element={
-                <RequireAuth>
-                  <CheckoutRoute />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/account"
-              element={
-                <RequireAuth>
-                  <Account />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/account/orders/:orderId"
-              element={
-                <RequireAuth>
-                  <OrderDetails />
-                </RequireAuth>
-              }
-            />
+            <Routes>
+              <Route path="/" element={<HomeWrapper />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route
+                path="/checkout"
+                element={
+                  <RequireAuth>
+                    <CheckoutRoute />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/account"
+                element={
+                  <RequireAuth>
+                    <Account />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/account/orders/:orderId"
+                element={
+                  <RequireAuth>
+                    <OrderDetails />
+                  </RequireAuth>
+                }
+              />
 
-            {/* The four legal pages, driven off the same list the footer links
-                from, so a route and its Strapi slug cannot drift apart. Public
-                and unauthenticated: policy text is readable by anyone. These are
-                deliberately NOT in the header — they belong in the footer. */}
-            {POLICY_LINKS.map(({ slug, path }) => (
-              <Route key={slug} path={path} element={<PolicyPage slug={slug} />} />
-            ))}
-          </Routes>
+              {/* The four legal pages, driven off the same list the footer links
+                  from, so a route and its Strapi slug cannot drift apart. Public
+                  and unauthenticated: policy text is readable by anyone. These are
+                  deliberately NOT in the header — they belong in the footer. */}
+              {POLICY_LINKS.map(({ slug, path }) => (
+                <Route key={slug} path={path} element={<PolicyPage slug={slug} />} />
+              ))}
+            </Routes>
 
-          <Footer />
-          <StickyPayButton />
-        </BrowserRouter>
+            <Footer />
+            <StickyPayButton />
+          </BrowserRouter>
+        </AccountNotificationsProvider>
       </AuthProvider>
     </CartProvider>
   );

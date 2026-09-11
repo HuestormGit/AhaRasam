@@ -103,6 +103,27 @@
       outline: 3px solid #1a1e25;
       outline-offset: 2px;
     }
+
+    // Inline inside the label, so the tab keeps its own display and the pill
+    // does not have to become a flex container to hold a count.
+    .account-tab-badge {
+      display: inline-block;
+      min-width: 22px;
+      margin-left: 8px;
+      padding: 0 6px;
+      border-radius: 11px;
+      background: #aa2423;
+      color: #fff;
+      font-size: 14px;
+      line-height: 22px;
+      text-align: center;
+    }
+
+    // The active tab is itself #aa2423, so the badge inverts to stay legible.
+    &.is-active .account-tab-badge {
+      background: #fff;
+      color: #aa2423;
+    }
   }
 
   .account-logout-btn {

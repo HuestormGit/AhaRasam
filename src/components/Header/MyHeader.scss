@@ -54,6 +54,20 @@
     &:hover {
       color: #b30000;
     }
+
+    // A flex sibling of the label rather than an absolutely positioned badge:
+    // .nav-link is already a centred flex row, so the dot needs no positioning
+    // context and cannot escape the link box. pointer-events are off so it can
+    // never swallow a click meant for the link itself.
+    .nav-dot {
+      flex: 0 0 auto;
+      width: 8px;
+      height: 8px;
+      margin-left: 6px;
+      border-radius: 50%;
+      background: #aa2423;
+      pointer-events: none;
+    }
   }
 
   .navbar-brand {
