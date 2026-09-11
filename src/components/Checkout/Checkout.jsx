@@ -480,7 +480,7 @@ const Checkout = ({ cartData = [], onClose }) => {
   return (
     <div className="popup-overlay">
       <div className="popup-content">
-        <h2>Checkout</h2>
+        <h1>Checkout</h1>
 
         {!cartData.length && <p>Your cart is empty.</p>}
         {quoteLoading && <p role="status">Calculating your total…</p>}

@@ -28,6 +28,12 @@ import OrderDetails from "./pages/OrderDetails/OrderDetails";
 import PolicyPage, { POLICY_LINKS } from "./pages/Policy/PolicyPage";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import NotFound from "./pages/NotFound/NotFound";
+import { useDocumentMeta } from "./hooks/usePolicy";
+
+function PageTitle({ title, children }) {
+  useDocumentMeta(`${title}${title === "AHA! Rasam" ? "" : " | AHA! Rasam"}`);
+  return children;
+}
 
 function HomeWrapper() {
   const location = useLocation();
@@ -81,34 +87,40 @@ function App() {
               render error in one page cannot blank the whole app. */}
           <ErrorBoundary>
             <Routes>
-              <Route path="/" element={<HomeWrapper />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route path="/" element={<PageTitle title="AHA! Rasam"><HomeWrapper /></PageTitle>} />
+              <Route path="/cart" element={<PageTitle title="Cart"><Cart /></PageTitle>} />
+              <Route path="/login" element={<PageTitle title="Login"><LoginPage /></PageTitle>} />
+              <Route path="/register" element={<PageTitle title="Register"><RegisterPage /></PageTitle>} />
+              <Route path="/forgot-password" element={<PageTitle title="Forgot Password"><ForgotPasswordPage /></PageTitle>} />
+              <Route path="/reset-password" element={<PageTitle title="Reset Password"><ResetPasswordPage /></PageTitle>} />
               <Route
                 path="/checkout"
                 element={
-                  <RequireAuth>
-                    <CheckoutRoute />
-                  </RequireAuth>
+                  <PageTitle title="Checkout">
+                    <RequireAuth>
+                      <CheckoutRoute />
+                    </RequireAuth>
+                  </PageTitle>
                 }
               />
               <Route
                 path="/account"
                 element={
-                  <RequireAuth>
-                    <Account />
-                  </RequireAuth>
+                  <PageTitle title="Account">
+                    <RequireAuth>
+                      <Account />
+                    </RequireAuth>
+                  </PageTitle>
                 }
               />
               <Route
                 path="/account/orders/:orderId"
                 element={
-                  <RequireAuth>
-                    <OrderDetails />
-                  </RequireAuth>
+                  <PageTitle title="Order Details">
+                    <RequireAuth>
+                      <OrderDetails />
+                    </RequireAuth>
+                  </PageTitle>
                 }
               />
 
@@ -123,7 +135,7 @@ function App() {
               {/* Last, so every real route above still wins. This is normal
                   routing, not error handling — the boundary above stays for
                   actual render crashes. */}
-              <Route path="*" element={<NotFound />} />
+              <Route path="*" element={<PageTitle title="Page Not Found"><NotFound /></PageTitle>} />
             </Routes>
           </ErrorBoundary>
 

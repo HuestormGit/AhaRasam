@@ -109,7 +109,7 @@ const PolicyPage = ({ slug }) => {
   const heading = policy?.title || known?.fallbackTitle || "Policy";
 
   useDocumentMeta(
-    policy?.seoTitle || `${heading} | Aha Rasam`,
+    `${heading} | AHA! Rasam`,
     policy?.seoDescription
   );
 
