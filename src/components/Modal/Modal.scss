@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 10000;
 }
 
 .modal-box {
@@ -59,4 +59,14 @@ button {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+}
+
+// The notification variant's Close button is the only direct-child button of
+// .modal-box; the confirm variant's pair sits deeper, inside .modal-actions.
+// Dark label, not the #fff above: white on this gold is 2:1 and unreadable.
+.modal-box > button {
+  background: #E1AD3F;
+  color: #1a1e25;
+
+  &:hover { background: #d49b24; }
 }
