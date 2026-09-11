@@ -83,15 +83,26 @@
     }
   }
 
+  // ---- Alternate UI: compact sticky bar ----
+  // The landing state is untouched; this is only the scrolled state. One
+  // variable drives the logo box and, through the grid's min-height, the bar
+  // itself, so the whole bar shrinks from a single number. `.my-navbar
+  // .sticky-nav` outranks `.my-navbar`, so this wins at every breakpoint
+  // without repeating the value per media query.
   &.sticky-nav {
     position: sticky;
     top: 0;
     z-index: 5;
     transform: translateY(-100px);
     animation: Stickey-nav 0.2s ease forwards;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
 
-    @include md {
-      --nav-logo-size: 100px;
+    --nav-logo-size: 64px;
+
+    .nav-link {
+      padding: 0.5em 0.75em;
+      font-size: 18px;
+      line-height: 20px;
     }
   }
 
