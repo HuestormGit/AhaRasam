@@ -15,7 +15,17 @@ export const formatAmount = (rupees) => {
 export const formatMinor = (minor) =>
   Number.isSafeInteger(minor) ? (minor / 100).toFixed(2) : "0.00";
 
-export const gstSummaryLabel = (items = []) => {
-  const rates = [...new Set(items.map((item) => item.gstRateBps))];
-  return rates.length === 1 ? `GST @ ${rates[0] / 100}%` : "GST";
+// Display label only — never a tax calculation. Callers pass server data that
+// may be null, partial or still loading (a default parameter only covers
+// undefined), so anything that is not a usable single rate falls back to the
+// plain "GST" heading rather than rendering "GST @ NaN%".
+export const gstSummaryLabel = (items) => {
+  if (!Array.isArray(items) || items.length === 0) return "GST";
+  const rates = new Set(items.map((item) => item?.gstRateBps));
+  const [rate] = rates;
+  // One rate, shared by every line, and actually a number: anything else
+  // (a missing rate on one line included) is not safe to name.
+  return rates.size === 1 && Number.isSafeInteger(rate)
+    ? `GST @ ${rate / 100}%`
+    : "GST";
 };

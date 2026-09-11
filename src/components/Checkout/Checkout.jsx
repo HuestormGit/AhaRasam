@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import "./Checkout.scss";
 import Modal from "../Modal/Modal";
 import { CartContext } from "../../context/CartContext";
@@ -68,6 +68,46 @@ const readAuthToken = () => {
   }
 };
 
+// Mirrors what the backend requires: fullName, phone, email, addressLine1, city
+// and state. Pure on purpose — this used to call setErrors() from an effect that
+// watched the form, which is why an untouched checkout opened with every
+// "… is required" message already on screen.
+const validateForm = (form) => {
+  const errors = {};
+
+  if (!form.name.trim()) errors.name = "Name is required";
+  if (!form.email.trim()) errors.email = "Email is required";
+  else if (!EMAIL_PATTERN.test(form.email.trim()))
+    errors.email = "Enter a valid email";
+  if (!form.contact.trim()) errors.contact = "Contact number is required";
+  else if (!/^[0-9]{10}$/.test(form.contact.trim()))
+    errors.contact = "Enter a valid 10-digit number";
+  if (!form.address.trim()) errors.address = "Address is required";
+  if (!form.city.trim()) errors.city = "City is required";
+  if (!form.state.trim()) errors.state = "State is required";
+
+  return errors;
+};
+
+// Same label / input / error shape as the account address form, emitted flat
+// (no wrapper div) so `.popup-content input` and `.error` keep matching.
+const CheckoutField = ({ id, label, error, ...props }) => (
+  <>
+    <label htmlFor={id}>{label}</label>
+    <input
+      id={id}
+      aria-invalid={!!error}
+      aria-describedby={error ? `${id}-error` : undefined}
+      {...props}
+    />
+    {error && (
+      <p className="error" id={`${id}-error`}>
+        {error}
+      </p>
+    )}
+  </>
+);
+
 const Checkout = ({ cartData = [], onClose }) => {
   const { clearCart } = useContext(CartContext);
   // Chosen on the cart page and carried across the navigation. Display and
@@ -81,8 +121,10 @@ const Checkout = ({ cartData = [], onClose }) => {
     city: "",
     state: "",
   });
-  const [errors, setErrors] = useState({});
-  const [isFormValid, setIsFormValid] = useState(false);
+  // Which fields are allowed to complain, and whether a pay attempt has been
+  // made. Validation itself is derived, never stored.
+  const [touched, setTouched] = useState({});
+  const [submitted, setSubmitted] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [result, setResult] = useState(null); // { success, title, message, done }
   const { quote, quoteLoading, quoteError } = useCheckoutQuote(cartData);
@@ -93,40 +135,26 @@ const Checkout = ({ cartData = [], onClose }) => {
   const orderTotalPaise = quote ? quote.subtotalPaise + shippingPaise : 0;
 
   const handleChange = (e) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+    // Editing a field is what earns it live feedback; fields the customer has
+    // not reached stay quiet until a pay attempt.
+    setTouched((prev) => (prev[name] ? prev : { ...prev, [name]: true }));
   };
 
-  // Mirrors what the backend requires: fullName, phone, email, addressLine1,
-  // city, state and a 6-digit postalCode.
-  const validate = () => {
-    const newErrors = {};
+  // Recomputed every render instead of mirrored into state, so correcting a
+  // field clears its own message with no effect and nothing to keep in step.
+  const validationErrors = validateForm(form);
+  // The pincode is read-only and comes from the delivery check, so it cannot be
+  // typed around. Its absence is already explained by the delivery panel, which
+  // is why it gates validity without adding a second error message.
+  const isFormValid =
+    Object.keys(validationErrors).length === 0 &&
+    PINCODE_PATTERN.test(delivery?.destinationPincode || "");
 
-    if (!form.name.trim()) newErrors.name = "Name is required";
-    if (!form.email.trim()) newErrors.email = "Email is required";
-    else if (!EMAIL_PATTERN.test(form.email.trim()))
-      newErrors.email = "Enter a valid email";
-    if (!form.contact.trim()) newErrors.contact = "Contact number is required";
-    else if (!/^[0-9]{10}$/.test(form.contact.trim()))
-      newErrors.contact = "Enter a valid 10-digit number";
-    if (!form.address.trim()) newErrors.address = "Address is required";
-    if (!form.city.trim()) newErrors.city = "City is required";
-    if (!form.state.trim()) newErrors.state = "State is required";
-
-    setErrors(newErrors);
-    // The pincode is read-only and comes from the delivery check, so it cannot
-    // be typed around. Its absence is already explained by the delivery panel,
-    // which is why it gates validity without adding a second error message.
-    return (
-      Object.keys(newErrors).length === 0 &&
-      PINCODE_PATTERN.test(delivery?.destinationPincode || "")
-    );
-  };
-
-  useEffect(() => {
-    setIsFormValid(validate());
-    // eslint-disable-next-line
-  }, [form, delivery]);
+  // Validation always runs; this is the only thing that decides when it speaks.
+  const errorFor = (field) =>
+    submitted || touched[field] ? validationErrors[field] : undefined;
 
   const showError = (title, message) =>
     setResult({ success: false, title, message });
@@ -340,7 +368,10 @@ const Checkout = ({ cartData = [], onClose }) => {
   };
 
   const handlePayment = async () => {
-    if (!validate()) return;
+    // Enter submits even while the Pay button is disabled, so this — not the
+    // button's `disabled` — is the guard that actually protects the charge, and
+    // the one that stops a second submit landing on a payment already in flight.
+    if (processing || !isFormValid) return;
 
     if (!cartData.length) {
       showError("Cart is empty", "Add a product to your cart before checking out.");
@@ -437,10 +468,19 @@ const Checkout = ({ cartData = [], onClose }) => {
     openCheckout(created, token);
   };
 
+  // The one way in: Enter inside any field and the Pay button both arrive here,
+  // so a single path can start a charge. Submitting is also what releases the
+  // errors for fields the customer never touched.
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setSubmitted(true);
+    handlePayment();
+  };
+
   return (
     <div className="popup-overlay">
       <div className="popup-content">
-        <h2>Checkout</h2>
+        <h1>Checkout</h1>
 
         {!cartData.length && <p>Your cart is empty.</p>}
         {quoteLoading && <p role="status">Calculating your total…</p>}
@@ -490,54 +530,124 @@ const Checkout = ({ cartData = [], onClose }) => {
           </>
         )}
 
-        <input type="text" name="name" placeholder="Enter Name" value={form.name} onChange={handleChange} />
-        {errors.name && <p className="error">{errors.name}</p>}
+        {/* A real form, so Enter in any field submits exactly as the Pay button
+            does — and nothing else in here can submit, because every other
+            button states type="button". `noValidate` keeps our own messages
+            authoritative instead of handing the customer a browser bubble for
+            type="email". */}
+        <form onSubmit={handleSubmit} noValidate>
+          <CheckoutField
+            id="checkout-name"
+            label="Full Name"
+            type="text"
+            name="name"
+            autoComplete="name"
+            placeholder="Enter Name"
+            value={form.name}
+            onChange={handleChange}
+            error={errorFor("name")}
+          />
 
-        <input type="email" name="email" placeholder="Enter Email" value={form.email} onChange={handleChange} />
-        {errors.email && <p className="error">{errors.email}</p>}
+          <CheckoutField
+            id="checkout-email"
+            label="Email"
+            type="email"
+            name="email"
+            autoComplete="email"
+            placeholder="Enter Email"
+            value={form.email}
+            onChange={handleChange}
+            error={errorFor("email")}
+          />
 
-        <input type="text" name="contact" placeholder="Enter Contact" value={form.contact} onChange={handleChange} />
-        {errors.contact && <p className="error">{errors.contact}</p>}
+          <CheckoutField
+            id="checkout-contact"
+            label="Contact Number"
+            type="tel"
+            name="contact"
+            autoComplete="tel"
+            inputMode="numeric"
+            placeholder="Enter Contact"
+            value={form.contact}
+            onChange={handleChange}
+            error={errorFor("contact")}
+          />
 
-        <input type="text" name="address" placeholder="Address (Street / House No.)" value={form.address} onChange={handleChange} />
-        {errors.address && <p className="error">{errors.address}</p>}
+          <CheckoutField
+            id="checkout-address"
+            label="Address (House No. / Street)"
+            type="text"
+            name="address"
+            autoComplete="address-line1"
+            placeholder="Address (Street / House No.)"
+            value={form.address}
+            onChange={handleChange}
+            error={errorFor("address")}
+          />
 
-        <input type="text" name="city" placeholder="City" value={form.city} onChange={handleChange} />
-        {errors.city && <p className="error">{errors.city}</p>}
+          <CheckoutField
+            id="checkout-city"
+            label="City"
+            type="text"
+            name="city"
+            autoComplete="address-level2"
+            placeholder="City"
+            value={form.city}
+            onChange={handleChange}
+            error={errorFor("city")}
+          />
 
-        <input type="text" name="state" placeholder="State" value={form.state} onChange={handleChange} />
-        {errors.state && <p className="error">{errors.state}</p>}
+          <CheckoutField
+            id="checkout-state"
+            label="State"
+            type="text"
+            name="state"
+            autoComplete="address-level1"
+            placeholder="State"
+            value={form.state}
+            onChange={handleChange}
+            error={errorFor("state")}
+          />
 
-        {/* Read-only on purpose: the selected delivery option belongs to this
-            pincode, so editing it here would quote one address and ship another. */}
-        <label className="checkout-pincode" htmlFor="checkout-pincode">
-          Delivery Pincode
-        </label>
-        <input
-          id="checkout-pincode"
-          type="text"
-          name="pincode"
-          placeholder="Checked in your cart"
-          value={delivery?.destinationPincode || ""}
-          readOnly
-        />
-        <button type="button" className="change-pincode-btn" onClick={changePincode}>
-          Change delivery pincode
-        </button>
+          {/* Read-only on purpose: the selected delivery option belongs to this
+              pincode, so editing it here would quote one address and ship another. */}
+          <label className="checkout-pincode" htmlFor="checkout-pincode">
+            Delivery Pincode
+          </label>
+          <input
+            id="checkout-pincode"
+            type="text"
+            name="pincode"
+            autoComplete="postal-code"
+            inputMode="numeric"
+            placeholder="Checked in your cart"
+            value={delivery?.destinationPincode || ""}
+            readOnly
+          />
+          <button type="button" className="change-pincode-btn" onClick={changePincode}>
+            Change delivery pincode
+          </button>
 
-        <button
-          onClick={handlePayment}
-          disabled={!isFormValid || processing || quoteLoading || !quote || !delivery}
-        >
-          {processing
-            ? "Creating Payment..."
-            : quote
-              ? `Pay ₹${formatMinor(orderTotalPaise)}`
-              : "Quote unavailable"}
-        </button>
-        <button onClick={onClose} disabled={processing}>
-          Cancel
-        </button>
+          {/* Deliberately NOT disabled for an invalid form: a dead button tells
+              the customer nothing, and it would make "submit and see what is
+              missing" impossible — a disabled default button also suppresses
+              Enter. handlePayment refuses invalid input itself, which is the
+              stronger guard. It stays disabled only where submitting could not
+              mean anything: mid-payment, or with no quote or delivery yet. */}
+          <button
+            type="submit"
+            disabled={processing || quoteLoading || !quote || !delivery}
+          >
+            {processing
+              ? "Creating Payment..."
+              : quote
+                ? `Pay ₹${formatMinor(orderTotalPaise)}`
+                : "Quote unavailable"}
+          </button>
+          <button type="button" onClick={onClose} disabled={processing}>
+            Cancel
+          </button>
+        </form>
       </div>
 
       <Modal

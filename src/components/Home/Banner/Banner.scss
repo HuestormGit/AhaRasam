@@ -3,6 +3,15 @@
 .hero-banner {
     display: flex;
     flex-direction: column;
+    // No `position`/`z-index` here on purpose, for two reasons. The
+    // decorative ::before/::after are absolutely positioned at top: 0 and are
+    // meant to resolve against the initial containing block, so the artwork
+    // starts at the top of the PAGE and carries across the header band;
+    // making .hero-banner their containing block re-anchors them to the hero
+    // box, dropping them ~90px so their top edge is cut off at the header
+    // edge. A stacking context here would also trap their z-index, leaving
+    // them stuck under the navbar. They stay click-through via
+    // pointer-events: none, so nothing here can steal a header click.
     padding: 0px 0px 50px;
      &::before {
             content: "";
@@ -13,7 +22,11 @@
             height: 942px;
             background-size: cover;
             background-repeat: no-repeat;
-            // z-index: 1; 
+            // Above the navbar's z-index: 5 so the ingredients carry across
+            // the header band instead of being cut off at its edge, and
+            // click-through so they never take a link's click.
+            pointer-events: none;
+            z-index: 6;
             background-image: url("../../../assets/Mobileleftside.png"); 
 
             
@@ -56,12 +69,12 @@
             background-image: url("../../../assets/Mobilerightside.png");
             background-size: cover;
             background-repeat: no-repeat;
-            // z-index: 1;
+            pointer-events: none;
+            z-index: 6;
             
             @include md{
                 width: 250px;  
                 height: 515px;
-                z-index: 1;
                 opacity: 1;
                 top: 0;
                 right: 0;
@@ -142,6 +155,7 @@
                 
             }
             .sub-heading{
+                margin: 0 0 .5rem;
                 text-align: center;
                 font-size: 20px;
                 line-height: 26px;
@@ -204,6 +218,11 @@
         display: flex;
         padding: 0px 0px 50px;
         margin-top: -1px;
+        > .row {
+            width: 100%;
+            margin-right: 0;
+            margin-left: 0;
+        }
         @include lg{
             display: none;
         }

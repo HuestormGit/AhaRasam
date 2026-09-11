@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { apiClient } from "../utils/Api";
 
 // Session-scoped on purpose: a delivery rate is only good for this visit, and it
@@ -96,6 +96,7 @@ const writeStoredDelivery = (value) => {
 };
 
 const idle = { status: "idle", options: [], pincode: "" };
+const DELIVERY_DEBOUNCE_MS = 250;
 
 export const useDeliveryCheck = (cartData = []) => {
   const requestItems = cartData.map((item) => ({
@@ -114,6 +115,7 @@ export const useDeliveryCheck = (cartData = []) => {
     stored ? { pincode: stored.destinationPincode } : null
   );
   const [state, setState] = useState(idle);
+  const inFlight = useRef(null);
   // { type, id } of what the customer picked. Cleared when the pincode changes.
   const [preference, setPreference] = useState(null);
 
@@ -126,12 +128,25 @@ export const useDeliveryCheck = (cartData = []) => {
     let active = true;
     setState({ status: "checking", options: [], pincode: submitted.pincode });
 
-    apiClient
-      .post("/api/checkout/shipping-options", {
-        destinationPincode: submitted.pincode,
-        items: requestItems,
-      })
-      .then(({ data }) => {
+    const fingerprint = `${submitted.pincode}:${requestKey}`;
+    const timer = setTimeout(() => {
+      let request = inFlight.current?.fingerprint === fingerprint
+        ? inFlight.current.request
+        : null;
+
+      if (!request) {
+        request = apiClient
+          .post("/api/checkout/shipping-options", {
+            destinationPincode: submitted.pincode,
+            items: requestItems,
+          })
+          .finally(() => {
+            if (inFlight.current?.request === request) inFlight.current = null;
+          });
+        inFlight.current = { fingerprint, request };
+      }
+
+      request.then(({ data }) => {
         const result = data?.data;
         if (
           !result ||
@@ -164,15 +179,16 @@ export const useDeliveryCheck = (cartData = []) => {
             pincode: submitted.pincode,
           });
         }
-      })
-      .catch(() => {
+      }).catch(() => {
         if (active) {
           setState({ status: "error", options: [], pincode: submitted.pincode });
         }
       });
+    }, DELIVERY_DEBOUNCE_MS);
 
     return () => {
       active = false;
+      clearTimeout(timer);
     };
     // requestKey is a stable serialization of the cart lines being shipped; a
     // cart change re-checks the same pincode instead of reusing a stale rate.

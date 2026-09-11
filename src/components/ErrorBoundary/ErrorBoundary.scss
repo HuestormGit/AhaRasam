@@ -1,0 +1,46 @@
+@import "../../css-config/mixins.scss";
+
+// Same card language as the account/order pages: cream panel, red heading,
+// Barlow Condensed. Sits between the header and footer, which both survive.
+.page-error {
+  margin: 150px 0 100px;
+  color: #4b4033;
+
+  .container { max-width: 700px; }
+
+  h1 {
+    margin: 0 0 14px;
+    color: #aa2423;
+    font-family: "Barlow Condensed";
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.15;
+
+    @include md { font-size: 36px; }
+  }
+
+  p {
+    margin: 0 0 22px;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+}
+
+.page-error-home {
+  display: inline-block;
+  padding: 12px 26px;
+  border-radius: 8px;
+  background: #aa2423;
+  color: #fff;
+  font-family: "Barlow Condensed";
+  font-size: 20px;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover { background: #8d1d1c; color: #fff; }
+
+  &:focus-visible {
+    outline: 3px solid #1a1e25;
+    outline-offset: 3px;
+  }
+}
