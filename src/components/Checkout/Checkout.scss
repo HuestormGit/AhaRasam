@@ -132,6 +132,15 @@
     .delivery-to { display: block; font-weight: 600; }
   }
 
+  // One rule covers the six address fields and the read-only pincode label.
+  label {
+    display: block;
+    margin-bottom: 0.35rem;
+    color: #4b4033;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
   input {
     display: block;
     width: 100%;

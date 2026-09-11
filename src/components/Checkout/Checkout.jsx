@@ -68,6 +68,25 @@ const readAuthToken = () => {
   }
 };
 
+// Same label / input / error shape as the account address form, emitted flat
+// (no wrapper div) so `.popup-content input` and `.error` keep matching.
+const CheckoutField = ({ id, label, error, ...props }) => (
+  <>
+    <label htmlFor={id}>{label}</label>
+    <input
+      id={id}
+      aria-invalid={!!error}
+      aria-describedby={error ? `${id}-error` : undefined}
+      {...props}
+    />
+    {error && (
+      <p className="error" id={`${id}-error`}>
+        {error}
+      </p>
+    )}
+  </>
+);
+
 const Checkout = ({ cartData = [], onClose }) => {
   const { clearCart } = useContext(CartContext);
   // Chosen on the cart page and carried across the navigation. Display and
@@ -490,23 +509,78 @@ const Checkout = ({ cartData = [], onClose }) => {
           </>
         )}
 
-        <input type="text" name="name" placeholder="Enter Name" value={form.name} onChange={handleChange} />
-        {errors.name && <p className="error">{errors.name}</p>}
+        <CheckoutField
+          id="checkout-name"
+          label="Full Name"
+          type="text"
+          name="name"
+          autoComplete="name"
+          placeholder="Enter Name"
+          value={form.name}
+          onChange={handleChange}
+          error={errors.name}
+        />
 
-        <input type="email" name="email" placeholder="Enter Email" value={form.email} onChange={handleChange} />
-        {errors.email && <p className="error">{errors.email}</p>}
+        <CheckoutField
+          id="checkout-email"
+          label="Email"
+          type="email"
+          name="email"
+          autoComplete="email"
+          placeholder="Enter Email"
+          value={form.email}
+          onChange={handleChange}
+          error={errors.email}
+        />
 
-        <input type="text" name="contact" placeholder="Enter Contact" value={form.contact} onChange={handleChange} />
-        {errors.contact && <p className="error">{errors.contact}</p>}
+        <CheckoutField
+          id="checkout-contact"
+          label="Contact Number"
+          type="tel"
+          name="contact"
+          autoComplete="tel"
+          inputMode="numeric"
+          placeholder="Enter Contact"
+          value={form.contact}
+          onChange={handleChange}
+          error={errors.contact}
+        />
 
-        <input type="text" name="address" placeholder="Address (Street / House No.)" value={form.address} onChange={handleChange} />
-        {errors.address && <p className="error">{errors.address}</p>}
+        <CheckoutField
+          id="checkout-address"
+          label="Address (House No. / Street)"
+          type="text"
+          name="address"
+          autoComplete="address-line1"
+          placeholder="Address (Street / House No.)"
+          value={form.address}
+          onChange={handleChange}
+          error={errors.address}
+        />
 
-        <input type="text" name="city" placeholder="City" value={form.city} onChange={handleChange} />
-        {errors.city && <p className="error">{errors.city}</p>}
+        <CheckoutField
+          id="checkout-city"
+          label="City"
+          type="text"
+          name="city"
+          autoComplete="address-level2"
+          placeholder="City"
+          value={form.city}
+          onChange={handleChange}
+          error={errors.city}
+        />
 
-        <input type="text" name="state" placeholder="State" value={form.state} onChange={handleChange} />
-        {errors.state && <p className="error">{errors.state}</p>}
+        <CheckoutField
+          id="checkout-state"
+          label="State"
+          type="text"
+          name="state"
+          autoComplete="address-level1"
+          placeholder="State"
+          value={form.state}
+          onChange={handleChange}
+          error={errors.state}
+        />
 
         {/* Read-only on purpose: the selected delivery option belongs to this
             pincode, so editing it here would quote one address and ship another. */}
@@ -517,6 +591,8 @@ const Checkout = ({ cartData = [], onClose }) => {
           id="checkout-pincode"
           type="text"
           name="pincode"
+          autoComplete="postal-code"
+          inputMode="numeric"
           placeholder="Checked in your cart"
           value={delivery?.destinationPincode || ""}
           readOnly

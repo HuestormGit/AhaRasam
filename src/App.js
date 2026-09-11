@@ -26,6 +26,7 @@ import {
 import Account from "./pages/Account/Account";
 import OrderDetails from "./pages/OrderDetails/OrderDetails";
 import PolicyPage, { POLICY_LINKS } from "./pages/Policy/PolicyPage";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 
 function HomeWrapper() {
   const location = useLocation();
@@ -75,46 +76,50 @@ function App() {
         <BrowserRouter>
           <MyHeader />
 
-          <Routes>
-            <Route path="/" element={<HomeWrapper />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route
-              path="/checkout"
-              element={
-                <RequireAuth>
-                  <CheckoutRoute />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/account"
-              element={
-                <RequireAuth>
-                  <Account />
-                </RequireAuth>
-              }
-            />
-            <Route
-              path="/account/orders/:orderId"
-              element={
-                <RequireAuth>
-                  <OrderDetails />
-                </RequireAuth>
-              }
-            />
+          {/* Header, footer and the sticky bar live outside the boundary, so a
+              render error in one page cannot blank the whole app. */}
+          <ErrorBoundary>
+            <Routes>
+              <Route path="/" element={<HomeWrapper />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/reset-password" element={<ResetPasswordPage />} />
+              <Route
+                path="/checkout"
+                element={
+                  <RequireAuth>
+                    <CheckoutRoute />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/account"
+                element={
+                  <RequireAuth>
+                    <Account />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/account/orders/:orderId"
+                element={
+                  <RequireAuth>
+                    <OrderDetails />
+                  </RequireAuth>
+                }
+              />
 
-            {/* The four legal pages, driven off the same list the footer links
-                from, so a route and its Strapi slug cannot drift apart. Public
-                and unauthenticated: policy text is readable by anyone. These are
-                deliberately NOT in the header — they belong in the footer. */}
-            {POLICY_LINKS.map(({ slug, path }) => (
-              <Route key={slug} path={path} element={<PolicyPage slug={slug} />} />
-            ))}
-          </Routes>
+              {/* The four legal pages, driven off the same list the footer links
+                  from, so a route and its Strapi slug cannot drift apart. Public
+                  and unauthenticated: policy text is readable by anyone. These are
+                  deliberately NOT in the header — they belong in the footer. */}
+              {POLICY_LINKS.map(({ slug, path }) => (
+                <Route key={slug} path={path} element={<PolicyPage slug={slug} />} />
+              ))}
+            </Routes>
+          </ErrorBoundary>
 
           <Footer />
           <StickyPayButton />

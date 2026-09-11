@@ -104,24 +104,6 @@
        
        .topbox{
             z-index: 1;
-            .comingsoon{
-                text-align: center;
-                font-family: "Barlow Condensed";
-                font-weight: 400;
-                font-size: 50px;
-                color: #aa2423;
-                 @include md{
-                    font-size: 80px;
-                    font-weight: 400; // Medium weight
-
-                }
-                @include lg{
-                    font-size: 70px;
-                    font-weight: 400; 
-                    padding: 100px 0 5px;
-
-                }
-            }
             .banner-heading {
                 color: #FFFFFF;
                 text-align: center;
