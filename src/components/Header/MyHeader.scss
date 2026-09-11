@@ -103,7 +103,7 @@
   // `align-items: center` on the grid is the ONE rule that vertically centres
   // both groups and the logo — no per-side offsets anywhere.
   @include md {
-    --nav-logo-size: 200px;
+    --nav-logo-size: 180px;
 
     .navbar-layout {
       display: grid;
@@ -132,7 +132,7 @@
   }
 
   @include lg {
-    --nav-logo-size: 220px;
+    --nav-logo-size: 200px;
 
     .nav-link {
       padding: 0.5em 1em;

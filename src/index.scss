@@ -21,13 +21,6 @@ body {
 #root {
   min-height: 100vh;
   width: 100%;
-  // `clip`, not `hidden`. Both hide the hero row's negative Bootstrap gutters
-  // (which overflow ~12px each side), but `hidden` also makes #root a scroll
-  // container — overflow-y computes to `auto` — and the sticky header then
-  // anchors to a box that never scrolls, so it scrolled away with the page.
-  // `clip` clips without creating a scrollport, leaving the viewport as the
-  // navbar's scrollport. Browsers too old for `clip` drop the declaration and
-  // get a working sticky header with the 12px overflow back.
-  overflow-x: clip;
+  overflow-x: hidden;
   font-family: 'Barlow';
 }
