@@ -36,6 +36,9 @@ const MyHeader = () => {
     }
   };
 
+  // Login page shows the AuthShell logo instead of the full navbar.
+  if (location.pathname === "/login") return null;
+
   return (
     <nav
       className={`navbar navbar-expand-md my-navbar ${
