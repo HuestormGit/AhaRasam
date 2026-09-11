@@ -27,6 +27,7 @@ import Account from "./pages/Account/Account";
 import OrderDetails from "./pages/OrderDetails/OrderDetails";
 import PolicyPage, { POLICY_LINKS } from "./pages/Policy/PolicyPage";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import NotFound from "./pages/NotFound/NotFound";
 
 function HomeWrapper() {
   const location = useLocation();
@@ -118,6 +119,11 @@ function App() {
               {POLICY_LINKS.map(({ slug, path }) => (
                 <Route key={slug} path={path} element={<PolicyPage slug={slug} />} />
               ))}
+
+              {/* Last, so every real route above still wins. This is normal
+                  routing, not error handling — the boundary above stays for
+                  actual render crashes. */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </ErrorBoundary>
 
