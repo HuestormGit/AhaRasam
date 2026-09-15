@@ -73,7 +73,7 @@ function App() {
   return (
     <CartProvider>
       <AuthProvider>
-        {/* Above BrowserRouter so the navbar dot and the Account page's
+        {/* Above BrowserRouter so the navbar bell and the Account page's
             Orders badge read one fetch and one count. */}
         <AccountNotificationsProvider>
           <BrowserRouter>
