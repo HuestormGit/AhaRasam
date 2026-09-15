@@ -9,7 +9,7 @@ import {
   formatDeliveryEstimate,
   readStoredDelivery,
 } from "../../hooks/useDeliveryCheck";
-import { RAZORPAY_KEY, razorpayConfigError } from "../../utils/razorpay";
+import { RAZORPAY_KEY, loadRazorpay, razorpayConfigError } from "../../utils/razorpay";
 import { AUTH_TOKEN_KEY, customerRequest } from "../../utils/Api";
 import { formatMinor, gstSummaryLabel } from "../../utils/money";
 
@@ -407,6 +407,20 @@ const Checkout = ({ cartData = [], onClose }) => {
     }
 
     setProcessing(true);
+
+    // Fetched on demand, and before the order exists: a load failure here
+    // strands nothing, and until this resolves no Razorpay script has run for
+    // a visitor who never reached payment.
+    try {
+      await loadRazorpay();
+    } catch {
+      setProcessing(false);
+      showError(
+        "Could not start payment",
+        "We couldn't load the secure payment window. Please check your connection and try again."
+      );
+      return;
+    }
 
     let created;
     try {
