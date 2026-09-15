@@ -61,6 +61,16 @@
       color: #b30000;
     }
 
+    // Leading tab icon. react-icons renders at 1em, so an em font-size keeps it
+    // locked to the .nav-link font-size steps at md/lg, and currentColor inherits
+    // the existing colour and hover transition -- no breakpoint block needs to
+    // know this element exists.
+    .nav-ico {
+      flex: 0 0 auto;
+      margin-right: 8px;
+      font-size: 0.95em;
+    }
+
     // A flex sibling of the label rather than an absolutely positioned badge:
     // .nav-link is already a centred flex row, so the bell needs no positioning
     // context and cannot escape the link box. pointer-events are off so it can
