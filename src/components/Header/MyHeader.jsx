@@ -6,6 +6,14 @@ import { CartContext } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import { useAccountNotifications } from "../../context/AccountNotificationsContext";
 import { FaRegBell } from "react-icons/fa";
+import {
+  FiInfo,
+  FiLogIn,
+  FiMail,
+  FiShoppingBag,
+  FiShoppingCart,
+  FiUser,
+} from "react-icons/fi";
 
 const MyHeader = () => {
   const [scrollnav, setScrollnav] = useState(false);
@@ -99,11 +107,13 @@ const MyHeader = () => {
             <ul className="navbar-nav navbar-side navbar-left">
               <li className="nav-item">
                 <button className="nav-link btn-link" onClick={() => goToSection("AboutUs")}>
+                  <FiInfo className="nav-ico" aria-hidden="true" />
                   About us
                 </button>
               </li>
               <li className="nav-item">
                 <button className="nav-link btn-link" onClick={() => goToSection("product")}>
+                  <FiShoppingBag className="nav-ico" aria-hidden="true" />
                   Buy
                 </button>
               </li>
@@ -116,17 +126,20 @@ const MyHeader = () => {
             <ul className="navbar-nav navbar-side navbar-right">
               <li className="nav-item">
                 <button className="nav-link btn-link" onClick={() => goToSection("Contact")}>
+                  <FiMail className="nav-ico" aria-hidden="true" />
                   Contact
                 </button>
               </li>
               <li className="nav-item">
                 <Link to="/cart" className="nav-link btn-link" onClick={() => closeMenu()}>
+                  <FiShoppingCart className="nav-ico" aria-hidden="true" />
                   Cart ({itemCount})
                 </Link>
               </li>
               <li className="nav-item">
                 {user ? (
                   <Link to="/account" className="nav-link btn-link" onClick={() => closeMenu()}>
+                    <FiUser className="nav-ico" aria-hidden="true" />
                     Account
                     {hasUnseen && (
                       <>
@@ -141,6 +154,7 @@ const MyHeader = () => {
                   </Link>
                 ) : (
                   <Link to="/login" className="nav-link btn-link" onClick={() => closeMenu()}>
+                    <FiLogIn className="nav-ico" aria-hidden="true" />
                     Login
                   </Link>
                 )}
