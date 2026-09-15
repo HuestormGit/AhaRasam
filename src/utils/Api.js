@@ -53,7 +53,13 @@ export const postDataToApi = async (url, payload) => {
     const { data } = await apiClient.post(url, payload);
     return data;
   } catch (error) {
-    console.error("❌ API post error:", error.response?.data || error.message);
+    // Status and code only, never the bodies. The request body IS the customer's
+    // submission, and a Strapi ValidationError echoes submitted values back in
+    // details.errors[].value — neither belongs in a browser console.
+    console.error("API POST failed", {
+      status: error?.response?.status,
+      code: error?.code,
+    });
     throw error;
   }
 };
