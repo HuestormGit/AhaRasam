@@ -56,17 +56,37 @@
     }
 
     // A flex sibling of the label rather than an absolutely positioned badge:
-    // .nav-link is already a centred flex row, so the dot needs no positioning
+    // .nav-link is already a centred flex row, so the bell needs no positioning
     // context and cannot escape the link box. pointer-events are off so it can
     // never swallow a click meant for the link itself.
-    .nav-dot {
+    //
+    // Sized in em and coloured with currentColor, so it rides the .nav-link
+    // font-size steps at md/lg and the existing hover transition for free --
+    // neither breakpoint block needs to know this element exists.
+    .nav-bell {
+      position: relative;
+      display: flex;
       flex: 0 0 auto;
-      width: 8px;
-      height: 8px;
+      align-items: center;
       margin-left: 6px;
-      border-radius: 50%;
-      background: #aa2423;
+      color: currentColor;
+      font-size: 0.85em;
       pointer-events: none;
+
+      // The unseen signal itself: the same red the dot used, now anchored to
+      // the bell. The ring is the navbar's own background, which is what keeps
+      // the dot readable where it overlaps the glyph.
+      &::after {
+        content: "";
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        width: 7px;
+        height: 7px;
+        border: 1.5px solid #E1AD3F;
+        border-radius: 50%;
+        background: #aa2423;
+      }
     }
   }
 

@@ -5,6 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
 import { useAccountNotifications } from "../../context/AccountNotificationsContext";
+import { FaRegBell } from "react-icons/fa";
 
 const MyHeader = () => {
   const [scrollnav, setScrollnav] = useState(false);
@@ -102,7 +103,9 @@ const MyHeader = () => {
                     Account
                     {hasUnseen && (
                       <>
-                        <span className="nav-dot" aria-hidden="true" />
+                        <span className="nav-bell" aria-hidden="true">
+                          <FaRegBell />
+                        </span>
                         <span className="visually-hidden">
                           , new notifications
                         </span>
