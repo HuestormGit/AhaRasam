@@ -90,6 +90,58 @@
       color: #707070;
     }
   }
+
+  // Password fields only. The input and its reveal button share one relative
+  // box, so the button sits inside the input's right edge without leaving the
+  // grid row -- the label above and the error below are unaffected.
+  .auth-field-control {
+    position: relative;
+    display: grid;
+
+    input {
+      // Room for the button, so revealed text never runs under the icon.
+      padding-right: 44px;
+    }
+  }
+
+  .auth-field-reveal {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 100%;
+    padding: 0;
+    // Normalises the global `button { margin-top: 1rem }` that Modal.scss
+    // leaks, which would otherwise push the icon below the input.
+    margin: 0;
+    border: 0;
+    border-radius: 0 8px 8px 0;
+    background: none;
+    color: #707070;
+    font-size: 18px;
+    line-height: 0;
+    cursor: pointer;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: #AA2423;
+    }
+
+    // Matches the focus ring the inputs already use; inset so it is not
+    // clipped by the input's own border.
+    &:focus-visible {
+      outline: 3px solid rgba(170, 36, 35, 0.24);
+      outline-offset: -3px;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      color: #707070;
+    }
+  }
 }
 
 .auth-field-error,
