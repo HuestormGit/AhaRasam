@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import logo from "../../assets/Aha-Rasam-logo.png";
 import { useAuth } from "../../context/AuthContext";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "./Auth.scss";
 
 const emailIsValid = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
@@ -32,22 +33,52 @@ const AuthShell = ({ title, intro, children }) => (
   </main>
 );
 
-const Field = ({ id, label, error, ...props }) => (
-  <div className="auth-field">
-    <label htmlFor={id}>{label}</label>
+const Field = ({ id, label, error, type, ...props }) => {
+  // Password fields get a reveal toggle; every other field renders exactly as
+  // before. Only the input's `type` flips -- it is the same controlled element
+  // either way, so the typed value, validation and submission are untouched.
+  const [revealed, setRevealed] = useState(false);
+  const isPassword = type === "password";
+
+  const input = (
     <input
       id={id}
+      type={isPassword && revealed ? "text" : type}
       aria-invalid={!!error}
       aria-describedby={error ? `${id}-error` : undefined}
       {...props}
     />
-    {error && (
-      <span id={`${id}-error`} className="auth-field-error">
-        {error}
-      </span>
-    )}
-  </div>
-);
+  );
+
+  return (
+    <div className="auth-field">
+      <label htmlFor={id}>{label}</label>
+      {isPassword ? (
+        <div className="auth-field-control">
+          {input}
+          {/* type="button" is what keeps this out of the form submit. A real
+              <button> is focusable and fires on Enter/Space for free. */}
+          <button
+            type="button"
+            className="auth-field-reveal"
+            onClick={() => setRevealed((shown) => !shown)}
+            aria-label={revealed ? "Hide password" : "Show password"}
+            disabled={props.disabled}
+          >
+            {revealed ? <FaEyeSlash /> : <FaEye />}
+          </button>
+        </div>
+      ) : (
+        input
+      )}
+      {error && (
+        <span id={`${id}-error`} className="auth-field-error">
+          {error}
+        </span>
+      )}
+    </div>
+  );
+};
 
 const Message = ({ children, success = false }) =>
   children ? (
