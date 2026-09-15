@@ -52,7 +52,13 @@ const writeSeenAt = (userId, value) => {
   }
 };
 
-const AccountNotificationsContext = createContext(null);
+const AccountNotificationsContext = createContext({
+  orders: [],
+  ordersStatus: "loading",
+  unseenOrders: 0,
+  hasUnseen: false,
+  markOrdersSeen: () => {},
+});
 
 export const AccountNotificationsProvider = ({ children }) => {
   const { user } = useAuth();
