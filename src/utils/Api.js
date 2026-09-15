@@ -41,7 +41,6 @@ export const mediaUrl = (url) =>
 export const fetchDataFromApi = async (url) => {
   try {
     const { data } = await apiClient.get(url);
-    console.log("✅ API response:", data);
     return data;
   } catch (error) {
     console.error("❌ API fetch error:", error);
@@ -52,7 +51,6 @@ export const fetchDataFromApi = async (url) => {
 export const postDataToApi = async (url, payload) => {
   try {
     const { data } = await apiClient.post(url, payload);
-    console.log("✅ API post response:", data);
     return data;
   } catch (error) {
     console.error("❌ API post error:", error.response?.data || error.message);
