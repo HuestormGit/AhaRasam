@@ -67,9 +67,7 @@ function Contact() {
 
       // Reset form
       setForm({ name: "", email: "", phone: "", action: "buy", message: "" });
-    } catch (error) {
-      console.error("❌ Error saving contact:", error.response?.data || error.message);
-
+    } catch {
       setModal({
         show: true,
         success: false,
