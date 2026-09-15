@@ -17,6 +17,7 @@ import { useContext, useEffect, useState } from "react";
 import StickyPayButton from "./components/StickyPayButton/StickyPayButton";
 import Checkout from "./components/Checkout/Checkout";
 import { AuthProvider, RequireAuth } from "./context/AuthContext";
+import { AccountNotificationsProvider } from "./context/AccountNotificationsContext";
 import {
   ForgotPasswordPage,
   LoginPage,
@@ -80,68 +81,73 @@ function App() {
   return (
     <CartProvider>
       <AuthProvider>
-        <BrowserRouter>
-          <MyHeader />
+        {/* Above BrowserRouter so the navbar bell and the Account page's
+            Orders badge read one fetch and one count. */}
+        <AccountNotificationsProvider>
+          <BrowserRouter>
+            <MyHeader />
 
-          {/* Header, footer and the sticky bar live outside the boundary, so a
-              render error in one page cannot blank the whole app. */}
-          <ErrorBoundary>
-            <Routes>
-              <Route path="/" element={<PageTitle title="AHA! Rasam"><HomeWrapper /></PageTitle>} />
-              <Route path="/cart" element={<PageTitle title="Cart"><Cart /></PageTitle>} />
-              <Route path="/login" element={<PageTitle title="Login"><LoginPage /></PageTitle>} />
-              <Route path="/register" element={<PageTitle title="Register"><RegisterPage /></PageTitle>} />
-              <Route path="/forgot-password" element={<PageTitle title="Forgot Password"><ForgotPasswordPage /></PageTitle>} />
-              <Route path="/reset-password" element={<PageTitle title="Reset Password"><ResetPasswordPage /></PageTitle>} />
-              <Route
-                path="/checkout"
-                element={
-                  <PageTitle title="Checkout">
-                    <RequireAuth>
-                      <CheckoutRoute />
-                    </RequireAuth>
-                  </PageTitle>
-                }
-              />
-              <Route
-                path="/account"
-                element={
-                  <PageTitle title="Account">
-                    <RequireAuth>
-                      <Account />
-                    </RequireAuth>
-                  </PageTitle>
-                }
-              />
-              <Route
-                path="/account/orders/:orderId"
-                element={
-                  <PageTitle title="Order Details">
-                    <RequireAuth>
-                      <OrderDetails />
-                    </RequireAuth>
-                  </PageTitle>
-                }
-              />
+            {/* Header, footer and the sticky bar live outside the boundary, so a
+                render error in one page cannot blank the whole app. */}
+            <ErrorBoundary>
+              <Routes>
+                <Route path="/" element={<PageTitle title="AHA! Rasam"><HomeWrapper /></PageTitle>} />
+                <Route path="/cart" element={<PageTitle title="Cart"><Cart /></PageTitle>} />
+                <Route path="/login" element={<PageTitle title="Login"><LoginPage /></PageTitle>} />
+                <Route path="/register" element={<PageTitle title="Register"><RegisterPage /></PageTitle>} />
+                <Route path="/forgot-password" element={<PageTitle title="Forgot Password"><ForgotPasswordPage /></PageTitle>} />
+                <Route path="/reset-password" element={<PageTitle title="Reset Password"><ResetPasswordPage /></PageTitle>} />
+                <Route
+                  path="/checkout"
+                  element={
+                    <PageTitle title="Checkout">
+                      <RequireAuth>
+                        <CheckoutRoute />
+                      </RequireAuth>
+                    </PageTitle>
+                  }
+                />
+                <Route
+                  path="/account"
+                  element={
+                    <PageTitle title="Account">
+                      <RequireAuth>
+                        <Account />
+                      </RequireAuth>
+                    </PageTitle>
+                  }
+                />
+                <Route
+                  path="/account/orders/:orderId"
+                  element={
+                    <PageTitle title="Order Details">
+                      <RequireAuth>
+                        <OrderDetails />
+                      </RequireAuth>
+                    </PageTitle>
+                  }
+                />
 
-              {/* The four legal pages, driven off the same list the footer links
-                  from, so a route and its Strapi slug cannot drift apart. Public
-                  and unauthenticated: policy text is readable by anyone. These are
-                  deliberately NOT in the header — they belong in the footer. */}
-              {POLICY_LINKS.map(({ slug, path }) => (
-                <Route key={slug} path={path} element={<PolicyPage slug={slug} />} />
-              ))}
+                {/* The four legal pages, driven off the same list the footer links
+                    from, so a route and its Strapi slug cannot drift apart. Public
+                    and unauthenticated: policy text is readable by anyone. These are
+                    deliberately NOT in the header — they belong in the footer.
+                    PolicyPage sets its own title, so no PageTitle wrapper here. */}
+                {POLICY_LINKS.map(({ slug, path }) => (
+                  <Route key={slug} path={path} element={<PolicyPage slug={slug} />} />
+                ))}
 
-              {/* Last, so every real route above still wins. This is normal
-                  routing, not error handling — the boundary above stays for
-                  actual render crashes. */}
-              <Route path="*" element={<PageTitle title="Page Not Found"><NotFound /></PageTitle>} />
-            </Routes>
-          </ErrorBoundary>
+                {/* Last, so every real route above still wins. This is normal
+                    routing, not error handling — the boundary above stays for
+                    actual render crashes. */}
+                <Route path="*" element={<PageTitle title="Page Not Found"><NotFound /></PageTitle>} />
+              </Routes>
+            </ErrorBoundary>
 
-          <Footer />
-          <StickyPayButton />
-        </BrowserRouter>
+            <Footer />
+            <StickyPayButton />
+          </BrowserRouter>
+        </AccountNotificationsProvider>
       </AuthProvider>
     </CartProvider>
   );
