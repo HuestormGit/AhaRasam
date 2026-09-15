@@ -41,7 +41,6 @@ export const mediaUrl = (url) =>
 export const fetchDataFromApi = async (url) => {
   try {
     const { data } = await apiClient.get(url);
-    console.log("✅ API response:", data);
     return data;
   } catch (error) {
     console.error("❌ API fetch error:", error);
@@ -52,10 +51,15 @@ export const fetchDataFromApi = async (url) => {
 export const postDataToApi = async (url, payload) => {
   try {
     const { data } = await apiClient.post(url, payload);
-    console.log("✅ API post response:", data);
     return data;
   } catch (error) {
-    console.error("❌ API post error:", error.response?.data || error.message);
+    // Status and code only, never the bodies. The request body IS the customer's
+    // submission, and a Strapi ValidationError echoes submitted values back in
+    // details.errors[].value — neither belongs in a browser console.
+    console.error("API POST failed", {
+      status: error?.response?.status,
+      code: error?.code,
+    });
     throw error;
   }
 };

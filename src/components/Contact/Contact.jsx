@@ -53,15 +53,10 @@ function Contact() {
       message: form.message,
     };
 
-    console.log("Form state before submit:", form);
-    console.log("Payload being sent to Strapi:", JSON.stringify(payload, null, 2));
-
     setLoading(true);
 
     try {
-      const res = await postDataToApi("/api/contacts", payload);
-
-      console.log("✅ Strapi response:", res);
+      await postDataToApi("/api/contacts", payload);
 
       setModal({
         show: true,
@@ -72,9 +67,7 @@ function Contact() {
 
       // Reset form
       setForm({ name: "", email: "", phone: "", action: "buy", message: "" });
-    } catch (error) {
-      console.error("❌ Error saving contact:", error.response?.data || error.message);
-
+    } catch {
       setModal({
         show: true,
         success: false,
