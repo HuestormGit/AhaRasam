@@ -988,9 +988,12 @@ const Account = () => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedTab = searchParams.get("tab");
-  const activeTab = TABS.some(({ id }) => id === requestedTab)
-    ? requestedTab
-    : "profile";
+  const requestedTabIndex = TABS.findIndex(({ id }) => id === requestedTab);
+  const activeTab = TABS[requestedTabIndex]?.id || TABS[0].id;
+  // Orders come from the provider that also feeds the navbar bell, so this page
+  // and the header share one GET /orders and one unseen count. The provider
+  // fetches exactly what useCustomerOrders used to, which is why that hook is
+  // gone rather than kept alongside it.
   const { orders, ordersStatus, unseenOrders, markOrdersSeen } =
     useAccountNotifications();
   const {
@@ -1005,6 +1008,28 @@ const Account = () => {
   useEffect(() => {
     if (activeTab === "orders") markOrdersSeen();
   }, [activeTab, markOrdersSeen]);
+
+  useEffect(() => {
+    if (requestedTab !== null && requestedTabIndex === -1) {
+      setSearchParams({}, { replace: true });
+    }
+  }, [requestedTab, requestedTabIndex, setSearchParams]);
+
+  const selectTab = (tabId) =>
+    setSearchParams(tabId === TABS[0].id ? {} : { tab: tabId });
+
+  const handleTabKeyDown = (event, index) => {
+    let nextIndex;
+    if (event.key === "ArrowLeft") nextIndex = (index - 1 + TABS.length) % TABS.length;
+    if (event.key === "ArrowRight") nextIndex = (index + 1) % TABS.length;
+    if (event.key === "Home") nextIndex = 0;
+    if (event.key === "End") nextIndex = TABS.length - 1;
+    if (nextIndex === undefined) return;
+
+    event.preventDefault();
+    selectTab(TABS[nextIndex].id);
+    event.currentTarget.parentElement.children[nextIndex].focus();
+  };
 
   const handleLogout = () => {
     logout();
@@ -1025,7 +1050,7 @@ const Account = () => {
                 role="tablist"
                 aria-label="Account sections"
               >
-                {TABS.map((tab) => (
+                {TABS.map((tab, index) => (
                   <button
                     key={tab.id}
                     type="button"
@@ -1033,12 +1058,12 @@ const Account = () => {
                     id={`account-tab-${tab.id}`}
                     aria-selected={activeTab === tab.id}
                     aria-controls={`account-panel-${tab.id}`}
+                    tabIndex={activeTab === tab.id ? 0 : -1}
                     className={
                       activeTab === tab.id ? "account-tab is-active" : "account-tab"
                     }
-                    onClick={() =>
-                      setSearchParams(tab.id === "profile" ? {} : { tab: tab.id })
-                    }
+                    onClick={() => selectTab(tab.id)}
+                    onKeyDown={(event) => handleTabKeyDown(event, index)}
                   >
                     {tab.label}
                     {tab.id === "orders" && unseenOrders > 0 && (
@@ -1064,26 +1089,30 @@ const Account = () => {
               </button>
             </aside>
 
-            <div
-              className="account-panel"
-              role="tabpanel"
-              id={`account-panel-${activeTab}`}
-              aria-labelledby={`account-tab-${activeTab}`}
-            >
-              {activeTab === "profile" && (
-                <ProfilePanel user={user} applyUser={applyUser} />
-              )}
-              {activeTab === "addresses" && (
-                <AddressesPanel
-                  status={addressesStatus}
-                  addresses={addresses}
-                  setAddresses={setAddresses}
-                />
-              )}
-              {activeTab === "orders" && (
-                <OrdersPanel status={ordersStatus} orders={orders} />
-              )}
-            </div>
+            {TABS.map((tab) => (
+              <div
+                key={tab.id}
+                className="account-panel"
+                role="tabpanel"
+                id={`account-panel-${tab.id}`}
+                aria-labelledby={`account-tab-${tab.id}`}
+                hidden={activeTab !== tab.id}
+              >
+                {tab.id === "profile" && activeTab === tab.id && (
+                  <ProfilePanel user={user} applyUser={applyUser} />
+                )}
+                {tab.id === "addresses" && activeTab === tab.id && (
+                  <AddressesPanel
+                    status={addressesStatus}
+                    addresses={addresses}
+                    setAddresses={setAddresses}
+                  />
+                )}
+                {tab.id === "orders" && activeTab === tab.id && (
+                  <OrdersPanel status={ordersStatus} orders={orders} />
+                )}
+              </div>
+            ))}
           </div>
         </section>
       </div>

@@ -11,7 +11,7 @@
       margin: auto;
     }
 
-    h2 {
+    h1 {
       margin-bottom: 30px;
       color: #aa2423;
       font-family: Barlow, Condensed SemiBold;
@@ -92,7 +92,8 @@
 
       @include md { font-size: 20px; }
 
-      h4 {
+      .product-name {
+        display: block;
         margin: 0 0 7px;
         color: #aa2423;
         font-family: Barlow, Condensed SemiBold;
@@ -161,7 +162,7 @@
     background: #fffaf1;
     font-family: Barlow, Condensed;
 
-    h3 {
+    h2 {
       margin: 0 0 20px;
       color: #aa2423;
       font-size: 24px;

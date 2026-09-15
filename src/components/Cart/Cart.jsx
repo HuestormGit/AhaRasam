@@ -67,7 +67,7 @@ const Cart = () => {
       <div className="navbg"></div>
       <div className="container">
         <section className="cart-section">
-          <h2>Cart</h2>
+          <h1>Cart</h1>
 
           {cart.length === 0 ? (
             <p className="no-product">Your cart is empty!</p>
@@ -118,7 +118,7 @@ const Cart = () => {
                           }
                         >
                           <td className="product-cell" data-label="Product">
-                            <h4>{quotedItem?.productName || item.productName}</h4>
+                            <span className="product-name">{quotedItem?.productName || item.productName}</span>
                             {item.unavailable && (
                               <p className="item-unavailable">No longer available</p>
                             )}
@@ -182,7 +182,7 @@ const Cart = () => {
 
               {quote && (
                 <section className="order-summary" aria-labelledby="order-summary-title">
-                  <h3 id="order-summary-title">Order Summary</h3>
+                  <h2 id="order-summary-title">Order Summary</h2>
                   <div className="summary-row">
                     <span>MRP Total</span>
                     <span>₹{formatMinor(quote.mrpTotalPaise)}</span>

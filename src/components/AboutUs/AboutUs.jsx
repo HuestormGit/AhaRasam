@@ -23,9 +23,9 @@ function AboutUs() {
                     <div className="col-lg-1 col-md-1 col-sm-12"></div>
 
                 </div>
-                <h5>
+                <p className="AboutUsStatement">
                     And because we believe goodness is meant to be shared, every sip contributes to social impact, supporting education, healthcare, preservation of places of worship, care for holy animals, and the welfare of ex-army families, turning a simple daily ritual into a gesture of care for the wider community.               
-                </h5>
+                </p>
             </div>
         </div>
     </section>
