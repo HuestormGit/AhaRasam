@@ -4,11 +4,16 @@ import { useEffect, useRef, useState, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
+import { useAccountNotifications } from "../../context/AccountNotificationsContext";
+import { FaRegBell } from "react-icons/fa";
 
 const MyHeader = () => {
   const [scrollnav, setScrollnav] = useState(false);
   const { itemCount } = useContext(CartContext);
   const { user } = useAuth();
+  // True when anything in the Account section is unseen. Today that is only
+  // the Orders tab; the header reads the flag, never the source.
+  const { hasUnseen } = useAccountNotifications();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -58,6 +63,9 @@ const MyHeader = () => {
       );
     }
   };
+
+  // Login page shows the AuthShell logo instead of the full navbar.
+  if (location.pathname === "/login") return null;
 
   return (
     <nav
@@ -120,6 +128,16 @@ const MyHeader = () => {
                 {user ? (
                   <Link to="/account" className="nav-link btn-link" onClick={() => closeMenu()}>
                     Account
+                    {hasUnseen && (
+                      <>
+                        <span className="nav-bell" aria-hidden="true">
+                          <FaRegBell />
+                        </span>
+                        <span className="visually-hidden">
+                          , new notifications
+                        </span>
+                      </>
+                    )}
                   </Link>
                 ) : (
                   <Link to="/login" className="nav-link btn-link" onClick={() => closeMenu()}>

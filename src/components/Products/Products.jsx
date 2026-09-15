@@ -3,6 +3,7 @@ import { fetchDataFromApi, mediaUrl } from "../../utils/Api";
 import { formatAmount, minorToRupees } from "../../utils/money";
 import "./Products.scss";
 import { CartContext } from "../../context/CartContext";
+import Modal from "../Modal/Modal";
 
 const Products = () => {
   const [products, setProducts] = useState([]);
@@ -10,6 +11,8 @@ const Products = () => {
   const [selectedVariantIndex, setSelectedVariantIndex] = useState({});
   const { addToCart } = useContext(CartContext);
   const sliderRef = useRef(null);
+  // Quantity of the last successful add; null means the modal is closed.
+  const [addedQty, setAddedQty] = useState(null);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -135,7 +138,7 @@ const Products = () => {
       qty,
     });
 
-    alert(`${qty} item(s) added to cart`);
+    setAddedQty(qty);
   };
 
   return (
@@ -354,6 +357,13 @@ const Products = () => {
           </div>
         </div>
       </div>
+      <Modal
+        show={addedQty !== null}
+        success
+        title="Added to cart"
+        message={`${addedQty} item${addedQty === 1 ? "" : "s"} added to your cart`}
+        onClose={() => setAddedQty(null)}
+      />
     </div>
   );
 };

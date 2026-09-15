@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useAccountNotifications } from "../../context/AccountNotificationsContext";
 import Modal from "../../components/Modal/Modal";
 import { AUTH_TOKEN_KEY, customerRequest } from "../../utils/Api";
 import { formatMinor } from "../../utils/money";
@@ -11,16 +12,6 @@ const TABS = [
   { id: "addresses", label: "Addresses" },
   { id: "orders", label: "Orders" },
 ];
-
-// src/api/order/routes/order.js now lists GET /orders alongside the Razorpay
-// payment routes, so the collection is readable. The backend scopes the read to
-// the signed-in customer from the JWT and ignores the query below entirely —
-// the filter is kept only so the request reads like any other Strapi list call.
-const ORDERS_ENDPOINT = "/api/orders";
-
-const ordersQuery = (userId) =>
-  `${ORDERS_ENDPOINT}?filters[customer][id][$eq]=${userId}` +
-  "&populate=orderItems&sort=createdAt:desc";
 
 const ordersErrorMessage =
   "We couldn't load your orders right now. Please try again.";
@@ -110,45 +101,14 @@ const formatDate = (value) => {
 const statusLabel = (value) =>
   value ? value.charAt(0).toUpperCase() + value.slice(1) : "Pending";
 
-// Reads the customer's own orders with the customer JWT, never the CMS token —
-// the same split utils/Api.js already draws for /api/users/me.
-const useCustomerOrders = (userId) => {
-  const [state, setState] = useState(() =>
-    ORDERS_ENDPOINT
-      ? { status: "loading", orders: [] }
-      : { status: "unavailable", orders: [] }
-  );
-
-  useEffect(() => {
-    if (!ORDERS_ENDPOINT || !userId) return undefined;
-
-    let active = true;
-    const token = localStorage.getItem(AUTH_TOKEN_KEY);
-    setState({ status: "loading", orders: [] });
-
-    customerRequest("get", ordersQuery(userId), token)
-      .then(({ data }) => {
-        if (!active) return;
-        setState({
-          status: "ready",
-          orders: Array.isArray(data?.data) ? data.data : [],
-        });
-      })
-      .catch(() => active && setState({ status: "error", orders: [] }));
-
-    return () => {
-      active = false;
-    };
-  }, [userId]);
-
-  return state;
-};
-
-// The same shape as useCustomerOrders above, with a setter: create, update and
-// delete all answer with the customer's own rows, so the list is replaced from
-// the server's response rather than refetched. Nothing is ever inserted into
-// this state optimistically — what is on screen is always what the server last
-// confirmed.
+// The same shape as the orders state in AccountNotificationsContext, with a
+// setter: create, update and delete all answer with the customer's own rows,
+// so the list is replaced from the server's response rather than refetched.
+// Nothing is ever inserted into this state optimistically — what is on screen
+// is always what the server last confirmed.
+//
+// Addresses stay a page-local fetch: unlike orders, nothing outside /account
+// reads them, so there is nothing to share and no second caller to dedupe.
 const useCustomerAddresses = (userId) => {
   const [state, setState] = useState({ status: "loading", addresses: [] });
 
@@ -1030,12 +990,24 @@ const Account = () => {
   const requestedTab = searchParams.get("tab");
   const requestedTabIndex = TABS.findIndex(({ id }) => id === requestedTab);
   const activeTab = TABS[requestedTabIndex]?.id || TABS[0].id;
-  const { status: ordersStatus, orders } = useCustomerOrders(user.id);
+  // Orders come from the provider that also feeds the navbar bell, so this page
+  // and the header share one GET /orders and one unseen count. The provider
+  // fetches exactly what useCustomerOrders used to, which is why that hook is
+  // gone rather than kept alongside it.
+  const { orders, ordersStatus, unseenOrders, markOrdersSeen } =
+    useAccountNotifications();
   const {
     status: addressesStatus,
     addresses,
     setAddresses,
   } = useCustomerAddresses(user.id);
+
+  // The panel being on screen is what marks its orders seen -- no extra click
+  // handler, and a direct link to ?tab=orders counts as a visit too. Reruns
+  // when the fetch lands, which is what clears a count that arrives late.
+  useEffect(() => {
+    if (activeTab === "orders") markOrdersSeen();
+  }, [activeTab, markOrdersSeen]);
 
   useEffect(() => {
     if (requestedTab !== null && requestedTabIndex === -1) {
@@ -1094,6 +1066,17 @@ const Account = () => {
                     onKeyDown={(event) => handleTabKeyDown(event, index)}
                   >
                     {tab.label}
+                    {tab.id === "orders" && unseenOrders > 0 && (
+                      <>
+                        <span className="account-tab-badge" aria-hidden="true">
+                          {unseenOrders}
+                        </span>
+                        <span className="visually-hidden">
+                          , {unseenOrders} new{" "}
+                          {unseenOrders === 1 ? "order" : "orders"}
+                        </span>
+                      </>
+                    )}
                   </button>
                 ))}
               </div>
