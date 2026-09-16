@@ -1,16 +1,20 @@
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext } from "react";
 import { fetchDataFromApi, mediaUrl } from "../../utils/Api";
 import { formatAmount, minorToRupees } from "../../utils/money";
 import "./Products.scss";
 import { CartContext } from "../../context/CartContext";
 import Modal from "../Modal/Modal";
 
+// Every thumbnail is rendered in the same square box. Declaring that size on the
+// element itself gives the image an intrinsic aspect ratio, so the card reserves
+// its space before the bytes arrive instead of reflowing when they land.
+const THUMB_SIZE = 220;
+
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [quantities, setQuantities] = useState({});
   const [selectedVariantIndex, setSelectedVariantIndex] = useState({});
   const { addToCart } = useContext(CartContext);
-  const sliderRef = useRef(null);
   // Quantity of the last successful add; null means the modal is closed.
   const [addedQty, setAddedQty] = useState(null);
 
@@ -38,35 +42,6 @@ const Products = () => {
 
     loadProducts();
   }, []);
-
-  // useEffect(() => {
-  //   const slider = sliderRef.current;
-  //   if (!slider) return;
-
-  //   let index = 0;
-
-  //   const interval = setInterval(() => {
-  //     if (!slider.children.length) return;
-
-  //     const cards = slider.children;
-  //     const cardWidth = cards[0].offsetWidth + 15;
-
-  //     index++;
-
-  //     if (index >= cards.length) {
-  //       index = 0;
-  //       slider.scrollTo({ left: 0, behavior: "smooth" });
-  //       return;
-  //     }
-
-  //     slider.scrollTo({
-  //       left: index * cardWidth,
-  //       behavior: "smooth",
-  //     });
-  //   }, 5000);
-
-  //   return () => clearInterval(interval);
-  // }, [products]);
 
   const handleQtyChange = (productId, delta) => {
     setQuantities((prev) => {
@@ -159,110 +134,13 @@ const Products = () => {
             </div>
           </div>
 
-          {/* MOBILE SLIDER */}
-          <div className="mobile-slider">
-            <div className="slides-wrapper" ref={sliderRef}>
-              {products.map((product) => {
-                const productId = product.id;
-                const image =
-                  mediaUrl(product.Image?.url) ||
-                  "https://placehold.co/300x300?text=No+Image";
-
-                const variants = getVariants(product);
-                const selectedIdx = selectedVariantIndex[productId] ?? 0;
-                const qty = quantities[productId] || 1;
-
-                const ingredientsText = extractText(product.Ingredients);
-
-                return (
-                  <div key={productId} className="product-card">
-                    <div className="product-thumb">
-                      <img src={image} alt={product.Title} />
-                    </div>
-
-                    <div className="product-details">
-                      <h3 className="title">{product.Title}</h3>
-                      <h4 className="sub-title">{product.SubTitle}</h4>
-
-                      <h5 className="Ingredients">Ingredients:</h5>
-                      <p className="desc">
-                        {ingredientsText || "No ingredients available"}
-                      </p>
-
-                      <p className="mrp">
-                        MRP: ₹
-                        {variants[selectedIdx]
-                          ? formatAmount(variantMrp(variants[selectedIdx]))
-                          : "—"}
-                      </p>
-
-                      {variants.length === 0 && (
-                        <p className="variant-unavailable">Currently unavailable</p>
-                      )}
-
-                      {variants.length > 0 && (
-                        <>
-                          <select
-                            className="variant-drop"
-                            value={selectedIdx}
-                            onChange={(e) =>
-                              handleVariantChange(
-                                productId,
-                                Number(e.target.value)
-                              )
-                            }
-                          >
-                            {variants.map((v, idx) => (
-                              <option value={idx} key={idx}>
-                                {variantLabel(v)}
-                              </option>
-                            ))}
-                          </select>
-
-                          <div className="qty-box">
-                            <button
-                              onClick={() =>
-                                handleQtyChange(productId, -1)
-                              }
-                              className="qty-btn"
-                            >
-                              -
-                            </button>
-
-                            <span>{qty}</span>
-
-                            <button
-                              onClick={() =>
-                                handleQtyChange(productId, 1)
-                              }
-                              className="qty-btn"
-                            >
-                              +
-                            </button>
-                          </div>
-
-                          <button
-                            className="add-btn"
-                            onClick={() =>
-                              handleAddToCart(productId, product)
-                            }
-                          >
-                            ADD TO CART
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* DESKTOP GRID */}
-          <div className="products-grid">
+          {/* One card per product, once. This list is a horizontal scroll strip
+              on phones and a grid from md up — the difference is layout only, so
+              there is no second copy of the cards to keep in sync, hide, or
+              make the browser decode twice. */}
+          <div className="products-list">
             {products.map((product) => {
               const productId = product.id;
-
               const image =
                 mediaUrl(product.Image?.url) ||
                 "https://placehold.co/300x300?text=No+Image";
@@ -276,7 +154,17 @@ const Products = () => {
               return (
                 <div key={productId} className="product-card">
                   <div className="product-thumb">
-                    <img src={image} alt={product.Title} />
+                    <img
+                      src={image}
+                      alt={product.Title}
+                      width={THUMB_SIZE}
+                      height={THUMB_SIZE}
+                      // The section sits below a full-height banner at every
+                      // supported width, so no product image is ever the LCP
+                      // element and none of them need to block the first paint.
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </div>
 
                   <div className="product-details">
@@ -303,6 +191,11 @@ const Products = () => {
                       <>
                         <select
                           className="variant-drop"
+                          // The control shows only the pack size, so on its own
+                          // it is an unlabelled combobox to a screen reader.
+                          aria-label={`Pack size${
+                            product.Title ? ` for ${product.Title}` : ""
+                          }`}
                           value={selectedIdx}
                           onChange={(e) =>
                             handleVariantChange(
@@ -320,6 +213,7 @@ const Products = () => {
 
                         <div className="qty-box">
                           <button
+                            type="button"
                             onClick={() =>
                               handleQtyChange(productId, -1)
                             }
@@ -331,6 +225,7 @@ const Products = () => {
                           <span>{qty}</span>
 
                           <button
+                            type="button"
                             onClick={() =>
                               handleQtyChange(productId, 1)
                             }
@@ -341,6 +236,7 @@ const Products = () => {
                         </div>
 
                         <button
+                          type="button"
                           className="add-btn"
                           onClick={() =>
                             handleAddToCart(productId, product)
