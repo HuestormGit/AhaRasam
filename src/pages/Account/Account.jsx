@@ -904,45 +904,64 @@ const AddressesPanel = ({ status, addresses, setAddresses }) => {
   );
 };
 
-const OrderCard = ({ order }) => (
-  <li className="account-order">
-    <Link
-      className="account-order-link"
-      to={`/account/orders/${encodeURIComponent(order.documentId)}`}
-    >
-      <div className="account-order-head">
-        <div>
-          <h3>{order.orderNumber || `Order #${order.id}`}</h3>
-          <p className="account-order-date">Placed {formatDate(order.createdAt)}</p>
+// Two destinations per card, so the whole-card link had to go: an anchor
+// cannot contain another anchor, and a card with a hidden second action is
+// worse than a card with two visible ones. Both actions carry the order number
+// for screen readers, because "View Details" repeated down a list names nothing.
+const OrderCard = ({ order }) => {
+  const orderPath = `/account/orders/${encodeURIComponent(order.documentId)}`;
+  const trackPath = `/track-order/${encodeURIComponent(order.documentId)}`;
+  const title = order.orderNumber || `Order #${order.id}`;
+
+  return (
+    <li className="account-order">
+      <div className="account-order-body">
+        <div className="account-order-head">
+          <div>
+            <h3>{title}</h3>
+            <p className="account-order-date">Placed {formatDate(order.createdAt)}</p>
+          </div>
+          <p className="account-order-total">₹{formatMinor(order.grandTotalMinor)}</p>
         </div>
-        <p className="account-order-total">₹{formatMinor(order.grandTotalMinor)}</p>
+        <div className="account-order-status">
+          <span className="account-badge">
+            Payment: {statusLabel(order.paymentStatus)}
+          </span>
+          <span className="account-badge">
+            Delivery: {statusLabel(order.shipmentStatus)}
+          </span>
+        </div>
+        {order.orderItems?.length > 0 && (
+          <ul className="account-order-items">
+            {order.orderItems.map((item) => (
+              <li key={item.id}>
+                <span>
+                  {item.productTitleSnapshot}
+                  {item.packSizeSnapshot ? ` (${item.packSizeSnapshot})` : ""} ×{" "}
+                  {item.quantity}
+                </span>
+                <span>₹{formatMinor(item.lineTotalMinor)}</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
-      <div className="account-order-status">
-        <span className="account-badge">
-          Payment: {statusLabel(order.paymentStatus)}
-        </span>
-        <span className="account-badge">
-          Delivery: {statusLabel(order.shipmentStatus)}
-        </span>
+      <div className="account-order-actions">
+        <Link className="account-order-action" to={orderPath}>
+          View Details
+          <span className="visually-hidden"> for {title}</span>
+        </Link>
+        <Link
+          className="account-order-action account-order-action-primary"
+          to={trackPath}
+        >
+          Track Order
+          <span className="visually-hidden"> {title}</span>
+        </Link>
       </div>
-      {order.orderItems?.length > 0 && (
-        <ul className="account-order-items">
-          {order.orderItems.map((item) => (
-            <li key={item.id}>
-              <span>
-                {item.productTitleSnapshot}
-                {item.packSizeSnapshot ? ` (${item.packSizeSnapshot})` : ""} ×{" "}
-                {item.quantity}
-              </span>
-              <span>₹{formatMinor(item.lineTotalMinor)}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-      <span className="account-order-affordance">View details →</span>
-    </Link>
-  </li>
-);
+    </li>
+  );
+};
 
 const OrdersPanel = ({ status, orders }) => (
   <>

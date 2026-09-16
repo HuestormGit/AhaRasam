@@ -26,6 +26,7 @@ import {
 } from "./components/Auth/AuthPages";
 import Account from "./pages/Account/Account";
 import OrderDetails from "./pages/OrderDetails/OrderDetails";
+import TrackOrder from "./pages/TrackOrder/TrackOrder";
 import PolicyPage, { POLICY_LINKS } from "./pages/Policy/PolicyPage";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
 import NotFound from "./pages/NotFound/NotFound";
@@ -123,6 +124,21 @@ function App() {
                     <PageTitle title="Order Details">
                       <RequireAuth>
                         <OrderDetails />
+                      </RequireAuth>
+                    </PageTitle>
+                  }
+                />
+
+                {/* Tracking is the same order read behind the same gate as the
+                    details page above — no anonymous order lookup, so a route
+                    that only knows an id grants nothing the account flow does
+                    not already grant. */}
+                <Route
+                  path="/track-order/:orderId"
+                  element={
+                    <PageTitle title="Track Order">
+                      <RequireAuth>
+                        <TrackOrder />
                       </RequireAuth>
                     </PageTitle>
                   }

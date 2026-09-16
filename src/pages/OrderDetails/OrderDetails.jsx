@@ -189,6 +189,15 @@ const OrderDetails = () => {
             <span>Payment: {statusLabel(order.paymentStatus)}</span>
             <span>Delivery: {statusLabel(order.shipmentStatus)}</span>
           </div>
+          {/* orderId, not order.documentId: the tracking page reads the order
+              back by whatever identifier brought the customer here, so the two
+              routes can never drift onto different id schemes. */}
+          <Link
+            className="order-details-track"
+            to={`/track-order/${encodeURIComponent(orderId)}`}
+          >
+            Track Order
+          </Link>
         </div>
         <p className="order-details-total">
           <span>Grand total</span>

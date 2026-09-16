@@ -74,6 +74,28 @@
   }
 }
 
+// Scoped to the page so it outranks the generic `a` colour rule above.
+.order-details-page .order-details-track {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 14px;
+  padding: 9px 22px;
+  border: 2px solid #aa2423;
+  border-radius: 24px;
+  background: #aa2423;
+  color: #fff;
+  font-family: "Barlow Condensed";
+  font-size: 18px;
+  text-decoration: none;
+
+  &:hover {
+    background: #8d1d1c;
+    border-color: #8d1d1c;
+    color: #fff;
+  }
+}
+
 .order-details-total {
   display: flex;
   flex-direction: column;
